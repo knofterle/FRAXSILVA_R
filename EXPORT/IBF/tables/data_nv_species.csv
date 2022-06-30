@@ -1,0 +1,33 @@
+"Baumart_kurz","Baumart_lang","n","n_plots","height_mean","height_median","height_max","height_min"
+"BAh","Acer pseudoplatanus",3923,237,203,116,6110,5
+"GEs","Fraxinus excelsior",2908,243,134,98,4060,3
+"SAh","Acer platanoides",1505,133,159,122,1057,19
+"HBu","Carpinus betulus",530,119,355,183,6782,20
+"RBu","Fagus sylvatica",275,92,655,314,8630,13
+"WKi","Prunus avium",9,9,364,316,711,115
+"Roter Hartriegel","Cornus sanguinea",60,18,945,635,6105,50
+"FAh","Acer minor",40,23,1315,761,7201,54
+"Himbeere","Rubus idaeus",5,3,342,298,496,135
+"Hundsrose","Rosa canina",2,1,663,663,780,546
+"Weissdorn","Crataegus spec",34,21,1063,605,5599,55
+"Brombeere","Rubus rubus",6,4,558,604.5,910,138
+"Holunder","Sambucus spec",40,8,654,610,1743,169
+"Pfaffenhuetchen","Euonymus europaeus",192,15,233,181.5,1058,60
+"unknown","unknown",1,1,176,176,176,176
+"GHa","Corylus avellana",13,8,491,121,3290,39
+"GFi","Picea abies",1,1,41,41,41,41
+"WLi","Tilia cordata",3,3,256,55,663,51
+"Weide","Salix spec",1,1,87,87,87,87
+"SEi","Quercus robur",1,1,128,128,128,128
+"Vogelbeere","Sorbus aucuparia",3,3,282,146,570,131
+"Eiche","Quercus spec",157,31,146,133,589,43
+"BUl","Ulmus glabra",5,4,361,420,708,48
+"Liguster","Ligustrum vulgare",23,2,586,500,1437,124
+"Waldrebe","Clematis vitalba ",1,1,1410,1410,1410,1410
+"Faulbaum","Frangula alnus",75,24,813,453,5936,45
+"FlatterUl","Ulmus laevis",2,1,318,318.5,368,269
+"FeldUl","Ulmus minor",2,1,1110,1110,1653,567
+"BHa","Corylus colurna",1,1,233,233,233,233
+"Seidelbast","Daphne mezereum",5,5,764,733,1139,344
+"Schlehe","Prunus spinosa",70,15,851,506.5,4500,72
+"SUMME","31",9893,100,221.950455005056,120,8630,3
