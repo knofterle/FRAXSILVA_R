@@ -47,21 +47,25 @@ color[color == "zero"] <- "blue"
 plot(map_ansitz$x, map_ansitz$y, col = color, xlim = c(0,70), ylim = c(0,80))
 
 # All trees are plotted
-pdf(file = "EXPORT/Goe_Lau/Ansitz_1" ,width=6,height=6,paper='special')
-ggplot(data = tree_data_ansitz, aes (x,y)) +
+plot <- ggplot(data = tree_data_ansitz, aes (x,y)) +
   geom_point(colour = "green4", size = tree_data_ansitz$d/20, alpha = 0.2) +
   geom_point(colour = "green4", size = tree_data_ansitz$d/130) +
   lims( x = c(0,65), y = c(0,85)) +
   #  geom_point(data = solaris_ansitz, aes(x, y, colour = TSF), size = 7) +
   theme_bw()
-dev.off()
+ggsave(
+	plot = plot,
+	filename = "EXPORT/Goe_Lau/figures/Ansitz_1.pdf",
+	units = "mm",
+	width = 150,
+	height = 150
+)
+
 
 # Only the remaining trees are plotted
-pdf(file = "EXPORT/Goe_Lau/Ansitz_2" ,width=6,height=6,paper='special')
-
 sub_tree_data_ansitz <- tree_data_ansitz[tree_data_ansitz$a == "", ]
 
-ggplot(data = sub_tree_data_ansitz, aes (x,y)) +
+plot <- ggplot(data = sub_tree_data_ansitz, aes (x,y)) +
   geom_point(colour = "green4", size = sub_tree_data_ansitz$d/20, alpha = 0.2) +
   geom_point(colour = "green4", size = sub_tree_data_ansitz$d/130) +
   lims( x = c(0,65), y = c(0,85)) +
@@ -69,7 +73,14 @@ ggplot(data = sub_tree_data_ansitz, aes (x,y)) +
   #             alpha = 0.8)
   #  geom_point(data = solaris_ansitz, aes(x, y, colour = TSF), size = 7) +
   theme_bw()
-dev.off()
+ggsave(
+	plot = plot,
+	filename = "EXPORT/Goe_Lau/figures/Ansitz_2.pdf",
+	units = "mm",
+	width = 150,
+	height = 150
+)
+
 
 ###### VISUALIZE THE SOLARISKOP DATA -------------------------------------------
 
@@ -77,8 +88,7 @@ solaris_ansitz <- merge(x = thr_selected, y = nvplots_ansitz, by.x = "name",
                         by.y = "nr", all.x = F, all.y = T) 
 
 # Only remaining trees are plotted
-pdf(file = "EXPORT/Goe_Lau/Ansitz_3" ,width=6,height=6,paper='special')
-ggplot(data = sub_tree_data_ansitz, aes (x,y)) +
+plot <- ggplot(data = sub_tree_data_ansitz, aes (x,y)) +
   geom_point(colour = "green4", size = sub_tree_data_ansitz$d/20, alpha = 0.2) +
   geom_point(colour = "green4", size = sub_tree_data_ansitz$d/130) +
   geom_point(data = solaris_ansitz, aes(x,y, colour = TSF), pch = 15, size = 6,
@@ -87,10 +97,16 @@ ggplot(data = sub_tree_data_ansitz, aes (x,y)) +
   #  geom_point(data = solaris_ansitz, aes(x, y, colour = TSF), size = 7) +
   theme_bw() + 
   theme(legend.position="none") 
-dev.off()
+ggsave(
+	plot = plot,
+	filename = "EXPORT/Goe_Lau/figures/Ansitz_3.pdf",
+	units = "mm",
+	width = 150,
+	height = 150
+)
 
 ### Tidy up 
-rm(color, sub_tree_data_ansitz, map_ansitz)
+rm(color, sub_tree_data_ansitz, map_ansitz, plot)
 
 ###### OUTPUT ------------------------------------------------------------------
 # solaris_ansitz, 

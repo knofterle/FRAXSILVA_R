@@ -47,19 +47,25 @@ color[color == "zero"] <- "blue"
 plot(map_polter$x, map_polter$y, col = color, xlim = c(0,70), ylim = c(0,80))
 
 # All trees are plotted
-pdf(file = "EXPORT/Goe_Lau/Polter_1" ,width=6,height=6,paper='special')
-  ggplot(data = tree_data_polter, aes (x,y)) +
-    geom_point(colour = "green4", size = tree_data_polter$d/20, alpha = 0.2) +
-    geom_point(colour = "green4", size = tree_data_polter$d/130) +
-    lims( x = c(0,65), y = c(0,85)) +
-  #  geom_point(data = solaris_polter, aes(x, y, colour = TSF), size = 7) +
-    theme_bw()
-dev.off()
+plot <-  ggplot(data = tree_data_polter, aes (x, y)) +
+	geom_point(colour = "green4",
+						 size = tree_data_polter$d / 20,
+						 alpha = 0.2) +
+	geom_point(colour = "green4", size = tree_data_polter$d / 130) +
+	lims(x = c(0, 65), y = c(0, 85)) +
+	#  geom_point(data = solaris_polter, aes(x, y, colour = TSF), size = 7) +
+	theme_bw()
+ggsave(
+	plot = plot,
+	filename = "EXPORT/Goe_Lau/figures/Polter_1.pdf",
+	units = "mm",
+	width = 150,
+	height = 150
+)
 
 # Only the remaining trees are plotted
-pdf(file = "EXPORT/Goe_Lau/Polter_2" ,width=6,height=6,paper='special')
  sub_tree_data_polter <- tree_data_polter[tree_data_polter$a == "", ]
- ggplot(data = sub_tree_data_polter, aes (x,y)) +
+plot <- ggplot(data = sub_tree_data_polter, aes (x,y)) +
    geom_point(colour = "green4", size = sub_tree_data_polter$d/20, alpha = 0.2) +
    geom_point(colour = "green4", size = sub_tree_data_polter$d/130) +
    lims( x = c(0,65), y = c(0,85)) +
@@ -67,7 +73,13 @@ pdf(file = "EXPORT/Goe_Lau/Polter_2" ,width=6,height=6,paper='special')
  #             alpha = 0.8)
  #  geom_point(data = solaris_polter, aes(x, y, colour = TSF), size = 7) +
   theme_bw()
-dev.off()
+ggsave(
+	plot = plot,
+	filename = "EXPORT/Goe_Lau/figures/Polter_2.pdf",
+	units = "mm",
+	width = 150,
+	height = 150
+)
 
 ###### VISUALIZE THE SOLARISKOP DATA -------------------------------------------
 
@@ -75,8 +87,7 @@ solaris_polter <- merge(x = thr_selected, y = nvplots_polter, by.x = "name",
                         by.y = "nr", all.x = F, all.y = T) 
 
 # Only remaining trees are plotted
-pdf(file = "EXPORT/Goe_Lau/Polter_3" ,width=6,height=6,paper='special')
-ggplot(data = sub_tree_data_polter, aes (x,y)) +
+plot <- ggplot(data = sub_tree_data_polter, aes (x,y)) +
   geom_point(colour = "green4", size = sub_tree_data_polter$d/20, alpha = 0.2) +
   geom_point(colour = "green4", size = sub_tree_data_polter$d/130) +
   geom_point(data = solaris_polter, aes(x,y, colour = TSF), pch = 15, size = 6,
@@ -85,10 +96,16 @@ ggplot(data = sub_tree_data_polter, aes (x,y)) +
   #  geom_point(data = solaris_polter, aes(x, y, colour = TSF), size = 7) +
   theme_bw() + 
   theme(legend.position="none") 
-dev.off()
+ggsave(
+	plot = plot,
+	filename = "EXPORT/Goe_Lau/figures/Polter_3.pdf",
+	units = "mm",
+	width = 150,
+	height = 150
+)
 
 ### Tidy up 
-rm(color, sub_tree_data_polter, map_polter)
+rm(color, sub_tree_data_polter, map_polter, plot)
 
 ###### OUTPUT ------------------------------------------------------------------
 # solaris_polter, 

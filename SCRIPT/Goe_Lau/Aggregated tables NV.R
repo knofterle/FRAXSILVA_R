@@ -22,8 +22,8 @@ for (i in 1:nrow(nv_plots)) {
   temp_rows <- (nv$Plotnummer == temp_plotnummer)
   
   nv_plots$n_trees[i] <- sum(temp_rows, na.rm = T)
-  nv_plots$n_species[i] <- length(unique(nv$Baumart[temp_rows]))
-  nv_plots$n_ash[i] <- sum(nv$Baumart[temp_rows] == "GEs", na.rm = T)
+  nv_plots$n_species[i] <- length(unique(nv$Baumart_kurz[temp_rows]))
+  nv_plots$n_ash[i] <- sum(nv$Baumart_kurz[temp_rows] == "GEs", na.rm = T)
   
   # The location can be taken from the plotnumber, each is unique
   if (temp_plotnummer %in% 1:315) {
@@ -79,16 +79,16 @@ nv_plots$height_mean <- round(nv_plots$height_mean, 2)
 
 ## PRODUCE AGGREGATED SPECIES TABLE  -------------------------------------------
 
-nv_species <- data.frame("species" = unique(nv$Baumart))
+nv_species <- data.frame("species" = unique(nv$Baumart_kurz))
 for (i in 1:nrow(nv_species)) {
   temp_species <- nv_species$species[i]
-  nv_species$n[i] <- length(nv$Baumart[nv$Baumart == temp_species])
+  nv_species$n[i] <- length(nv$Baumart_kurz[nv$Baumart_kurz == temp_species])
   nv_species$n_plots[i] <-
-    length(unique(nv$Plotnummer[nv$Baumart == temp_species]))
-  nv_species$height_mean[i] <- mean(nv$Hoehe[nv$Baumart == temp_species])
-  nv_species$height_median[i] <- median(nv$Hoehe[nv$Baumart == temp_species])
-  nv_species$height_max[i] <- max(nv$Hoehe[nv$Baumart == temp_species])
-  nv_species$height_min[i] <- min(nv$Hoehe[nv$Baumart == temp_species])
+    length(unique(nv$Plotnummer[nv$Baumart_kurz == temp_species]))
+  nv_species$height_mean[i] <- mean(nv$Hoehe[nv$Baumart_kurz == temp_species])
+  nv_species$height_median[i] <- median(nv$Hoehe[nv$Baumart_kurz == temp_species])
+  nv_species$height_max[i] <- max(nv$Hoehe[nv$Baumart_kurz == temp_species])
+  nv_species$height_min[i] <- min(nv$Hoehe[nv$Baumart_kurz == temp_species])
 }
 nv_species$height_mean <- round(nv_species$height_mean, 2)
 nv_species <- nv_species[order(nv_species$n, decreasing = T), ]

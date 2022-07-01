@@ -1,6 +1,6 @@
 ################ LOAD AND CLEAN NV DATA ################################
 # J.Osewold
-# 24.06.22
+# 01.07.22
 ##### ALMOST DONE #####
 ################################################################################
 
@@ -78,6 +78,9 @@ nv$Baumart[nv$Baumart %in% c("fah")] <- "FAh"
 nv$Baumart[nv$Baumart %in% c("ulme berg", "Ulme Berg", "ulme")] <- "BUl"
 nv$Baumart[nv$Baumart %in% c("wki")] <- "WKi"
 
+nv <- rename(nv, Baumart_kurz = Baumart)
+colnames(nv)
+
 ###### REMOVE SOME MORE TYPOS  -------------------------------------------------
 unique(nv$Esche.markiert)
 nv$Esche.markiert[nv$Esche.markiert %in% c(" ", "")] <- NA
@@ -122,20 +125,63 @@ for (i in 1:nrow(nv)) {
   }
 }
 
-table(nv$Rueckegasse)
+# table(nv$Rueckegasse)
 nv$Rueckegasse[nv$Rueckegasse %in% c(1, "TRUE")] <- TRUE
 nv$Rueckegasse[is.na(nv$Rueckegasse)] <- FALSE
 nv$Rueckegasse <- as.logical(nv$Rueckegasse)
 
+###### TERMINAL TRUE/FALSE --------------------------------------------------------
+# create columns that represent the "t" mark for terminal in the number of 
+# shoots
+# The code was copied from the IBF part
+
+nv$ETS.abgestorben.frisch.terminal <- FALSE
+nv$ETS.abgestorben.alt.terminal <- FALSE
+nv$ETS.lebend.terminal <- FALSE
+nv$Verbiss.lebend.terminal <- FALSE
+nv$Verbiss.tot.terminal <- FALSE
+nv$Sonstige.Gruende.tot.terminal <- FALSE
+
+for (i in c("ETS.abgestorben.frisch",
+						"ETS.abgestorben.alt",
+						"ETS.lebend",
+						"Verbiss.lebend",
+						"Verbiss.tot",
+						"Sonstige.Gruende.tot")) {
+	# Find all "t"s, the [[]] was neccessary to get a vector 
+	select1 <- grep("t", nv[[i]])
+	select2 <- grep("T", nv[[i]])
+	select <- c(select1, select2) # These are positions not a TRUE/FALSE vector
+	
+	# write the information in the "terminal" column
+	t <- paste0(i, ".terminal") 
+	nv[select, t] <- TRUE
+	# delete the "t"s
+	nv[i] <- gsub("t", "", nv[[i]])
+	nv[i] <- gsub("T", "", nv[[i]])
+	# change to numeric
+	nv[i] <- as.numeric(nv[[i]])
+}
+
+###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
+nv$Einjaehriger.Saemling <- as.logical(nv$Einjaehriger.Saemling)
+nv$Einjaehriger.Saemling[is.na(nv$Einjaehriger.Saemling)] <- F
+
+###### ADD COLUMN ETS GENERAL ------------------------------------------------------
+nv$ETS <-
+	!is.na(nv$ETS.abgestorben.frisch) |
+	!is.na(nv$ETS.abgestorben.alt) |
+	!is.na(nv$ETS.lebend)
+
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
-table(nv$Baumart)
+table(nv$Baumart_kurz)
 plotnumbers_with_empty <- unique(nv$Plotnummer)
 
 # The only information needed from the empty plots is the information about 
 # logging trails. Therefore the data has to be saved for little more, but 
 # separated to ease the counting of tree numbers
 nv_with_empty <- nv
-nv <- nv[nv$Baumart != "", ]
+nv <- nv[nv$Baumart_kurz != "", ]
 
 
 ###### TIDY UP  ----------------------------------------------------------------

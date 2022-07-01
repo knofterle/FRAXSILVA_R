@@ -58,7 +58,7 @@ ggplot(data = tmp) +
 tmp <- nv_plots %>% 
   arrange(ash_ratio) %>% 
   select(location, Plotnummer, n_trees, ash_ratio, n_ash)
-write.csv(tmp, file = "EXPORT/Goe_Lau/Auswahlhilfe_halbe_Plots.csv")
+write.csv(tmp, file = "EXPORT/Goe_Lau/tables/Auswahlhilfe_halbe_Plots.csv")
 
 ## TIDY UP  --------------------------------------------------------------------
 rm(nvplots_ansitz, nvplots_polter, nv_plots_coord, tmp)
