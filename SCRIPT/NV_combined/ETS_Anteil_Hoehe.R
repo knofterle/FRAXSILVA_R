@@ -22,7 +22,7 @@ library(dplyr)
 
 ## HARMONIZE DATESET  ----------------------------------------------------------
 nv_gl <- nv
-nv_gl$Hoehe <- nv_gl$Hoehe*10 # cm to mm
+nv_gl$Hoehe <- nv_gl$Hoehe * 10 # cm to mm
 
 nv_ibf <- data_nv
 nv_gl$Versuch <- "Goe_Lau"
@@ -47,20 +47,23 @@ tmp <-
 # count(tmp) 7869
 
 ## SUMMARIZE DATA BY HEIGHT GROUPS  --------------------------------------------
-steps <- seq(from = 0, to = 500, by = 12.5)
+steps <- seq(from = 0, to = 500, by = 10)
 table_ets_hist_gl <-
 	tmp %>%
 	filter(Versuch == "Goe_Lau") %>% 
 	mutate(hist_step = cut(
 		x = Hoehe,
 		breaks = steps,
-		labels = steps[1:40] + 3.75
-	)) %>%
+		labels = steps[1:50] + 3
+	)) %>% 
+	# Die labels müssen etwas versetzt zu den breaks und versetzt zueinander 
+	# (siehe table_ets_hist_ibf) sein damit die columns am Ende an der richtigen 
+	# Stelle und dich beieinander stehen.
 	group_by(hist_step, .drop = F) %>%
 	summarise(n = n(), ETS_ratio = sum(ETS) / n() * 100) %>% 
 	mutate(Versuch = "Goe_Lau") %>% 
 	mutate(hist_step = as.numeric(as.character(hist_step))) %>% 
-	mutate(hist_step_point = hist_step + 2.5)
+	mutate(hist_step_point = hist_step + 2)
 	# Es war nötig die hist_steps für die Punkte zu erhöhen damit zumindest die 
 	# Punkte auf einer x-Höhe liegen, die Columns mussten ein bisschen nach rechts
 	# bzw links damit sie sich nicht überdecken
@@ -71,13 +74,13 @@ table_ets_hist_ibf <-
 	mutate(hist_step = cut(
 		x = Hoehe,
 		breaks = steps,
-		labels = steps[1:40] + 8.75
+		labels = steps[1:50] + 7
 	)) %>% 
 	group_by(hist_step, .drop = F) %>% 
 	summarise(n = n(), ETS_ratio = sum(ETS)/ n() * 100) %>% 
 	mutate(Versuch = "IBF") %>% 
 	mutate(hist_step = as.numeric(as.character(hist_step))) %>% 
-	mutate(hist_step_point = hist_step - 2.5)
+	mutate(hist_step_point = hist_step - 2)
 
 table_ets_hist <- rbind(table_ets_hist_gl, table_ets_hist_ibf)
 
@@ -88,17 +91,25 @@ plot <-
 							 y = n,
 							 color = Versuch, 
 							 fill = Versuch),
-					 width = 5) +
+					 width = 4) +
 	geom_point(
 		aes(x = hist_step_point,
-				y = ETS_ratio * 10,
+				y = ETS_ratio * 5,
 				fill = Versuch),
 		shape =  21,
 		color = "black",
 		size = 2
-	)+
+	) +
+	geom_smooth(aes(
+		x = hist_step_point,
+		y = ETS_ratio * 5,
+		color = Versuch,
+		fill = Versuch
+	),
+	alpha = 0.2,
+	method = "lm") +
 	scale_y_continuous(name = "Anzahl [total = 7869]",
-										 sec.axis =  sec_axis(trans = ~ . / 10,
+										 sec.axis =  sec_axis(trans = ~ . / 5,
 										 										 name = "ETS Anteil [%]")) +
 	scale_x_continuous(
 		name = "Hoehenklassen [mm]",
@@ -118,7 +129,7 @@ plot <-
 	annotate(
 		geom = "text",
 		x = 150,
-		y = 850,
+		y = 450,
 		hjust = 0,
 		label =
 "> filter (hoehe < 500)
