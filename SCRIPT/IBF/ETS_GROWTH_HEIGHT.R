@@ -72,7 +72,7 @@ plot <-
   geom_point(aes(x = hist_step, y = growth, color = ETS)) +
   scale_y_continuous(name = "Anzahl [total = 1764]",
                      sec.axis =  sec_axis(trans = ~ .,
-                                          name = "Zuwachs [mm pro Jahr]")) +
+                                          name = "Durchschnittl. Zuwachs [mm pro Jahr]")) +
   scale_x_continuous(
     name = "Hoehenklassen [mm]",
     breaks = seq(0, 500, 50),
