@@ -1,0 +1,8 @@
+NOTIZEN ZUR DATENGRUNDLAGE
+
+Die Baumpositionen und alle vorhandenen ertragskundlichen Daten liegen in einer shapefile:
+BB_baeume oder so ähnlich
+die Flächengrenzen sind durch vier Punkte in der Shapefile Eckpunkte100m_UTM_p hinterlegt
+
+Ich habe das ganze umgewandelt zur csv
+
