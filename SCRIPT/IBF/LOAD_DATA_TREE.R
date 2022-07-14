@@ -54,6 +54,8 @@ colnames(data_tree_mon) <-
 		"Kraft_Klas", "Bemerkung")
 
 
+
+
 ###### LOAD TREE DISTRIBUTION AND TREE HEIGHT FROM shape -------------------------
 
 
