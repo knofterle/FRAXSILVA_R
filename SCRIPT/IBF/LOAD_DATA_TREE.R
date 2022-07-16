@@ -40,20 +40,31 @@ colnames(data_tree_platt) <-
     "BA_Gruppe", "Kraft_Klas")
 
 data_tree_steg <- read.csv(file = "DATA/RAW/Steglitz/IBF_BB1_Baeume_20211214.csv")
-str(data_tree_steg)
 colnames(data_tree_steg) <-
 	c("ID", "nr_fm", "nr", "Baumart", "Hoehe", "kraftsche_Klasse", 
 		"Kronenzustand", "WR_Kron", "Bemerkung", "x", "y", "DBH_mm", "BHD_cm", 
 		"Height_m", "Status", "Schicht", "BA_Gruppe")
 
 data_tree_mon <- read.csv(file = "DATA/RAW/Monheim/IBF_BY1_Baeume_20211214.csv")
-str(data_tree_mon)
 colnames(data_tree_mon) <- 
 	c("ID", "nr", "x", "y", "z", "wgs84_x", "wgs84_y", "wgs84_z", "ID2", 
 		"ID_nummer", "BA_Gruppe", "Baum_ID", "Baumart", "Umfang", "BHD",
 		"Kraft_Klas", "Bemerkung")
 
+data_tree_grfw <-
+	read.csv(file = "DATA/RAW/IBF/Greifswald/IBF_MV1_Baeume_20220228.csv")
 
+data_tree_leu <- 
+	read.csv(file = "DATA/RAW/IBF/Leutzsch/Baeume_SN1_Leutzsch_UTM_Koordinaten.csv")
+
+data_tree_bie <- 
+	read.csv(file = "DATA/RAW/IBF/Bienhof/Baeume_SN2_Bienhof_UTM_Koordinaten.csv")
+
+data_tree_ett_a <- 
+	read.csv(file = "DATA/RAW/IBF/Ettersberg/IBF_TH1a_Baeume_20211216.csv")
+
+data_tree_ett_b <- 
+	read.csv(file = "DATA/RAW/IBF/Ettersberg/IBF_TH1b_Baeume_20211216.csv")
 
 
 ###### LOAD TREE DISTRIBUTION AND TREE HEIGHT FROM shape -------------------------
