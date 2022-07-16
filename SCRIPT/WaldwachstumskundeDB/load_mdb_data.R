@@ -61,8 +61,17 @@ load.mdb.data <- function (path, columns, all.column) {
 	#### CLEAN COLUMNS  --------------------------------------------------------
 	# I dont want to double these columns, otherwise I would need to delete them
 	# later by a different name. I hope the data is the same in baum and stammv
-	baum <- subset(baum, select = -c(auf, nr, edvid, datum, Stempel, art, 
-																	 baumid)) 
+	# NO its not, therefore I renamed the columns only in stammv.
+	
+	# stammv <- subset(stammv, select = -c(auf, nr, edvid, datum, Stempel, art, 
+	# 																 baumid)) # OLD VERSION
+	
+	colnames(stammv) [colnames(stammv) %in% c("auf", "nr", "edvid", "datum", 
+																						"Stempel", "art",
+																						"baumid")] <-
+		c("auf.stammv", "nr.stammv", "edvid.stammv", "datum.stammv", 
+			"Stempel.stammv", "art.stammv", 
+			"baumid.stammv")
 	
 	# This column is named similar but does not include the same data..
 	colnames(baum) [colnames(baum) == "bemerk"] <- "bemerk.baum"
