@@ -5,31 +5,19 @@
 #==============================================================================#
 
 ## REQUIRES --------------------------------------------------------------------
-source(file = "SCRIPT/Goe_Lau/Load and Clean NV Data.R")
-source(file = "SCRIPT/IBF/LOAD_NV.R")
-# 
-# data_nv
-# nv 
+source(file = "SCRIPT/NV_combined/Combine_NV.R")
+# nv_all
 # 
 
 ## LIBRARYS --------------------------------------------------------------------
 library(dplyr)
+library(ggplot2)
 
 ## NOTES -----------------------------------------------------------------------
 # Das hier bastelt einen Plot aus den NV Daten aus Goe/Lau und IBF. Der 
 # funktioniert ganz ähnlich wie der Graph ETS Anteil ~ Hoehe ~ Zuwachs  für die 
 # IBF Daten.
 
-## HARMONIZE DATESET  ----------------------------------------------------------
-nv_gl <- nv
-nv_gl$Hoehe <- nv_gl$Hoehe * 10 # cm to mm
-
-nv_ibf <- data_nv
-nv_gl$Versuch <- "Goe_Lau"
-nv_ibf$Versuch <- "IBF"
-nv_all <- bind_rows(nv_gl, nv_ibf) 
-# This is similar to rbind() but all missing columns are filled with NA
-# count(nv_all) 24609
 
 ## DATA FILTER  ----------------------------------------------------------------
 tmp <-
