@@ -66,17 +66,24 @@ load.mdb.data <- function (path, columns, all.column) {
 	# stammv <- subset(stammv, select = -c(auf, nr, edvid, datum, Stempel, art, 
 	# 																 baumid)) # OLD VERSION
 	
-	colnames(stammv) [colnames(stammv) %in% c("auf", "nr", "edvid", "datum", 
-																						"Stempel", "art",
-																						"baumid")] <-
-		c("auf.stammv", "nr.stammv", "edvid.stammv", "datum.stammv", 
-			"Stempel.stammv", "art.stammv", 
-			"baumid.stammv")
+	# colnames(stammv) [colnames(stammv) %in% c("auf", "nr", "edvid", "datum", 
+	# 																					"Stempel", "art",
+	# 																					"baumid")] <-
+	# 	c("auf.stammv", "nr.stammv", "edvid.stammv", "datum.stammv", 
+	# 		"Stempel.stammv", "art.stammv", 
+	# 		"baumid.stammv")
 	
 	# This column is named similar but does not include the same data..
 	colnames(baum) [colnames(baum) == "bemerk"] <- "bemerk.baum"
-	colnames(stammv) [colnames(stammv) == "bemerk"] <- "bemerk.stammv"
-
+	
+	colnames(stammv) [colnames(stammv) == "auf"] <- "auf.stammv"
+	colnames(stammv) [colnames(stammv) == "nr"] <- "nr.stammv"
+	colnames(stammv) [colnames(stammv) == "edvid"] <- "edvid.stammv"
+	colnames(stammv) [colnames(stammv) == "Stempel"] <- "Stempel.stammv"
+	colnames(stammv) [colnames(stammv) == "art"] <- "art.stammv"
+	colnames(stammv) [colnames(stammv) == "baumid"] <- "baumid.stammv"
+	colnames(stammv) [colnames(stammv) == "datum"] <- "datum.stammv"
+	
 	#### MERGE BAUM AND STAMMV  ------------------------------------------------
 	mdb.data <- merge(baum, stammv, by = "id", all.x = T, all.y = T)
 	
