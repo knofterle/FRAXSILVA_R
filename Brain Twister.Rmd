@@ -12,7 +12,6 @@ source(file = "SCRIPT/IBF/LOAD_NV.R")
 #  Loads and cleans all data from the Winter IBF surveys
 dfn <- data_nv[data_nv$Flaeche=="Schotten",]
 library(dplyr)
-
 dfn %>% 
 	count(Baumart_lang)
 ```
@@ -25,7 +24,7 @@ Auch sind **nach der Bereinugung** in den Daten 17 Eschen, die keinen Wert bei *
 
 ```{r, rows.print=15}
 dfn <- dfn[!is.na(dfn$Baumart_kurz),] # Löschung der 24 Einträge ohne Baumart
-dfn[dfn$Baumart_kurz=="GEs",] %>% 
+	dfn[dfn$Baumart_kurz=="GEs",] %>% 
 	count(Anzahl.Triebe)
 ```
 
@@ -33,7 +32,12 @@ Hier als Subset:\
 
 ```{r, rows.print=17}
 dfn <- dfn[!is.na(dfn$Baumart_kurz),] # Löschung der 24 Einträge ohne Baumart
-subset(dfn, is.na(dfn$Anzahl.Triebe) & dfn$Baumart_kurz=="GEs")[,c(1,4, 13, 15, 16, 17, 18)]
+DT::datatable(
+	subset(dfn, is.na(dfn$Anzahl.Triebe) & dfn$Baumart_kurz=="GEs")[,c(1,4, 13, 15, 16, 17, 18)], 
+	options = list(
+  pageLength = 17, autoWidth = TRUE
+)
+	)
 
 ```
 
