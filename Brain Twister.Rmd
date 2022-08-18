@@ -3,7 +3,7 @@ title: "Ungereimtheiten"
 output: html_notebook
 ---
 
-#### 1. Fehlende Baumarten
+### 1. Fehlende Baumarten
 
 Okay, wir haben 24 Bäume ohne Baumart. Die hau ich weg.
 
@@ -17,7 +17,9 @@ dfn %>%
 	count(Baumart_lang)
 ```
 
-#### 2. Astralbäume
+------------------------------------------------------------------------
+
+### 2. Astralbäume
 
 Auch sind **nach der Bereinugung** in den Daten 17 Eschen, die keinen Wert bei *Anzahl.Triebe* haben.
 
