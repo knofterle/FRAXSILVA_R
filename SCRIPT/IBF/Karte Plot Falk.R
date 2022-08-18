@@ -219,7 +219,46 @@ for (cc in 1:nrow(df)) {
 }; close(pb); rm(pb, cc, xx)
 table(df$gruppierung)
 
+### ............................................................................
+#### 3.1.2.1 Vorschlag von Johannes                                         ---- 
+# Das ist eine alternative zu den for-Schleifen mit dem arrows befehl. 
+# Hauptsächlich wird eine große Tabelle geschrieben, mit 200k Zeilen und allen 
+# Distancen aller Bäume zueinander. Die kannst du dann hinterher filtern. Ich 
+# habe die Baumarten etc. nicht mit eingabaut aber das sollte ein leichtes sein.
+# Das ganze läuft auf meinem PC in nicht wahrnehmbarer Geschwindikeit. Also so 
+# schnell wie ich mich durch die Zeilen tippe.
 
+# Leeres Dataframe wird etwas umständlich erstellt
+nrow_df <- nrow(df)
+arrows_tb <- matrix(0, nrow = (nrow_df*nrow_df), ncol = 7)
+colnames(arrows_tb) <- c("cc", "xx", "x0", "y0", "x1", "y1", "distance")
+arrows_tb <- as.data.frame(arrows_tb)
+
+# Ich habe deine Nomenklatur mit cc und xx übernommen, das ist ja quasi immer 
+# Zeilenposition von Baum1 und Zeilenposition von Baum2
+arrows_tb$cc <- rep(1:nrow_df, each = nrow_df)
+arrows_tb$xx <- rep(1:nrow_df, times = nrow_df)
+cc <- arrows_tb$cc
+xx <- arrows_tb$xx
+# Schau dir an diesem Punkt mal cc und xx an, dann wird klar was gemacht wird.
+arrows_tb$distance <- abs(df$xy[cc] - df$xy[xx])
+arrows_tb$x0 <- df$x[cc]
+arrows_tb$y0 <- df$y[cc]
+arrows_tb$x1 <- df$x[xx]
+arrows_tb$y1 <- df$y[xx]
+
+# Filtern:
+arrows_short <- arrows_tb[arrows_tb$distance <= 6, ]
+arrows_short <- arrows_short[arrows_short$distance != 0, ]
+
+# Die funktion musste ich ein bisschen umdefinieren, damit arrows() die Parameter
+# richtig nimmt.
+arrows_fn <- function(c) {
+	arrows(x0 = c[1], y0 = c[2], x1 = c[3], y1 = c[4], length = 0, col = "purple")
+}
+
+# Zeilenweise wird jetzt arrows() applied. Tada!
+apply(arrows_short[, 3:6], 1, arrows_fn)
 
 
 ### ............................................................................
