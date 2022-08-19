@@ -13,6 +13,8 @@ source(file = "SCRIPT/Goe_Lau/Load and Clean NV Data.R")
 
 ## NOTES -----------------------------------------------------------------------
 
+## EXPORT NV  ---------------------------------------------
+write.csv(x = nv, file = "EXPORT/Goe_Lau/tables/NV.csv")
 
 ## PRODUCE AGGREGATED PLOTS TABLE  ---------------------------------------------
 nv_plots <- data.frame("Plotnummer" = plotnumbers_with_empty)
@@ -94,6 +96,25 @@ nv_species$height_mean <- round(nv_species$height_mean, 2)
 nv_species <- nv_species[order(nv_species$n, decreasing = T), ]
 
 
+## PRODUCE TABLE WITH ALL MARKED ASHES  ----------------------------------------
+# Ich habe für eine bessere Uebersicht die doppelten oder dreifachen Plotnummern 
+# durch NA ersetzt, dann ist besser zu sehen welche Eschen zu welchem Plot 
+# gehoeren
+# 
+tmp <- nv %>% 
+	filter(!is.na(Esche.markiert)) %>% 
+	select(!ETS)
+
+str(tmp)
+plot <- 0
+for (i in 1:nrow(tmp)) {
+	if (plot == tmp$Plotnummer[i]) {
+		tmp$Plotnummer[i] <- NA
+	} else {
+		plot <- tmp$Plotnummer[i]
+	}
+}
+write.csv(x = tmp, file = "EXPORT/Goe_Lau/tables/Marked_Ash.csv")
 
 ## TIDY UP  --------------------------------------------------------------------
 rm(i, plotnumbers_with_empty, temp_ets_new, temp_ets_total, temp_plotnummer,
