@@ -1,6 +1,6 @@
 ############################# LOAD_DATA_TREE ###################################
 # J.Osewold
-# 30.03.2022
+# 24.10.2022
 ##### BEGINNING #####
 ################################################################################
 
@@ -79,6 +79,13 @@ data_tree_ett_b <-
 # data_tree_huy
 # data_tree_platt
 # data_tree_weis
+# data_tree_steg
+# data_tree_mon
+# data_tree_grfw
+# data_tree_leu
+# data_tree_noe
+# data_tree_ett_a
+# data_tree_ett_b
 
 
 

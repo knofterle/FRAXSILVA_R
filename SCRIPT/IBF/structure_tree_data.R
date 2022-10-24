@@ -9,8 +9,7 @@ source(file = "SCRIPT/IBF/LOAD_DATA_TREE.R")
 
 ## LIBRARYS --------------------------------------------------------------------
 library(dplyr)
-library(sf)
-library(sfheaders)
+
 ## NOTES -----------------------------------------------------------------------
 # Dieses Skript soll ein paar Basisinformationen aus den Baumdaten der IBF holen
 # 
@@ -54,46 +53,6 @@ g <- tmp %>%
 g$percent <- g$g/sum(g$g)
 g
 
-## BB Steglitz JUNK  ---------------------------------------------------------------------
-
-# plot(data_tree_steg$x, data_tree_steg$y, )
-# table(data_tree_steg$Bemerkung)
-# 
-# data_tree_steg %>% 
-# #	filter(Bemerkung == "Probebäume") %>% 
-# #	select(x,y) %>% 
-# 	ggplot(aes(x = x, y = y, color = Bemerkung, label = nr)) +
-# 	geom_point() + 
-# 	geom_label()
-# 
-# # 13 14 15 18 19  exclude
-# # 46 149 219 266 124 corners a
-# # 77 113 178 261 123 corners b
-# 
-# borders <- st_sfc(sf::st_polygon(
-# 	list(
-# 		cbind(
-# 		data_tree_steg$x[c(46, 149, 219, 266, 124, 46)],
-# 		data_tree_steg$y[c(46, 149, 219, 266, 124, 46)])
-# 	)
-# )
-# )
-# 
-# points <-
-# 	sfheaders::sf_multipoint(sort(data_tree_steg),
-# 													 x = "x",
-# 													 y = "y",
-# 													 multipoint_id = "nr",
-# 													 keep = T)
-# points <- st_as_sf(data_tree_steg, coords = c("x", "y"), dim = "XY")
-# class(points)
-# points
-# points <- st_combine(points)	
-# rest <- st_intersection(borders, points)
-# rest <- st_contains(borders, points)
-# rest <-  points[borders,] # DAS HIER FUNKTIONIERT; ES IST SOOO DUMMM!!!!!
-
-
 
 ## SCHOTTEN  --------------------------------------------------------------------
 str(data_tree_scho)
@@ -112,6 +71,13 @@ sqrt(mean(dbh$d) / pi * 4) # 843
 
 tmptd <- tmp$d ^2 /4 * pi
 sqrt(mean(tmptd) / pi * 4) # 535
+
+# Export fuer die Cloud und Tim
+tmp <- data_tree_scho %>% 
+	filter(auf == 3) %>% 
+	filter(a == "") %>% 
+	filter(art != 999)
+write.csv(tmp, file = "DATA/PROCESSED/IBF/Schotten_Baeume_rohdaten.csv")
 
 ## MOLLENFELDE  --------------------------------------------------------------------
 tmp <- data_tree_mol %>% 
@@ -245,8 +211,7 @@ sqrt(mean(tmptd, na.rm = T) / pi * 4) # 38.6
 table(data_tree_mon$Baumart)
 tmp <- data_tree_mon
 tmp$d <- tmp$BHD
-# tmp$d[tmp$BaumNr == 462] <- 35.5 # Tippfehler bei BHD_2
-# tmp$d[tmp$BaumNr == 206] <- NA # keine Messung
+
 tmp$d[tmp$d < 7] <- NA
 tmp$g <- tmp$d ^2 /4 * pi
 g <- tmp %>% 
@@ -289,8 +254,7 @@ sqrt(mean(tmptd, na.rm = T) / pi * 4) # 63.7
 table(data_tree_grfw$Baumart)
 tmp <- data_tree_grfw
 tmp$d <- tmp$BHD
-# tmp$d[tmp$BaumNr == 462] <- 35.5 # Tippfehler bei BHD_2
-# tmp$d[tmp$BaumNr == 206] <- NA # keine Messung
+
 tmp$d[tmp$d < 7] <- NA
 tmp$g <- tmp$d ^2 /4 * pi
 g <- tmp %>% 
@@ -322,8 +286,6 @@ sqrt(mean(tmptd, na.rm = T) / pi * 4) # 68.4
 table(data_tree_leu$Bezeichnung)
 tmp <- data_tree_leu
 tmp$d <- tmp$BHD
-# tmp$d[tmp$BaumNr == 462] <- 35.5 # Tippfehler bei BHD_2
-# tmp$d[tmp$BaumNr == 206] <- NA # keine Messung
 tmp$d[tmp$d < 7] <- NA
 tmp$g <- tmp$d ^2 /4 * pi
 g <- tmp %>% 
@@ -355,8 +317,6 @@ sqrt(mean(tmptd, na.rm = T) / pi * 4) # 24.1
 table(data_tree_bie$Baumart)
 tmp <- data_tree_bie
 tmp$d <- tmp$BHD
-# tmp$d[tmp$BaumNr == 462] <- 35.5 # Tippfehler bei BHD_2
-# tmp$d[tmp$BaumNr == 206] <- NA # keine Messung
 tmp$d[tmp$d < 7] <- NA
 tmp$g <- tmp$d ^2 /4 * pi
 g <- tmp %>% 
@@ -391,8 +351,6 @@ sqrt(mean(tmptd, na.rm = T) / pi * 4) # 27.5
 table(data_tree_ett$Baumart)
 tmp <- data_tree_ett
 tmp$d <- tmp$BHD
-# tmp$d[tmp$BaumNr == 462] <- 35.5 # Tippfehler bei BHD_2
-# tmp$d[tmp$BaumNr == 206] <- NA # keine Messung
 tmp$d[tmp$d < 7] <- NA
 tmp$g <- tmp$d ^2 /4 * pi
 g <- tmp %>% 
