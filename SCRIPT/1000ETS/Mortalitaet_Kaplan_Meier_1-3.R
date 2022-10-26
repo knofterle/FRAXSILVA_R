@@ -11,9 +11,9 @@ library(dplyr)
 # This runs all previously necessary scripts
 source(file = "SCRIPT/1000ETS/load_data_1000.R")
 
-# data
-# ETSStufen
-# Tote
+# data_1000
+# ETSStufen_1000
+# Tote_1000
 
 ###### NOTES -------------------------------------------------------------------
 
