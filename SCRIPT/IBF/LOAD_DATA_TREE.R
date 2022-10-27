@@ -16,7 +16,7 @@ source(file = "SCRIPT/WaldwachstumskundeDB/load_mdb_data.R")
 # 
 ###### LOAD TREE DISTRIBUTION AND TREE HEIGHT FROM MDB -------------------------
 data_tree_scho <- load.mdb.data(
-  path = "DATA/RAW/Schotten/K19302.mdb", all.column = T)
+  path = "DATA/RAW/Schotten/K19302_new.mdb", all.column = T)
 data_tree_mol <- load.mdb.data(
   path = "DATA/RAW/Mollenfelde/314313.mdb", all.column = T)
 data_tree_huy <- load.mdb.data(
