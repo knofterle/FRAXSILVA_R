@@ -28,6 +28,18 @@
 # stretch_y
 # mirror
 # 
+# parameters <-
+# 	list (
+# 		integer = c(
+# 			plotdistance = 9.93,
+# 			plotangle_gon = 388.5,
+# 			rectangular = 1,
+# 			stretch_x = 0.99,
+# 			stretch_y = 1
+# 		),
+# 		bool = c(mirror = F)
+# 	)
+
 # This Script only defines functions which are later applied to all trial areas
 
 
