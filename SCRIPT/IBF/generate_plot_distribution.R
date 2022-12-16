@@ -76,7 +76,7 @@ generate.rel.coord <- function(file) {
 
 ###### CREATE TABLE WITH ABSOLUTE COORDINATES ----------------------------------
 generate.abs.coord <-
-  function(plot_coord_rel, reference, parameters, zero_ref)  {
+  function(plot_coord_rel, reference, parameters, zero_ref, plotnumber1 = 1)  {
     
   #### PREPROCESS THE PARAMETERS -----------------------------------------------
   
@@ -91,6 +91,12 @@ generate.abs.coord <-
     plot_coord_rel$y <- y
   }
   
+  # If the plotnumbers do not start at 1 they can be shifted with the option:
+  # plotnumber1
+  plot_coord_rel$nr <- plot_coord_rel$nr + plotnumber1 - 1
+  row.names(plot_coord_rel) <- plot_coord_rel$nr
+  	
+  	
   # Position of zero (Absolute Plotposition)
   zero_x <- reference[ zero_ref, "x"]
   zero_y <- reference[ zero_ref, "y"]
