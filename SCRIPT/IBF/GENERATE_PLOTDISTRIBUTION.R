@@ -1,6 +1,6 @@
 ################ GENERATE PLOT DISTRIBUTION   ##################################
 # J.Osewold
-# 11.04.22
+# 02.03.23
 ##### DRAFT #####
 ################################################################################
 
@@ -190,9 +190,139 @@ plots_pos_platt <- generate.abs.coord(
 plots_ref_platt <- check.reference(plot_coord_abs = plots_pos_platt, 
                                   reference = reference)  
 
+####### Greifswald ------------------------------------------------------------
+# parameters <-
+#   list (
+#     integer = c(
+#       plotdistance = 10,
+#       plotangle_gon = 145,
+#       rectangular = 1,
+#       stretch_x = 1,
+#       stretch_y = 1
+#     ),
+#     bool = c(mirror = T)
+#   )
+# 
+# zero_ref <- "ref55"
+
+# Some plots were measured in the field from trees and are therefore "exact 
+# values", the goal is to align the plot map with the tree map. 
+# reference <- read.csv(
+#   file = "DATA/RAW/Plattenwald/Plotverteilung Plattenwald/Reference points.csv",
+#   header = T, stringsAsFactors = F)
+# row.names(reference) <- reference$nr
+
+plot_coord_rel <- generate.rel.coord(
+  file = "DATA/RAW/IBF/Greifswald/Plotverteilung Greifswald/NV_Plotverteilung.csv")
+
+# plots_pos_platt <- generate.abs.coord(
+#   plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
+#   parameters = parameters)
+# 
+# plots_ref_platt <- check.reference(plot_coord_abs = plots_pos_platt, 
+#                                    reference = reference)  
+
+####### Stegelitz ------------------------------------------------------------
+# parameters <-
+#   list (
+#     integer = c(
+#       plotdistance = 10,
+#       plotangle_gon = 145,
+#       rectangular = 1,
+#       stretch_x = 1,
+#       stretch_y = 1
+#     ),
+#     bool = c(mirror = T)
+#   )
+# 
+# zero_ref <- "ref55"
+
+# Some plots were measured in the field from trees and are therefore "exact 
+# values", the goal is to align the plot map with the tree map. 
+# reference <- read.csv(
+#   file = "DATA/RAW/Plattenwald/Plotverteilung Plattenwald/Reference points.csv",
+#   header = T, stringsAsFactors = F)
+# row.names(reference) <- reference$nr
+
+plot_coord_rel <- generate.rel.coord(
+  file = "DATA/RAW/IBF/Stegelitz/Plotverteilung Stegelitz/NV_Plotverteilung.csv")
+
+# plots_pos_platt <- generate.abs.coord(
+#   plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
+#   parameters = parameters)
+# 
+# plots_ref_platt <- check.reference(plot_coord_abs = plots_pos_platt, 
+#                                    reference = reference)  
+
+####### Leutzsch ------------------------------------------------------------
+# parameters <-
+#   list (
+#     integer = c(
+#       plotdistance = 10,
+#       plotangle_gon = 145,
+#       rectangular = 1,
+#       stretch_x = 1,
+#       stretch_y = 1
+#     ),
+#     bool = c(mirror = T)
+#   )
+# 
+# zero_ref <- "ref55"
+
+# Some plots were measured in the field from trees and are therefore "exact 
+# values", the goal is to align the plot map with the tree map. 
+# reference <- read.csv(
+#   file = "DATA/RAW/Plattenwald/Plotverteilung Plattenwald/Reference points.csv",
+#   header = T, stringsAsFactors = F)
+# row.names(reference) <- reference$nr
+
+plot_coord_rel <- generate.rel.coord(
+  file = "DATA/RAW/IBF/Leutzsch/Plotverteilung Leutzsch/NV_Plotverteilung.csv")
+
+# plots_pos_platt <- generate.abs.coord(
+#   plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
+#   parameters = parameters)
+# 
+# plots_ref_platt <- check.reference(plot_coord_abs = plots_pos_platt, 
+#                                    reference = reference)  
+
+####### Ettersberg ------------------------------------------------------------
+# parameters <-
+#   list (
+#     integer = c(
+#       plotdistance = 10,
+#       plotangle_gon = 145,
+#       rectangular = 1,
+#       stretch_x = 1,
+#       stretch_y = 1
+#     ),
+#     bool = c(mirror = T)
+#   )
+# 
+# zero_ref <- "ref55"
+
+# Some plots were measured in the field from trees and are therefore "exact 
+# values", the goal is to align the plot map with the tree map. 
+# reference <- read.csv(
+#   file = "DATA/RAW/Plattenwald/Plotverteilung Plattenwald/Reference points.csv",
+#   header = T, stringsAsFactors = F)
+# row.names(reference) <- reference$nr
+
+plot_coord_rel <- generate.rel.coord(
+  file = "DATA/RAW/IBF/Ettersberg/Plotverteilung Ettersberg/NV_Plotverteilung.csv")
+
+# plots_pos_platt <- generate.abs.coord(
+#   plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
+#   parameters = parameters)
+# 
+# plots_ref_platt <- check.reference(plot_coord_abs = plots_pos_platt, 
+#                                    reference = reference)  
+
+
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(parameters, zero_ref, plot_coord_rel)
+
 
 ###### OUTPUT ------------------------------------------------------------------
 # plots_pos_scho
@@ -210,6 +340,10 @@ rm(parameters, zero_ref, plot_coord_rel)
 
 
 ###### JUNK --------------------------------------------------------------------
+# ggplot(data = plot_coord_rel, aes(x = x, y = y, label = nr)) + geom_text()
+
+
+
 # Old
 # Junk
 # 
