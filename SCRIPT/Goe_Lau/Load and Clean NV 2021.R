@@ -1,6 +1,6 @@
-################ LOAD AND CLEAN NV DATA ################################
+################ LOAD AND CLEAN NV 2021 ################################
 # J.Osewold
-# 01.07.22
+# 06.03.2023
 ##### ALMOST DONE #####
 ################################################################################
 
@@ -19,14 +19,23 @@ library(dplyr)
 ###### CONNECT FILES  ----------------------------------------------------------
 nv_polter <- read.csv(file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Polter.csv",
                       header = T,
-                      stringsAsFactors = F)
+                      stringsAsFactors = F, 
+											fileEncoding = "UTF-8")
+nv_polter <- cbind(nv_polter, Flaeche = c("goe_pol"))
 nv_ansitz <- read.csv(file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Ansitz.csv",
                       header = T,
-                      stringsAsFactors = F)
+                      stringsAsFactors = F, 
+											fileEncoding = "UTF-8")
+nv_ansitz <- cbind(nv_ansitz, Flaeche = c("goe_ans"))
 nv_lau <- read.csv(file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Steinhorst.csv",
                           header = T,
-                          stringsAsFactors = F)
-nv <- rbind(nv_polter, nv_ansitz, nv_lau)
+                          stringsAsFactors = F, 
+									fileEncoding = "UTF-8")
+nv_lau <- cbind(nv_lau, Flaeche = c("lau"))
+
+nv_2021 <- rbind(nv_polter, nv_ansitz, nv_lau)
+nv_2021 <- cbind(nv_2021, Jahr = c(2021))
+rm(nv_polter, nv_ansitz, nv_lau)
 
 # # Replace column names/ I changed the names in the file according to the 
 # naming in the IBF data
@@ -50,62 +59,62 @@ nv <- rbind(nv_polter, nv_ansitz, nv_lau)
 
 ###### CHECK FOR ERRORS  ---------------------------------------------------------
 # check for mistakes in the raw data, visually complete or typos?
-table(nv$Rueckegasse)
-sort(table(nv$Plotnummer))
+table(nv_2021$Rueckegasse)
+sort(table(nv_2021$Plotnummer))
 
 # plotnumbers complete?
-which(!c(1:301) %in% unique(nv$Plotnummer)) # 179 180 292 298 are missing
-which(!c(8901:9017) %in% unique(nv$Plotnummer)) # complete
-which(!c(8701:8817) %in% unique(nv$Plotnummer)) 
+which(!c(1:301) %in% unique(nv_2021$Plotnummer)) # 179 180 292 298 are missing
+which(!c(8901:9017) %in% unique(nv_2021$Plotnummer)) # complete
+which(!c(8701:8817) %in% unique(nv_2021$Plotnummer)) 
 # 8816 and 8817 are missing, I remember to have skipped them
 
 
-# sapply(nv, table)
+# sapply(nv_2021, table)
 
 ###### HARMONIZE ALL SPECIES NAMES  --------------------------------------------
-unique(nv$Baumart)
-nv$Baumart[nv$Baumart %in% c("Rbu", "RBU", "rbu")] <- "RBu"
-nv$Baumart[nv$Baumart %in% c("Esch", "esch")] <- "GEs"
-nv$Baumart[nv$Baumart %in% c("BAH", "Bah")] <- "BAh"
-nv$Baumart[nv$Baumart %in% c("Hbu", "hbu")] <- "HBu"
-nv$Baumart[nv$Baumart %in% c("WLI", "Wli", "wli")] <- "WLi"
-nv$Baumart[nv$Baumart %in% c("SAH", "Sah", "sah")] <- "SAh"
-nv$Baumart[nv$Baumart %in% c("Salweide", "Weide", "SWei", "weide")] <- "SWe" 
-nv$Baumart[nv$Baumart %in% c(" Eiche", "STi", " eiche")] <- "SEi" 
-nv$Baumart[nv$Baumart %in% c("Keine Bäume", "keine Bäume", " ")] <- "" 
-nv$Baumart[nv$Baumart %in% c("bah")] <- "BAh"
-nv$Baumart[nv$Baumart %in% c("fah")] <- "FAh"
-nv$Baumart[nv$Baumart %in% c("ulme berg", "Ulme Berg", "ulme")] <- "BUl"
-nv$Baumart[nv$Baumart %in% c("wki")] <- "WKi"
+unique(nv_2021$Baumart)
+nv_2021$Baumart[nv_2021$Baumart %in% c("Rbu", "RBU", "rbu")] <- "RBu"
+nv_2021$Baumart[nv_2021$Baumart %in% c("Esch", "esch")] <- "GEs"
+nv_2021$Baumart[nv_2021$Baumart %in% c("BAH", "Bah")] <- "BAh"
+nv_2021$Baumart[nv_2021$Baumart %in% c("Hbu", "hbu")] <- "HBu"
+nv_2021$Baumart[nv_2021$Baumart %in% c("WLI", "Wli", "wli")] <- "WLi"
+nv_2021$Baumart[nv_2021$Baumart %in% c("SAH", "Sah", "sah")] <- "SAh"
+nv_2021$Baumart[nv_2021$Baumart %in% c("Salweide", "Weide", "SWei", "weide")] <- "SWe" 
+nv_2021$Baumart[nv_2021$Baumart %in% c(" Eiche", "STi", " eiche")] <- "SEi" 
+nv_2021$Baumart[nv_2021$Baumart %in% c("Keine Bäume", "keine Bäume", " ")] <- "" 
+nv_2021$Baumart[nv_2021$Baumart %in% c("bah")] <- "BAh"
+nv_2021$Baumart[nv_2021$Baumart %in% c("fah")] <- "FAh"
+nv_2021$Baumart[nv_2021$Baumart %in% c("ulme berg", "Ulme Berg", "ulme")] <- "BUl"
+nv_2021$Baumart[nv_2021$Baumart %in% c("wki")] <- "WKi"
 
-nv <- rename(nv, Baumart_kurz = Baumart)
-colnames(nv)
+nv_2021 <- rename(nv_2021, Baumart_kurz = Baumart)
+colnames(nv_2021)
 
 ###### REMOVE SOME MORE TYPOS  -------------------------------------------------
-unique(nv$Esche.markiert)
-nv$Esche.markiert[nv$Esche.markiert %in% c(" ", "")] <- NA
-nv$Esche.markiert[nv$Esche.markiert %in% c(" SO", "SO ", "so", "So")] <- "SO"
-nv$Esche.markiert[nv$Esche.markiert %in% c("M", "Mitte", "mitte")] <- "MITTE"
-nv$Esche.markiert[nv$Esche.markiert %in% c("no", "No")] <- "NO"
-nv$Esche.markiert[nv$Esche.markiert %in% c("sw")] <- "SW"
-nv$Esche.markiert[nv$Esche.markiert %in% c("nw")] <- "NW"
+unique(nv_2021$Esche.markiert)
+nv_2021$Esche.markiert[nv_2021$Esche.markiert %in% c(" ", "")] <- NA
+nv_2021$Esche.markiert[nv_2021$Esche.markiert %in% c(" SO", "SO ", "so", "So")] <- "SO"
+nv_2021$Esche.markiert[nv_2021$Esche.markiert %in% c("M", "Mitte", "mitte")] <- "MITTE"
+nv_2021$Esche.markiert[nv_2021$Esche.markiert %in% c("no", "No")] <- "NO"
+nv_2021$Esche.markiert[nv_2021$Esche.markiert %in% c("sw")] <- "SW"
+nv_2021$Esche.markiert[nv_2021$Esche.markiert %in% c("nw")] <- "NW"
 
-nv$Einjaehriger.Saemling[nv$Einjaehriger.Saemling %in% 2] <- 1
-nv$Rueckegasse[nv$Rueckegasse %in% "z"] <- 1
+nv_2021$Einjaehriger.Saemling[nv_2021$Einjaehriger.Saemling %in% 2] <- 1
+nv_2021$Rueckegasse[nv_2021$Rueckegasse %in% "z"] <- 1
 
-nv$ETS.abgestorben.alt[nv$ETS.abgestorben.alt %in% "T!"] <- "T1"
+nv_2021$ETS.abgestorben.alt[nv_2021$ETS.abgestorben.alt %in% "T!"] <- "T1"
 
 ###### REMOVE DOUBLED PLOTS  ---------------------------------------------------
-nv <- nv[!(nv$Bemerkungen %in% c("Werden erst im Herbst gemacht",
+nv_2021 <- nv_2021[!(nv_2021$Bemerkungen %in% c("Werden erst im Herbst gemacht",
                                  "wird im Herbst nachgeholt#")),]
 
 # One of both plots with the number "283" was a typo the plot actually had the 
 # number "238", I identified it manually and address it with the first tree 
 # entry, or simply: its the first occurrence
-nv$Plotnummer[nv$Plotnummer %in% 283][1] <- 238
+nv_2021$Plotnummer[nv_2021$Plotnummer %in% 283][1] <- 238
 
 ###### FILL ALL LINES  ---------------------------------------------------------
-nv$Rueckegasse[nv$Rueckegasse %in% ""] <- NA
+nv_2021$Rueckegasse[nv_2021$Rueckegasse %in% ""] <- NA
 temp_plotnummer <- 0
 temp_rueckegasse <- 0
 
@@ -115,32 +124,32 @@ temp_rueckegasse <- 0
 # that do not lie on a trail have a NA in that column just as all following 
 # lines after a plot description
 
-for (i in 1:nrow(nv)) {
-  if (!is.na(nv$Plotnummer[i])) {
-    temp_plotnummer <- nv$Plotnummer[i]
-    temp_rueckegasse <- nv$Rueckegasse[i]
+for (i in 1:nrow(nv_2021)) {
+  if (!is.na(nv_2021$Plotnummer[i])) {
+    temp_plotnummer <- nv_2021$Plotnummer[i]
+    temp_rueckegasse <- nv_2021$Rueckegasse[i]
   } else {
-    nv$Plotnummer[i] <- temp_plotnummer
-    nv$Rueckegasse[i] <- temp_rueckegasse
+    nv_2021$Plotnummer[i] <- temp_plotnummer
+    nv_2021$Rueckegasse[i] <- temp_rueckegasse
   }
 }
 
 # table(nv$Rueckegasse)
-nv$Rueckegasse[nv$Rueckegasse %in% c(1, "TRUE")] <- TRUE
-nv$Rueckegasse[is.na(nv$Rueckegasse)] <- FALSE
-nv$Rueckegasse <- as.logical(nv$Rueckegasse)
+nv_2021$Rueckegasse[nv_2021$Rueckegasse %in% c(1, "TRUE")] <- TRUE
+nv_2021$Rueckegasse[is.na(nv_2021$Rueckegasse)] <- FALSE
+nv_2021$Rueckegasse <- as.logical(nv_2021$Rueckegasse)
 
 ###### TERMINAL TRUE/FALSE --------------------------------------------------------
 # create columns that represent the "t" mark for terminal in the number of 
 # shoots
 # The code was copied from the IBF part
 
-nv$ETS.abgestorben.frisch.terminal <- FALSE
-nv$ETS.abgestorben.alt.terminal <- FALSE
-nv$ETS.lebend.terminal <- FALSE
-nv$Verbiss.lebend.terminal <- FALSE
-nv$Verbiss.tot.terminal <- FALSE
-nv$Sonstige.Gruende.tot.terminal <- FALSE
+nv_2021$ETS.abgestorben.frisch.terminal <- FALSE
+nv_2021$ETS.abgestorben.alt.terminal <- FALSE
+nv_2021$ETS.lebend.terminal <- FALSE
+nv_2021$Verbiss.lebend.terminal <- FALSE
+nv_2021$Verbiss.tot.terminal <- FALSE
+nv_2021$Sonstige.Gruende.tot.terminal <- FALSE
 
 for (i in c("ETS.abgestorben.frisch",
 						"ETS.abgestorben.alt",
@@ -149,39 +158,39 @@ for (i in c("ETS.abgestorben.frisch",
 						"Verbiss.tot",
 						"Sonstige.Gruende.tot")) {
 	# Find all "t"s, the [[]] was neccessary to get a vector 
-	select1 <- grep("t", nv[[i]])
-	select2 <- grep("T", nv[[i]])
+	select1 <- grep("t", nv_2021[[i]])
+	select2 <- grep("T", nv_2021[[i]])
 	select <- c(select1, select2) # These are positions not a TRUE/FALSE vector
 	
 	# write the information in the "terminal" column
 	t <- paste0(i, ".terminal") 
-	nv[select, t] <- TRUE
+	nv_2021[select, t] <- TRUE
 	# delete the "t"s
-	nv[i] <- gsub("t", "", nv[[i]])
-	nv[i] <- gsub("T", "", nv[[i]])
+	nv_2021[i] <- gsub("t", "", nv_2021[[i]])
+	nv_2021[i] <- gsub("T", "", nv_2021[[i]])
 	# change to numeric
-	nv[i] <- as.numeric(nv[[i]])
+	nv_2021[i] <- as.numeric(nv_2021[[i]])
 }
 
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
-nv$Einjaehriger.Saemling <- as.logical(nv$Einjaehriger.Saemling)
-nv$Einjaehriger.Saemling[is.na(nv$Einjaehriger.Saemling)] <- F
+nv_2021$Einjaehriger.Saemling <- as.logical(nv_2021$Einjaehriger.Saemling)
+nv_2021$Einjaehriger.Saemling[is.na(nv_2021$Einjaehriger.Saemling)] <- F
 
 ###### ADD COLUMN ETS GENERAL ------------------------------------------------------
-nv$ETS <-
-	!is.na(nv$ETS.abgestorben.frisch) |
-	!is.na(nv$ETS.abgestorben.alt) |
-	!is.na(nv$ETS.lebend)
+nv_2021$ETS <-
+	!is.na(nv_2021$ETS.abgestorben.frisch) |
+	!is.na(nv_2021$ETS.abgestorben.alt) |
+	!is.na(nv_2021$ETS.lebend)
 
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
-table(nv$Baumart_kurz)
-plotnumbers_with_empty <- unique(nv$Plotnummer)
+table(nv_2021$Baumart_kurz)
+plotnumbers_with_empty <- unique(nv_2021$Plotnummer)
 
 # The only information needed from the empty plots is the information about 
 # logging trails. Therefore the data has to be saved for little more, but 
 # separated to ease the counting of tree numbers
-nv_with_empty <- nv
-nv <- nv[nv$Baumart_kurz != "", ]
+nv_with_empty <- nv_2021
+nv_2021 <- nv_2021[nv_2021$Baumart_kurz != "", ]
 
 
 ###### TIDY UP  ----------------------------------------------------------------
