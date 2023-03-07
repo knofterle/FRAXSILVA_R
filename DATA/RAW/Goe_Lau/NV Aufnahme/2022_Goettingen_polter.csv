@@ -4,14 +4,14 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 8901,,,,rbu,31,,,,,,,,,,,,
 8902,,,,WeideSa,14,,,,,,,,,,,,
 8902,,,,WeideSa,19,,,,,,,,,,,,
-8902,,nw,f,esch,5,2,,,,,,,,,,x,
-8902,,,,esch,7,1,,,,,,,,,,,letztes mal übersehen
-8902,,no,n,esch,10,1,,,,,,,,,,,
+8902,,,,esch,5,2,,,,,,,,,,x,
+8902,,,,esch,7,1,,,,,,,,,,,
+8902,,no,t,esch,10,1,,,,,,,,,,,
 8902,,,,esch,10,1,,,,,,,,,,,
 8902,,so,t,esch,7,1,,,,,,,,,,,
-,,sw,n,esch,6,1,t,,,,,,,,,,
+,,,,esch,6,1,t,,,,,,,,,,
 ,,,,esch,7,1,t,,,,,,,,,,
-8903,,no,n,esch,10,1,,,,,,,,,,,
+8903,,,,esch,10,1,,,,,,,,,,,
 ,,,,esch,7,4,,,,,,,3,,,,
 ,,,,rbu,10,,,,,,,,,,,,
 ,,sw,t,esch,17,3,,,,,,1,,,,,
@@ -39,7 +39,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,rbu,18,,,,,,,,,,,,
 ,,so,t,esch,7,1,,,,,,,,,,,
 ,,,,esch,6, ,,,,,,,,,,,vergilbt
-,,sw,n,esch,10,3,,,,,,,2,,,,
+,,,,esch,10,3,,,,,,,2,,,,
 ,,nw,t,esch,10,1,,,,,,,,,,,
 ,,,,rbu,15,,,,,,,,,,,,
 8906,,,,wli,11,,,,,,,,,,,,
@@ -90,7 +90,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,so,t,esch,8,1,,,,,,,,,,,
 ,,Mitte,t,esch,6,1,,,,,,,1,,,,
 ,,nw,t,esch,7,1,,,,,,,,,,,
-8912,,nw,n,esch,8,2,,,,,,,1,7,,,
+8912,,,,esch,8,2,,,,,,,1,7,,,
 8913,,nw,t,esch,12,1,,,,,,,,,,,
 ,,Mitte,t,esch,4,2,,,,,1,,,,,,
 ,,sw,t,esch,8,1,,,,,,,1,,,,
@@ -296,7 +296,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,bah,21,,,,,,,,,,,,
 ,,,,rbu,23,,,,,,,,,,,,
 ,,,,esch,15,3,,,,,2,,,,,,
-,,so,n,esch,26,1,,,,,,,,,,,
+,,,,esch,26,1,,,,,,,,,,,
 ,,,,esch,14,12,,,,,,1,,,,,
 ,,Mitte,t,esch,22,4,,,,,,,4,,,,tot
 ,,,,esch,12,1,,,,,,,,,,,
@@ -380,7 +380,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,nw,t,esch,22,2,,,,,,,2,,,,tot
 ,,,,esch,5,1,,,,,,,,,,,
 ,,sw,t,esch,11,1,,,,,,,,,,,
-8957,,no,n,esch,10,1,,,,,,,,,,,"Buche 101 steht auf der Nordostecke des Plots, Nordost Esche wurde letztes Mal übersehen, aber markeirt"
+8957,,no,t,esch,10,1,,,,,,,,,,,"Buche 101 steht auf der Nordostecke des Plots, Nordost Esche wurde letztes Mal übersehen, aber markeirt"
 ,,,,esch,7,1,,,,,,,,,,,
 ,,mitte,t,esch,8,1,,,,,,,,,,,
 ,,sw,t,esch,9,1,,,,,,,t1,,,,tot
@@ -730,8 +730,8 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,9,1,,,,,,,,,,,
 ,,,,esch,10,1,,,,,,,,,,,
 ,,,,esch,7,1,,,,,,,,,,,
-,,,so,esch,11,1,,,,,,,,,,,
-8963,,,no,esch,10,1,,,,,,,,,,,
+,,so,t,esch,11,1,,,,,,,,,,,
+8963,,no,,esch,10,1,,,,,,,,,,,
 ,,,,bah,11,,,,,,,,,,,,
 ,,,,esch,12,1,,,,,,,,,,,
 ,,,,hbu,33,,,,,,,,,,,,
@@ -805,7 +805,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,8,1,t,,,,,,,,,,
 ,,,,esch,7,1,,,,,,,,,,,
 ,,,,bah,4,,,,,,,,,,,,
-,,mitte,n,esch,,,,,,,,,,,,,
+,,mitte,f,esch,,,,,,,,,,,,,
 8967,,nw,t,esch,12,2,,,,,,,1,,,,
 ,,,,esch,10,2,,,,,,1,,,,,
 ,,,,esch,8,1,,,,,,,,,,,
@@ -1347,7 +1347,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,19,2,,,,,,,,,,,
 ,,,,esch,24,3,,,,,1,,,,,,
 ,,,,esch,19,1,,,,,,,,,,,
-,,,,esch,25,1,,,,,t1,,,19ss,,,
+,,,,esch,25,1,,,,,t1,,,19,,,
 ,,,,esch,24,3,,,,,2,,,,,,
 8996,,,,bah,11,1,,,,,,,,,,,
 ,,,,WeideSa,13,,,,,,,,,,,,
@@ -1657,7 +1657,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,rbu,120,,,,,,,,,,,,
 ,,,,rbu,111,,,,,,,,,,,,
 ,,,,rbu,98,,,,,,,,,,,,
-,,nw,n,esch,11,1,,,,,,,,,,,war makiert aber nicht im datensatz
+,,nw,t,esch,11,1,,,,,,,,,,,war makiert aber nicht im datensatz
 ,,,,esch,8,1,,,,,,,,,,,
 ,,,,esch,8,1,,,,,,,,,,,
 ,,,,esch,12,1,,,,,,,,,,,

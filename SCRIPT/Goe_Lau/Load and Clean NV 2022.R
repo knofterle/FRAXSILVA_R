@@ -1,6 +1,6 @@
 ################ LOAD AND CLEAN NV 2022 ################################
 # J.Osewold
-# 01.07.22
+# 07.03.2023
 ##### ALMOST DONE #####
 ################################################################################
 
@@ -39,15 +39,14 @@ rm(nv_polter_22, nv_ansitz_22, nv_lau_22)
 ###### CHECK FOR ERRORS  ---------------------------------------------------------
 # check for mistakes in the raw data, visually complete or typos?
 colnames(nv_2022)
-unique(nv_2022$Plotnummer)
-unique(nv_2022$Gefunden)
-
+unique(nv_2022$Aceria.fraxinivora)
 
 # plotnumbers complete?
 which(!c(1:301) %in% unique(nv_2022$Plotnummer)) # 292 are missing, 292 wegen Rand
 which(!c(8901:9017) %in% unique(nv_2022$Plotnummer)) # complete
 which(!c(8701:8817) %in% unique(nv_2022$Plotnummer)) 
-# 8816 and 8817 are missing
+
+#8816 and 8817 are missing
 
 
 # sapply(nv_2021, table)
@@ -55,24 +54,44 @@ which(!c(8701:8817) %in% unique(nv_2022$Plotnummer))
 ###### HARMONIZE ALL SPECIES NAMES  --------------------------------------------
 unique(nv_2022$Baumart)
 nv_2022$Baumart[nv_2022$Baumart %in% c("Rbu", "RBU", "rbu")] <- "RBu"
-nv_2022$Baumart[nv_2022$Baumart %in% c("Esch", "esch")] <- "GEs"
+nv_2022$Baumart[nv_2022$Baumart %in% c("Esch", "esch", " esch")] <- "GEs"
 nv_2022$Baumart[nv_2022$Baumart %in% c("BAH", "Bah")] <- "BAh"
-nv_2022$Baumart[nv_2022$Baumart %in% c("Hbu", "hbu")] <- "HBu"
-nv_2022$Baumart[nv_2022$Baumart %in% c("WLI", "Wli", "wli")] <- "WLi"
+nv_2022$Baumart[nv_2022$Baumart %in% c("Hbu", "hbu", "hainBu")] <- "HBu"
+nv_2022$Baumart[nv_2022$Baumart %in% c("WLI", "Wli", "wli", "lindewi")] <- "WLi"
 nv_2022$Baumart[nv_2022$Baumart %in% c("SAH", "Sah", "sah")] <- "SAh"
-nv_2022$Baumart[nv_2022$Baumart %in% c("Salweide", "Weide", "SWei", "weide")] <- "SWe" 
-nv_2022$Baumart[nv_2022$Baumart %in% c(" Eiche", "STi", " eiche")] <- "SEi" 
-nv_2022$Baumart[nv_2022$Baumart %in% c("Keine Bäume", "keine Bäume", " ")] <- "" 
+nv_2022$Baumart[nv_2022$Baumart %in% c("Salweide", "Weide", "SWei", "weide", 
+																			 "WeideSa", "weidesa", "weide ")] <- "SaWei" 
+nv_2022$Baumart[nv_2022$Baumart %in% c(" Eiche", "STi", " eiche", 
+																			 "Que")] <- "Eiche" 
+nv_2022$Baumart[nv_2022$Baumart %in% c("Keine Bäume", "keine Bäume",
+																			 "keine bäume", " ", "  ", "     ")] <- "" 
 nv_2022$Baumart[nv_2022$Baumart %in% c("bah")] <- "BAh"
 nv_2022$Baumart[nv_2022$Baumart %in% c("fah")] <- "FAh"
-nv_2022$Baumart[nv_2022$Baumart %in% c("ulme berg", "Ulme Berg", "ulme")] <- "BUl"
-nv_2022$Baumart[nv_2022$Baumart %in% c("wki")] <- "WKi"
+nv_2022$Baumart[nv_2022$Baumart %in% c("ulme berg", "Ulme Berg", "ulme", 
+																			 "ulmb", "ulmeb")] <- "BUl"
+nv_2022$Baumart[nv_2022$Baumart %in% c("wki", "kirsche", "Kirsche")] <- "WKi"
+nv_2022$Baumart[nv_2022$Baumart %in% c("traubeneiche", "que", "quercus", 
+																			 "Quercus", "qzercus", "qzercus", 
+																			 "tei")] <- "Eiche"
+nv_2022$Baumart[nv_2022$Baumart %in% c("pappel")] <- "Pappel"
+nv_2022$Baumart[nv_2022$Baumart %in% c(" birke")] <- "Birke"
+nv_2022$Baumart[nv_2022$Baumart %in% c(" lärche")] <- "ELae"
+nv_2022$Baumart[nv_2022$Baumart %in% c("weide ohr")] <- "OWei"
+nv_2022$Baumart[nv_2022$Baumart %in% c("prunusserotina", "prunus serontina", 
+																			 "Prunus serontina", 
+																			 "prunus serontina")] <- "STrau"
+nv_2022$Baumart[nv_2022$Baumart %in% c("felsenbirne")] <- "Felsenbirne"
 
 nv_2022 <- rename(nv_2022, Baumart_kurz = Baumart)
-colnames(nv_2022)
+
 
 ###### REMOVE SOME MORE TYPOS  -------------------------------------------------
-unique(nv_2022$Esche.markiert)
+nv_2022$Anzahl.Triebe[nv_2022$Anzahl.Triebe %in% 
+												"                                  "] <- NA
+nv_2022$Anzahl.Triebe[nv_2022$Anzahl.Triebe %in% "1s"] <- "1"
+
+nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% c("t", "T")] <- TRUE
+nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% c(" ", "")] <- NA
 nv_2022$Esche.markiert[nv_2022$Esche.markiert %in% c(" ", "")] <- NA
 nv_2022$Esche.markiert[nv_2022$Esche.markiert %in% c(" SO", "SO ", "so", "So")] <- "SO"
 nv_2022$Esche.markiert[nv_2022$Esche.markiert %in% 
@@ -80,25 +99,18 @@ nv_2022$Esche.markiert[nv_2022$Esche.markiert %in%
 nv_2022$Esche.markiert[nv_2022$Esche.markiert %in% c("no", "No", "no ")] <- "NO"
 nv_2022$Esche.markiert[nv_2022$Esche.markiert %in% c("sw")] <- "SW"
 nv_2022$Esche.markiert[nv_2022$Esche.markiert %in% c("nw")] <- "NW"
+nv_2022$Gefunden[nv_2022$Gefunden %in% c("t", "T", "t ", " t")] <- TRUE
+nv_2022$Gefunden[nv_2022$Gefunden %in% c("f","f  ")] <- FALSE
+nv_2022$Gefunden[nv_2022$Gefunden %in% c(""," ")] <- NA
+nv_2022$Einjaehriger.Saemling[nv_2022$Einjaehriger.Saemling %in% c("", NA)] <- FALSE
+nv_2022$Einjaehriger.Saemling[nv_2022$Einjaehriger.Saemling %in% c("t", "1")] <- TRUE
+nv_2022$ETS.abgestorben.alt[nv_2022$ETS.abgestorben.alt %in% 
+															"                                                         "] <- ""
+nv_2022$Nicht.gerade[nv_2022$Nicht.gerade %in% c("x", "1", "t", "X", "x ")] <- TRUE
+nv_2022$Nicht.gerade[nv_2022$Nicht.gerade %in% c("")] <- FALSE
 
-nv_2022$Einjaehriger.Saemling[nv_2022$Einjaehriger.Saemling %in% 2] <- 1
-nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% c("t", "T")] <- 1
-nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% " "] <- ""
-
-
-nv_2022$ETS.abgestorben.alt[nv_2022$ETS.abgestorben.alt %in% "T!"] <- "T1"
-
-###### REMOVE DOUBLED PLOTS  ---------------------------------------------------
-nv_2022 <- nv_2022[!(nv_2022$Bemerkungen %in% c("Werden erst im Herbst gemacht",
-                                 "wird im Herbst nachgeholt#")),]
-
-# One of both plots with the number "283" was a typo the plot actually had the 
-# number "238", I identified it manually and address it with the first tree 
-# entry, or simply: its the first occurrence
-nv_2022$Plotnummer[nv_2022$Plotnummer %in% 283][1] <- 238
 
 ###### FILL ALL LINES  ---------------------------------------------------------
-nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% ""] <- NA
 temp_plotnummer <- 0
 temp_rueckegasse <- 0
 
@@ -118,9 +130,9 @@ for (i in 1:nrow(nv_2022)) {
   }
 }
 
-# table(nv$Rueckegasse)
-nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% c(1, "TRUE")] <- TRUE
+# nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% c(1, "TRUE")] <- TRUE
 nv_2022$Rueckegasse[is.na(nv_2022$Rueckegasse)] <- FALSE
+table(nv_2022$Rueckegasse)
 nv_2022$Rueckegasse <- as.logical(nv_2022$Rueckegasse)
 
 ###### TERMINAL TRUE/FALSE --------------------------------------------------------
@@ -134,13 +146,15 @@ nv_2022$ETS.lebend.terminal <- FALSE
 nv_2022$Verbiss.lebend.terminal <- FALSE
 nv_2022$Verbiss.tot.terminal <- FALSE
 nv_2022$Sonstige.Gruende.tot.terminal <- FALSE
+nv_2022$Aceria.fraxinivora.terminal <- FALSE
 
 for (i in c("ETS.abgestorben.frisch",
 						"ETS.abgestorben.alt",
 						"ETS.lebend",
 						"Verbiss.lebend",
 						"Verbiss.tot",
-						"Sonstige.Gruende.tot")) {
+						"Sonstige.Gruende.tot",
+						"Aceria.fraxinivora")) {
 	# Find all "t"s, the [[]] was neccessary to get a vector 
 	select1 <- grep("t", nv_2022[[i]])
 	select2 <- grep("T", nv_2022[[i]])
@@ -157,8 +171,15 @@ for (i in c("ETS.abgestorben.frisch",
 }
 
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
+colnames(nv_2022)
+
+nv_2022$Gefunden <- as.logical(nv_2022$Gefunden)
+table(nv_2022$Gefunden)
+
 nv_2022$Einjaehriger.Saemling <- as.logical(nv_2022$Einjaehriger.Saemling)
 nv_2022$Einjaehriger.Saemling[is.na(nv_2022$Einjaehriger.Saemling)] <- F
+
+nv_2022$Nicht.gerade <- as.logical(nv_2022$Nicht.gerade)
 
 ###### ADD COLUMN ETS GENERAL ------------------------------------------------------
 nv_2022$ETS <-

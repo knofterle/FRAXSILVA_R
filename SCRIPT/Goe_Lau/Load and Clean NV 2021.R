@@ -81,7 +81,9 @@ nv_2021$Baumart[nv_2021$Baumart %in% c("WLI", "Wli", "wli")] <- "WLi"
 nv_2021$Baumart[nv_2021$Baumart %in% c("SAH", "Sah", "sah")] <- "SAh"
 nv_2021$Baumart[nv_2021$Baumart %in% c("Salweide", "Weide", "SWei", "weide")] <- "SWe" 
 nv_2021$Baumart[nv_2021$Baumart %in% c(" Eiche", "STi", " eiche")] <- "SEi" 
-nv_2021$Baumart[nv_2021$Baumart %in% c("Keine Bäume", "keine Bäume", " ")] <- "" 
+nv_2021$Baumart[nv_2021$Baumart %in% c("Keine Bäume", "keine Bäume")] <- 
+	"keine Bäume" 
+nv_2021$Baumart[nv_2021$Baumart %in% c(" ")] <- "" 
 nv_2021$Baumart[nv_2021$Baumart %in% c("bah")] <- "BAh"
 nv_2021$Baumart[nv_2021$Baumart %in% c("fah")] <- "FAh"
 nv_2021$Baumart[nv_2021$Baumart %in% c("ulme berg", "Ulme Berg", "ulme")] <- "BUl"
@@ -182,16 +184,42 @@ nv_2021$ETS <-
 	!is.na(nv_2021$ETS.abgestorben.alt) |
 	!is.na(nv_2021$ETS.lebend)
 
+###### ADD MISSING PLOTS  -----------------------------------------------------
+# Diese Plots haben aus unterschiedlichen Gründen gefehlt, ich habe sie dann 
+# ergänzt
+# 179 Zaun
+# 180 Zaun
+# 292 Zaun
+# 298 keine Bäume
+# 8816 RAND
+# 8817 Rand
+standard_line <- nv_2021[6,]
+standard_line$Jahr <- 2021
+standard_line$Baumart_kurz <- ""
+standard_line$Hoehe <- NA
+
+new_plots <- 
+	standard_line %>% 
+	slice(rep(1, each=6))
+
+new_plots$Plotnummer <- c(179, 180, 292, 298, 8816, 8817)
+new_plots$Bemerkungen <- c("Zaun", "Zaun", "Zaun", "keine Bäume", "RAND", "RAND")
+new_plots$Flaeche <- c("lau", "lau", "lau", "lau", "goe_ans", "goe_ans")
+new_plots$Baumart_kurz <- c("", "", "", "keine Bäume", "", "")
+
+nv_2021 <- rbind(nv_2021,new_plots)
+
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
-table(nv_2021$Baumart_kurz)
+
 plotnumbers_with_empty <- unique(nv_2021$Plotnummer)
+
 
 # The only information needed from the empty plots is the information about 
 # logging trails. Therefore the data has to be saved for little more, but 
 # separated to ease the counting of tree numbers
-nv_with_empty <- nv_2021
-nv_2021 <- nv_2021[nv_2021$Baumart_kurz != "", ]
-
+nv_2021_with_empty <- nv_2021
+nv_2021 <-nv_2021[!nv_2021$Baumart_kurz %in% c("", "keine Bäume"), ]
+unique(nv_2021$Baumart_kurz)
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 

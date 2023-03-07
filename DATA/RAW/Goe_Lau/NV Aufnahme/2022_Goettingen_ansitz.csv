@@ -35,7 +35,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,bah,14,,,,,,,,,,,,
 ,,,,esch,12,1,,,,,,,,,,,
 ,,,,esch,8,2,,,,,,,,,,,
-,,mitte,n,esch,13,1,,,,,,,,,,,war markiert aber nicht in der alten Tabelle aufgenommen
+,,,,esch,13,1,,,,,,,,,,,war markiert aber nicht in der alten Tabelle aufgenommen
 ,,,,esch,17,1,,,,,,,,,,,
 ,,,,esch,16,1,,,,,,,,,,,
 ,,,,esch,11,1,,,,,,,,,,,
@@ -111,7 +111,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,20,3,,,,,,1,,,,,
 ,,,,esch,11,1,,,,,,,,,,,
 ,,,,bah,14,,,,,,,,,,,,
-,,no,n,esch,10,1,,,,,,,,,,,war markiert aber im alten Datensatz wohl leider nichts markiert
+,,no,t,esch,10,1,,,,,,,,,,,war markiert aber im alten Datensatz wohl leider nichts markiert
 ,,,,esch,8,1,,,,,,,,,,,
 ,,,,esch,8,2,,,,,,,1,,,,
 ,,,,esch,9,1,,,,,,,,,,,
@@ -498,7 +498,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,13,1,,,,,,,,,,,
 ,,,,bah,23,,,,,,,,,,,,
 ,,,,bah,19,,,,,,,,,,,,
-,,,,esch,13, 21üä,,,,,,,,,,,
+,,,,esch,13,2,,,,,,,,,,,
 8716,,,,rbu,648,,,,,,,,,,,,"Baum 130 steht auf der NW Ecke ,  eine kleine Buche dmoninert den Plot"
 ,,sw,t,esch,15,2,,,t1,,,,,11,,,
 ,,,,esch,10,1,,,,,,,,,,,
@@ -1823,7 +1823,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,8,3,,,,,,,,,,,
 ,,,,esch,9,1,,,,,,,,,,,
 ,,,,esch,8,1,,,,,,,,,,,
-,,,,esch,8,1s,,,,,,,,,,,
+,,,,esch,8,1,,,,,,,,,,,
 8745,,,,bah,30,,,,,,,,,,,,
 ,,so,f,,,,,,,,,,,,,,
 ,,,,esch,9,1,,,,,,,,,,,
@@ -2606,7 +2606,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,rbu,11,,,,,,,,,,,,
 ,,,,esch,6,1,,,,,,,,,,,
 ,,,,bah,7,,,,,,,,,,,,
-,,,,esch,5,1,,,,,,,,,,,
+        ,,,,esch,5,1,,,,,,,,,,,
 ,,,,esch,5,1,,,,,,,,,,,
 ,,,,esch,5,1,,,,,,,,,,,
 ,,,,esch,6,1,,,,,,,,,,,
