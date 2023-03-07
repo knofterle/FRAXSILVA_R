@@ -1,6 +1,6 @@
 ################ LOAD AND CLEAN NV 2021 ################################
 # J.Osewold
-# 06.03.2023
+# 07.03.2023
 ##### ALMOST DONE #####
 ################################################################################
 
@@ -17,20 +17,26 @@ library(dplyr)
 # with the full dataset in June 22
 
 ###### CONNECT FILES  ----------------------------------------------------------
-nv_polter <- read.csv(file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Polter.csv",
-                      header = T,
-                      stringsAsFactors = F, 
-											fileEncoding = "UTF-8")
+nv_polter <-	read.csv(
+	file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Polter.csv",
+	header = T,
+	stringsAsFactors = F,
+	fileEncoding = "UTF-8"
+)
 nv_polter <- cbind(nv_polter, Flaeche = c("goe_pol"))
-nv_ansitz <- read.csv(file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Ansitz.csv",
-                      header = T,
-                      stringsAsFactors = F, 
-											fileEncoding = "UTF-8")
+nv_ansitz <-	read.csv(
+	file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Ansitz.csv",
+	header = T,
+	stringsAsFactors = F,
+	fileEncoding = "UTF-8"
+)
 nv_ansitz <- cbind(nv_ansitz, Flaeche = c("goe_ans"))
-nv_lau <- read.csv(file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Steinhorst.csv",
-                          header = T,
-                          stringsAsFactors = F, 
-									fileEncoding = "UTF-8")
+nv_lau <-	read.csv(
+	file = "DATA/RAW/Goe_Lau/NV Aufnahme/2021_Steinhorst.csv",
+	header = T,
+	stringsAsFactors = F,
+	fileEncoding = "UTF-8"
+)
 nv_lau <- cbind(nv_lau, Flaeche = c("lau"))
 
 nv_2021 <- rbind(nv_polter, nv_ansitz, nv_lau)
@@ -81,8 +87,7 @@ nv_2021$Baumart[nv_2021$Baumart %in% c("WLI", "Wli", "wli")] <- "WLi"
 nv_2021$Baumart[nv_2021$Baumart %in% c("SAH", "Sah", "sah")] <- "SAh"
 nv_2021$Baumart[nv_2021$Baumart %in% c("Salweide", "Weide", "SWei", "weide")] <- "SWe" 
 nv_2021$Baumart[nv_2021$Baumart %in% c(" Eiche", "STi", " eiche")] <- "SEi" 
-nv_2021$Baumart[nv_2021$Baumart %in% c("Keine Bäume", "keine Bäume")] <- 
-	"keine Bäume" 
+nv_2021$Baumart[nv_2021$Baumart %in% c("Keine Bäume", "keine Bäume")] <- "keine Bäume" 
 nv_2021$Baumart[nv_2021$Baumart %in% c(" ")] <- "" 
 nv_2021$Baumart[nv_2021$Baumart %in% c("bah")] <- "BAh"
 nv_2021$Baumart[nv_2021$Baumart %in% c("fah")] <- "FAh"
@@ -207,11 +212,11 @@ new_plots$Bemerkungen <- c("Zaun", "Zaun", "Zaun", "keine Bäume", "RAND", "RAND
 new_plots$Flaeche <- c("lau", "lau", "lau", "lau", "goe_ans", "goe_ans")
 new_plots$Baumart_kurz <- c("", "", "", "keine Bäume", "", "")
 
-nv_2021 <- rbind(nv_2021,new_plots)
+nv_2021 <- rbind(nv_2021, new_plots)
 
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
 
-plotnumbers_with_empty <- unique(nv_2021$Plotnummer)
+plotnumbers_with_empty_2021 <- unique(nv_2021$Plotnummer)
 
 
 # The only information needed from the empty plots is the information about 
@@ -223,13 +228,12 @@ unique(nv_2021$Baumart_kurz)
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 
-    nv_polter, nv_lau,
-   nv_ansitz, i)
+     i, standard_line, new_plots, select, select1, select2, t )
 
 ###### OUTPUT ------------------------------------------------------------------
-# nv
-# plotnumbers_with_empty
-# nv_with_empty
+# nv_2021
+# plotnumbers_with_empty_2021
+# nv_2021_with_empty
 
 
 

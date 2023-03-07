@@ -64,7 +64,8 @@ nv_2022$Baumart[nv_2022$Baumart %in% c("Salweide", "Weide", "SWei", "weide",
 nv_2022$Baumart[nv_2022$Baumart %in% c(" Eiche", "STi", " eiche", 
 																			 "Que")] <- "Eiche" 
 nv_2022$Baumart[nv_2022$Baumart %in% c("Keine Bäume", "keine Bäume",
-																			 "keine bäume", " ", "  ", "     ")] <- "" 
+																			 "keine bäume")] <- "keine Bäume" 
+nv_2022$Baumart[nv_2022$Baumart %in% c(" ", "  ", "     ")] <- ""
 nv_2022$Baumart[nv_2022$Baumart %in% c("bah")] <- "BAh"
 nv_2022$Baumart[nv_2022$Baumart %in% c("fah")] <- "FAh"
 nv_2022$Baumart[nv_2022$Baumart %in% c("ulme berg", "Ulme Berg", "ulme", 
@@ -130,7 +131,6 @@ for (i in 1:nrow(nv_2022)) {
   }
 }
 
-# nv_2022$Rueckegasse[nv_2022$Rueckegasse %in% c(1, "TRUE")] <- TRUE
 nv_2022$Rueckegasse[is.na(nv_2022$Rueckegasse)] <- FALSE
 table(nv_2022$Rueckegasse)
 nv_2022$Rueckegasse <- as.logical(nv_2022$Rueckegasse)
@@ -171,8 +171,6 @@ for (i in c("ETS.abgestorben.frisch",
 }
 
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
-colnames(nv_2022)
-
 nv_2022$Gefunden <- as.logical(nv_2022$Gefunden)
 table(nv_2022$Gefunden)
 
@@ -187,26 +185,50 @@ nv_2022$ETS <-
 	!is.na(nv_2022$ETS.abgestorben.alt) |
 	!is.na(nv_2022$ETS.lebend)
 
+###### ADD MISSING PLOTS  -----------------------------------------------------
+# Diese Plots haben aus unterschiedlichen Gründen gefehlt, ich habe sie dann 
+# ergänzt
+# 292 Zaun
+# 8816 RAND
+# 8817 Rand
+standard_line <- nv_2022[3,]
+standard_line
+standard_line$Jahr <- 2022
+standard_line$Baumart_kurz <- ""
+standard_line$Hoehe <- NA
+
+new_plots <- 
+	standard_line %>% 
+	slice(rep(1, each=3))
+
+new_plots$Plotnummer <- c(292, 8816, 8817)
+new_plots$Bemerkungen <- c("Zaun", "RAND", "RAND")
+new_plots$Flaeche <- c("lau", "goe_ans", "goe_ans")
+new_plots$Baumart_kurz <- c("", "", "")
+new_plots
+
+nv_2022 <- rbind(nv_2022,new_plots)
+
+
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
 table(nv_2022$Baumart_kurz)
-plotnumbers_with_empty <- unique(nv_2022$Plotnummer)
+plotnumbers_with_empty_2022 <- unique(nv_2022$Plotnummer)
 
 # The only information needed from the empty plots is the information about 
 # logging trails. Therefore the data has to be saved for little more, but 
 # separated to ease the counting of tree numbers
-nv_with_empty <- nv_2022
-nv_2022 <- nv_2022[nv_2022$Baumart_kurz != "", ]
+nv_2022_with_empty <- nv_2022
+nv_2022 <- nv_2022[!nv_2022$Baumart_kurz %in% c("", "keine Bäume"), ]
 
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 
-    nv_polter, nv_lau,
-   nv_ansitz, i)
+    i, standard_line, new_plots, select, select1, select2, t)
 
 ###### OUTPUT ------------------------------------------------------------------
-# nv
-# plotnumbers_with_empty
-# nv_with_empty
+# nv_2022
+# plotnumbers_with_empty_2022
+# nv_2022_with_empty
 
 
 
