@@ -69,10 +69,12 @@ table(nv_2021$Rueckegasse)
 sort(table(nv_2021$Plotnummer))
 
 # plotnumbers complete?
-which(!c(1:301) %in% unique(nv_2021$Plotnummer)) # 179 180 292 298 are missing
+which(!c(1:301) %in% unique(nv_2021$Plotnummer)) 
+# No one is missing, I added them manually in the file
 which(!c(8901:9017) %in% unique(nv_2021$Plotnummer)) # complete
 which(!c(8701:8817) %in% unique(nv_2021$Plotnummer)) 
-# 8816 and 8817 are missing, I remember to have skipped them
+# 8816 and 8817 are missing, I remember to have skipped them, I will not mention
+# them ever again
 
 
 # sapply(nv_2021, table)
@@ -198,21 +200,22 @@ nv_2021$ETS <-
 # 298 keine Bäume
 # 8816 RAND
 # 8817 Rand
-standard_line <- nv_2021[6,]
-standard_line$Jahr <- 2021
-standard_line$Baumart_kurz <- ""
-standard_line$Hoehe <- NA
-
-new_plots <- 
-	standard_line %>% 
-	slice(rep(1, each=6))
-
-new_plots$Plotnummer <- c(179, 180, 292, 298, 8816, 8817)
-new_plots$Bemerkungen <- c("Zaun", "Zaun", "Zaun", "keine Bäume", "RAND", "RAND")
-new_plots$Flaeche <- c("lau", "lau", "lau", "lau", "goe_ans", "goe_ans")
-new_plots$Baumart_kurz <- c("", "", "", "keine Bäume", "", "")
-
-nv_2021 <- rbind(nv_2021, new_plots)
+# aber dann letztlich doch manuell in der Datei, daher ist dieser Teil obsolet
+# standard_line <- nv_2021[6,]
+# standard_line$Jahr <- 2021
+# standard_line$Baumart_kurz <- ""
+# standard_line$Hoehe <- NA
+# 
+# new_plots <- 
+# 	standard_line %>% 
+# 	slice(rep(1, each=6))
+# 
+# new_plots$Plotnummer <- c(179, 180, 292, 298, 8816, 8817)
+# new_plots$Bemerkungen <- c("Zaun", "Zaun", "Zaun", "keine Bäume", "RAND", "RAND")
+# new_plots$Flaeche <- c("lau", "lau", "lau", "lau", "goe_ans", "goe_ans")
+# new_plots$Baumart_kurz <- c("", "", "", "keine Bäume", "", "")
+# 
+# nv_2021 <- rbind(nv_2021, new_plots)
 
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
 
@@ -228,7 +231,7 @@ unique(nv_2021$Baumart_kurz)
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 
-     i, standard_line, new_plots, select, select1, select2, t )
+     i, select, select1, select2, t )
 
 ###### OUTPUT ------------------------------------------------------------------
 # nv_2021

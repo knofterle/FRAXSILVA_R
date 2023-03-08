@@ -42,11 +42,12 @@ colnames(nv_2022)
 unique(nv_2022$Aceria.fraxinivora)
 
 # plotnumbers complete?
-which(!c(1:301) %in% unique(nv_2022$Plotnummer)) # 292 are missing, 292 wegen Rand
+which(!c(1:301) %in% unique(nv_2022$Plotnummer)) 
+# 292 was missing, 292 wegen Rand ich habe den aber manuell hinzugefügt
 which(!c(8901:9017) %in% unique(nv_2022$Plotnummer)) # complete
 which(!c(8701:8817) %in% unique(nv_2022$Plotnummer)) 
 
-#8816 and 8817 are missing
+#8816 and 8817 are missing but I will ignore them from now on
 
 
 # sapply(nv_2021, table)
@@ -191,23 +192,24 @@ nv_2022$ETS <-
 # 292 Zaun
 # 8816 RAND
 # 8817 Rand
-standard_line <- nv_2022[3,]
-standard_line
-standard_line$Jahr <- 2022
-standard_line$Baumart_kurz <- ""
-standard_line$Hoehe <- NA
-
-new_plots <- 
-	standard_line %>% 
-	slice(rep(1, each=3))
-
-new_plots$Plotnummer <- c(292, 8816, 8817)
-new_plots$Bemerkungen <- c("Zaun", "RAND", "RAND")
-new_plots$Flaeche <- c("lau", "goe_ans", "goe_ans")
-new_plots$Baumart_kurz <- c("", "", "")
-new_plots
-
-nv_2022 <- rbind(nv_2022,new_plots)
+# aber manuell in der Tabelle (nur 292), der ist also schon drin
+# standard_line <- nv_2022[3,]
+# standard_line
+# standard_line$Jahr <- 2022
+# standard_line$Baumart_kurz <- ""
+# standard_line$Hoehe <- NA
+# 
+# new_plots <- 
+# 	standard_line %>% 
+# 	slice(rep(1, each=3))
+# 
+# new_plots$Plotnummer <- c(292, 8816, 8817)
+# new_plots$Bemerkungen <- c("Zaun", "RAND", "RAND")
+# new_plots$Flaeche <- c("lau", "goe_ans", "goe_ans")
+# new_plots$Baumart_kurz <- c("", "", "")
+# new_plots
+# 
+# nv_2022 <- rbind(nv_2022,new_plots)
 
 
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
@@ -220,10 +222,15 @@ plotnumbers_with_empty_2022 <- unique(nv_2022$Plotnummer)
 nv_2022_with_empty <- nv_2022
 nv_2022 <- nv_2022[!nv_2022$Baumart_kurz %in% c("", "keine Bäume"), ]
 
+# Die markierten Eschen die nicht wieder gefunden wurden bilden dennoch eine 
+# Zeile in der Tabelle, die müssen zeitweise raus und später nochmal 
+# verwendet werden.
+nv_2022 <- nv_2022 %>% 
+	filter(Gefunden == TRUE | is.na(Gefunden))
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 
-    i, standard_line, new_plots, select, select1, select2, t)
+    i, select, select1, select2, t)
 
 ###### OUTPUT ------------------------------------------------------------------
 # nv_2022

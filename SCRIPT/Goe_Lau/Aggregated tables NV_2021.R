@@ -1,6 +1,6 @@
 #============================ Aggregated tables 2021 ==========================#
 # J.Osewold
-# 07.03.2023
+# 08.03.2023
 # REDO in 2023
 #==============================================================================#
 
@@ -23,19 +23,24 @@ nv_2021_plots <- data.frame("Plotnummer" = plotnumbers_with_empty_2021)
 for (i in 1:nrow(nv_2021_plots)) {
   temp_plotnummer <- nv_2021_plots$Plotnummer[i]
   temp_rows <- (nv_2021$Plotnummer == temp_plotnummer)
+  temp_rows2 <- (nv_2021_with_empty$Plotnummer == temp_plotnummer)
   
   nv_2021_plots$n_trees[i] <- sum(temp_rows, na.rm = T)
   nv_2021_plots$n_species[i] <- length(unique(nv_2021$Baumart_kurz[temp_rows]))
   nv_2021_plots$n_ash[i] <- sum(nv_2021$Baumart_kurz[temp_rows] == "GEs", na.rm = T)
   
-  # The location can be taken from the plotnumber, each is unique
-  if (temp_plotnummer %in% 1:315) {
-    nv_2021_plots$location[i] <- "Lau_Steinhorst"
-  } else if (temp_plotnummer %in% 8701:8815) {
-    nv_2021_plots$location[i] <- "Goe_Ansitz"
-  } else if (temp_plotnummer %in% 8900:9017) {
-    nv_2021_plots$location[i] <- "Goe_Polter"
-  }
+   # # The location can be taken from the plotnumber, each is unique
+   # if (temp_plotnummer %in% 1:315) {
+   #   nv_2021_plots$location[i] <- "Lau_Steinhorst"
+   # } else if (temp_plotnummer %in% 8701:8815) {
+   #   nv_2021_plots$location[i] <- "Goe_Ansitz"
+   # } else if (temp_plotnummer %in% 8900:9017) {
+   #   nv_2021_plots$location[i] <- "Goe_Polter"
+   # } 
+  # Obsolet weil ich die Flaeche bereits früher eingetragen habe. Aber es 
+  # funktiniert auf die alte Weise besser, weil die leeren Plots ja bereits 
+  # entfernt wurden
+  nv_2021_plots$location[i] <- nv_2021_with_empty$Flaeche[temp_rows2] [1]
   
   # The empty plots are missing in the nv_2021 table, but instead of NA, max() etc
   # returns inf+ or NaN, therefore a check for emptiness had to be implemented
@@ -51,8 +56,7 @@ for (i in 1:nrow(nv_2021_plots)) {
     nv_2021_plots$height_min[i] <- NA
   }
   
-  # How many ashes do either have nekroses OR (|) have just died? In relation to 
-  # the number of ashes on this plot
+  # How many ashes do either have nekroses OR (|) have just died?
   temp_ets_new <-
     nv_2021$ETS.abgestorben.frisch[temp_rows] != "" |
     nv_2021$ETS.lebend[temp_rows] != ""
@@ -66,19 +70,36 @@ for (i in 1:nrow(nv_2021_plots)) {
   nv_2021_plots$n_ets_total[i] <- sum(temp_ets_total, na.rm = T)
   
   # In most cases the first comment is related to the whole plot
-  nv_2021_plots$comment[i] <- (nv_2021$Bemerkungen[temp_rows])[1]
+  nv_2021_plots$comment[i] <- (nv_2021_with_empty$Bemerkungen[temp_rows2])[1]
+  
+  # Die Daten zu Zaun oder Ausschluss werden übertragen
+  nv_2021_plots$Zaun[i] <- nv_2021_with_empty$Zaun[temp_rows2] [1]
+  nv_2021_plots$Ausschluss[i] <-
+  	nv_2021_with_empty$Ausgeschlossen.Rand.Zaun[temp_rows2] [1]
+  
+  # Die ausgeschlossenen Plots hatten natürlich eine unbekannte Anzahl von 
+  # Baeumen und Baumarten.
+  if (nv_2021_plots$Ausschluss[i] == T) {
+  	nv_2021_plots$n_trees [i] <- NA
+  	nv_2021_plots$n_species [i] <- NA
+  	nv_2021_plots$n_ash [i] <- NA
+  	nv_2021_plots$n_ets_new [i] <- NA
+  	nv_2021_plots$n_ets_old [i] <- NA
+  	nv_2021_plots$n_ets_total [i] <- NA
+  }
 }
 
 # Now the information about logging trails from the empty plots is needed as 
 # well
 for (i in 1:nrow(nv_2021_plots)) {
   temp_plotnummer <- nv_2021_plots$Plotnummer[i]
-  nv_2021_plots$Rueckegasse <-
+  nv_2021_plots$Rueckegasse [i] <-
     unique(nv_2021_with_empty$Rueckegasse[nv_2021_with_empty$Plotnummer 
                                      == temp_plotnummer])
 }
 
 nv_2021_plots$height_mean <- round(nv_2021_plots$height_mean, 2) 
+write.csv(x = nv_2021_plots, file = "EXPORT/Goe_Lau/tables/NV_2021_Plots.csv")
 
 ## PRODUCE AGGREGATED SPECIES TABLE  -------------------------------------------
 
@@ -118,15 +139,15 @@ for (i in 1:nrow(tmp)) {
 write.csv(x = tmp, file = "EXPORT/Goe_Lau/tables/Marked_Ash_2021.csv")
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(i, plotnumbers_with_empty, temp_ets_new, temp_ets_total, temp_plotnummer,
-   temp_rows, temp_species, tmp, plot)
+rm(i, temp_ets_new, temp_ets_total, temp_plotnummer,
+   temp_rows, temp_species, tmp, plot, temp_rows2)
 
 ## OUTPUT ----------------------------------------------------------------------
 # nv_2021
-# nv_plots
-# nv_species
-# nv_with_empty
-# 
+# nv_2021_plots
+# nv_2021_species
+# nv_2021_with_empty
+# plotnumbers_with_empty_2021
 
 
 
