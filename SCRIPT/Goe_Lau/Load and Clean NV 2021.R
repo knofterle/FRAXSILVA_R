@@ -181,6 +181,25 @@ for (i in c("ETS.abgestorben.frisch",
 	nv_2021[i] <- as.numeric(nv_2021[[i]])
 }
 
+## KATEGORIEN AUS DEN KOMMENTAREN
+# Die Vorgehensweise ist ähnlich wie bei den IBF Daten, ich generiere aus den 
+# Kommentaren Kategorien T/F und hänge sie an die Tabelle an.
+
+nv_comments_raw <- unique(nv_2021$Bemerkungen)
+write.csv(nv_comments_raw, file = "DATA/PROCESSED/GoeLau/comments_raw.csv",
+					fileEncoding = "UTF-8")
+
+comments_nv_proc <-
+	read.csv(file = "DATA/PROCESSED/GoeLau/comments_proc.csv",
+					 stringsAsFactors = F,
+					 fileEncoding = "UTF-8")
+rowcheck_comm <- nrow(nv_2021)
+# data_nv <- merge(data_nv, comments_nv, by.x = "Bemerkungen", 
+# 								 by.y = "Bemerkungen", all.x = T, all.y = T)
+# rowcheck_comm <- (rowcheck_comm == nrow(data_nv))
+# data_nv <- data_nv[order(data_nv$ID_plant),]
+
+
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
 nv_2021$Einjaehriger.Saemling <- as.logical(nv_2021$Einjaehriger.Saemling)
 nv_2021$Einjaehriger.Saemling[is.na(nv_2021$Einjaehriger.Saemling)] <- F
