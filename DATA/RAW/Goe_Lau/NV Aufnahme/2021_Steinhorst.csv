@@ -802,7 +802,7 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,BAh,22,,,,,,,,,,,FALSE,FALSE
 ,,,Esch,37,11,,,,,,T4,1,,,FALSE,FALSE
 ,,,BAh,53,,,,,,,,,,,FALSE,FALSE
-,,SW,Esch,59,15,,2,,,,3,,,,FALSE,FALSE
+,,nw,Esch,59,15,,2,,,,3,,,,FALSE,FALSE
 ,,,HBu,6,,,,,,,,,,,FALSE,FALSE
 ,,,Esch,5,1,1,,,,,,,,,FALSE,FALSE
 ,,,BAh,10,,,,,,,,,,,FALSE,FALSE
@@ -1794,7 +1794,7 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,BAh,16,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,30,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,15,,,,,,,,,,,FALSE,FALSE
-,,no,Esch,14,1,,,,,,,,1,,FALSE,FALSE
+,,so,Esch,14,1,,,,,,,,1,,FALSE,FALSE
 76,,,BAh,15,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,26,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,10,,,,,,,,,,,FALSE,FALSE
@@ -2627,7 +2627,7 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,BAh,19,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,10,,,,,,,,,,,FALSE,FALSE
 ,,NO,Esch,32,6,,,2,,,1,,1,,FALSE,FALSE
-,,,Esch,36,9,,,2,,,,4,,KREBS; ABGENAGT,FALSE,FALSE
+,,,Esch,36,9,,,2,,,,4,,KREBS ABGENAGT,FALSE,FALSE
 ,,,BAh,6,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,7,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,11,,,,,,,,,,,FALSE,FALSE
@@ -3434,7 +3434,7 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,Esch,30,2,,,,,,,,,,FALSE,FALSE
 ,,,Esch,38,1,,,,,,,T1,,Krebs,FALSE,FALSE
 ,,,Esch,27,1,,,,,,,,,,FALSE,FALSE
-,,NW,Esch,21,1,,,,,,,,1,,FALSE,FALSE
+,,NO,Esch,21,1,,,,,,,,1,,FALSE,FALSE
 ,,SO,Esch,15,1,,,,,,,,0,,FALSE,FALSE
 ,,,Esch,20,3,,,,,1,,,,,FALSE,FALSE
 ,,,Esch,29,1,,,,,,,,,,FALSE,FALSE
@@ -6739,7 +6739,7 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,bah,11,,,,,,,,,,,TRUE,FALSE
 ,,,Esch,26,1,,,,,,,,,,TRUE,FALSE
 ,,,hbu,52,,,,,,,,,,,TRUE,FALSE
-,,sw,bah,16,,,,,,,,,,,TRUE,FALSE
+,,,bah,16,,,,,,,,,,,TRUE,FALSE
 ,,,Esch,33,3,,,,,,1,,,,TRUE,FALSE
 ,,,bah,14,,,,,,,,,,,TRUE,FALSE
 ,,,bah,12,,,,,,,,,,,TRUE,FALSE

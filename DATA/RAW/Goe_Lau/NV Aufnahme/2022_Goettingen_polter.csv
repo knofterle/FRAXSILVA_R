@@ -731,7 +731,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,10,1,,,,,,,,,,,
 ,,,,esch,7,1,,,,,,,,,,,
 ,,so,t,esch,11,1,,,,,,,,,,,
-8963,,no,,esch,10,1,,,,,,,,,,,
+8963,,no,t,esch,10,1,,,,,,,,,,,
 ,,,,bah,11,,,,,,,,,,,,
 ,,,,esch,12,1,,,,,,,,,,,
 ,,,,hbu,33,,,,,,,,,,,,
@@ -980,7 +980,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,19,1,,,,,,,,,,,
 ,,,,esch,21,1,,,,,,,,,,,
 ,,,,esch,17,1,,,,,,,,,,,
-,,so,t,esch,19,1,,,,,,,,,,,
+,,sw,t,esch,19,1,,,,,,,,,,,
 8977,,,,lindewi,89,,,,,,,,,,,,
 ,,so,t,esch,16,3,,,,,,t1,,16,,,
 ,,,,lindewi,12,,,,,,,,,,,,
@@ -1725,7 +1725,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,esch,8,1,,,,,,,,,,,
 ,,,,esch,9,1,,,,,,,,,,,
 ,,sw,t,esch,8,1,,,,,,,,,,,
-,,no,t,esch,7,1,,,,,,,1,,,,tot;abgefressen
+,,no,t,esch,7,1,,,,,,,1,,,,tot abgefressen
 ,,,,esch,6,1,,,,,,,,,,,
 ,,,,esch,11,1,,,,,,,,,,,
 ,,,,esch,12,1,,,,,,,,,,,

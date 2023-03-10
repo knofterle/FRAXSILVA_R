@@ -16,6 +16,8 @@ source(file = "SCRIPT/IBF/generate_plot_distribution.R")
 # 
 
 ####### LAUENBURG ---------------------------------------------------------------
+# Offenbar habe ich nur bis hier kurz ein bisschen was angelegt aber noch nicht
+# weiter gearbeitet.
 parameters <-
   list (
     integer = c(

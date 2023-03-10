@@ -1227,7 +1227,7 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,BAh,22,,,,,,,,,,,TRUE,FALSE
 ,,,Esch,7,1,1,,,,,,,,,TRUE,FALSE
 ,,,Hbu,6,,,,,,,,,,,TRUE,FALSE
-,,SW,Esch,6,1,1,,,,,,,3,,TRUE,FALSE
+,,NW,Esch,6,1,1,,,,,,,3,,TRUE,FALSE
 ,,,Esch,4,1,1,,,,,,,,,TRUE,FALSE
 ,,,Esch,6,1,1,,,,,,,,,TRUE,FALSE
 ,,,Esch,6,1,1,,,,,,,,,TRUE,FALSE
@@ -2020,7 +2020,7 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,Esch,6,1,1,,,,,,,,,TRUE,FALSE
 ,,,Esch,9,1,1,,,,,,,,,TRUE,FALSE
 ,,,Esch,8,1,1,,,,,,,,,TRUE,FALSE
-,,SO,Esch,7,1,1,,,,,,,0,,TRUE,FALSE
+,,NO,Esch,7,1,1,,,,,,,0,,TRUE,FALSE
 9009,,SO,Esch,8,1,,,,,,,,3,,TRUE,FALSE
 ,,,Esch,9,1,,,,,,,,,,TRUE,FALSE
 ,,,Esch,4,1,,,,,,,,,,TRUE,FALSE
