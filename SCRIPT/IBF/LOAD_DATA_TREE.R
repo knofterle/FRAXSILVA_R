@@ -52,7 +52,7 @@ colnames(data_tree_mon) <-
 		"Kraft_Klas", "Bemerkung")
 
 data_tree_grfw <-
-	read.csv(file = "DATA/RAW/IBF/Greifswald/IBF_MV1_Baeume_20220228.csv")
+	read.csv(file = "DATA/RAW/IBF/Greifswald/Greifswald-Koordinaten.csv")
 
 data_tree_leu <- 
 	read.csv(file = "DATA/RAW/IBF/Leutzsch/Baeume_SN1_Leutzsch_UTM_Koordinaten.csv")
@@ -67,7 +67,8 @@ data_tree_ett_b <-
 	read.csv(file = "DATA/RAW/IBF/Ettersberg/IBF_TH1b_Baeume_20211216.csv")
 
 
-###### LOAD TREE DISTRIBUTION AND TREE HEIGHT FROM shape -------------------------
+###### GESAMT TABELLE VON SEBASTIAN LADEN -------------------------
+data_tree_ibf <- read.csv(file = "DATA/RAW/ibf_alltrees_final_10-2022.csv")
 
 
 ###### TIDY UP  ----------------------------------------------------------------
