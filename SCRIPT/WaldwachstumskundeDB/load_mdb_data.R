@@ -9,6 +9,8 @@
 ###### REQUIRES ----------------------------------------------------------------
 # The package Hmisc or RODBC doesnt exist in linux or windows, therefore I had 
 # to use this decision step to separate between both systems
+# Das Programm funktioniert nur mit 32bit R, das lässt sich in RStudio unter 
+# global options/Basic einstellen.
 
 if (.Platform$OS.type == "windows") {
   source(file = "SCRIPT/WaldwachstumskundeDB/load_mdb_windows_sep.R")
@@ -88,12 +90,17 @@ load.mdb.data <- function (path, columns, all.column) {
 	mdb.data <- merge(baum, stammv, by = "id", all.x = T, all.y = T)
 	
 	###### AUF  ----------------------------------------------
+	# Auf muss auch mit einer ID gemergt werden weil es für mehrere Parzellen auch
+	# mehrere Aufnahme Beschreibungen gibt die aber alle die Nummer 1 in der Spalte
+	# "auf" teilen
+	auf$aufid <- paste0(auf$edvid, auf$auf)
+	mdb.data$aufid <- paste0(mdb.data$edvid, mdb.data$auf)
 	
-	auf <- subset(auf, select = -c(datum, Stempel, id, edvid))
 	colnames(auf) [colnames(auf) == "bemerk"] <- "bemerk.auf"
-	
+	auf <- subset(auf, select = -c(datum, Stempel, id, edvid))
+
 	#### MERGE AUF AND THE REST  ------------------------------------------------
-	mdb.data <- merge(mdb.data, auf, by = "auf", all.x = T, all.y = T)
+	mdb.data <- merge(mdb.data, auf, by = "aufid", all.x = T, all.y = T)
 
 	#### SELECT THE COLUMNS   ------------------------------------------------
 	if (all.column == F) {

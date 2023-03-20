@@ -1,7 +1,7 @@
-################ GENERATE PLOT DISTRIBUTION LAU  ##################################
+################ GENERATE PLOT DISTRIBUTION Goe and Lau  #######################
 # J.Osewold
-# 21.06.22
-##### DRAFT #####
+# 20.03.2023
+##### GOE fertig, Lau braucht noch Daten #####
 ################################################################################
 
 ###### LIBRARYS ----------------------------------------------------------------
@@ -12,48 +12,90 @@ source(file = "SCRIPT/IBF/generate_plot_distribution.R")
 
 ###### NOTES -------------------------------------------------------------------
 # Instead of the messy script I originally used for Goe Ansitz and Goe Polter 
-# I use the improved one from the IBF+ in the case of Lauenburg. 
+# I use the improved one from the IBF+. 
 # 
 
-####### LAUENBURG ---------------------------------------------------------------
-# Offenbar habe ich nur bis hier kurz ein bisschen was angelegt aber noch nicht
-# weiter gearbeitet.
+####### GOE_ANS ---------------------------------------------------------------
+# 
 parameters <-
-  list (
-    integer = c(
-      plotdistance = 9.93,
-      plotangle_gon = 388.5,
-      rectangular = 1,
-      stretch_x = 0.99,
-      stretch_y = 1
-    ),
-    bool = c(mirror = F)
-  )
+	list (
+		integer = c(
+			plotdistance = 5,
+			plotangle_gon = 85,
+			rectangular = 1,
+			stretch_x = 1,
+			stretch_y = 1.01
+		),
+		bool = c(mirror = F)
+	)
 
-zero_ref <- "ref14"
+zero_ref <- "ref8817"
 
 # Some plots were measured in the field from trees and are therefore "exact 
 # values", the goal is to align the plot map with the tree map. 
-reference <- read.csv(
-  file = "DATA/RAW/Schotten/Plotverteilung Schotten/Reference points.csv",
-  header = T, stringsAsFactors = F)
+reference <- read.csv2(
+	file = "DATA/RAW/Goe_Lau/Plot Distribution/Reference points Ansitz.csv",
+	header = T, stringsAsFactors = F)
 row.names(reference) <- reference$nr
 
 plot_coord_rel <- generate.rel.coord(
-  file = "DATA/RAW/Goe_Lau/Plot Distribution/Lau.csv")
+	file = "DATA/RAW/Goe_Lau/Plot Distribution/Goe_Ansitz.csv")
 # ggplot(data = plot_coord_rel, aes(x = -x, y = y, label = nr)) +
 #   geom_point() +
 #   geom_label()
 
-plots_pos_scho <- generate.abs.coord(
-  plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
-  parameters = parameters)
+# Die Plots beginnen nicht mit 1 oder 0, aber ich hatte zum Glück schonmal eine 
+# Funktion dafür geschrieben.
+plots_pos_goeans <- generate.abs.coord(
+	plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
+	parameters = parameters, plotnumber1 = 8701)
 
-plots_ref_scho <- check.reference(plot_coord_abs = plots_pos_scho, 
-                             reference = reference)  
+plots_ref_goeans <- check.reference(plot_coord_abs = plots_pos_goeans, 
+																	reference = reference)  
+plots_ref_goeans
+
+####### GOE_POL ---------------------------------------------------------------
+# 
+parameters <-
+	list (
+		integer = c(
+			plotdistance = 5,
+			plotangle_gon = 213,
+			rectangular = 1,
+			stretch_x = 1,
+			stretch_y = .96
+		),
+		bool = c(mirror = T)
+	)
+
+zero_ref <- "ref8913"
+
+# Some plots were measured in the field from trees and are therefore "exact 
+# values", the goal is to align the plot map with the tree map. 
+reference <- read.csv2(
+	file = "DATA/RAW/Goe_Lau/Plot Distribution/Reference points Polter.csv",
+	header = T, stringsAsFactors = F)
+row.names(reference) <- reference$nr
+
+plot_coord_rel <- generate.rel.coord(
+	file = "DATA/RAW/Goe_Lau/Plot Distribution/Goe_Polter.csv")
+# ggplot(data = plot_coord_rel, aes(x = -x, y = y, label = nr)) +
+#   geom_point() +
+#   geom_label()
+
+# Die Plots beginnen nicht mit 1 oder 0, aber ich hatte zum Glück schonmal eine 
+# Funktion dafür geschrieben.
+plots_pos_goepol <- generate.abs.coord(
+	plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
+	parameters = parameters, plotnumber1 = 8901)
+
+plots_ref_goepol <- check.reference(plot_coord_abs = plots_pos_goepol, 
+																		reference = reference)  
+plots_ref_goepol
+
 
 ###### TIDY UP  ----------------------------------------------------------------
-rm(parameters, zero_ref, plot_coord_rel)
+rm(parameters, zero_ref, plot_coord_rel, reference)
 
 ###### OUTPUT ------------------------------------------------------------------
 # 

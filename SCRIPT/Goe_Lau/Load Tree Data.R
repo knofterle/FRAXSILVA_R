@@ -20,13 +20,13 @@ tree_data_ansitz <- tree_data [tree_data$edvid %in% c(30931303, 30931304), ]
 ###### OBSOLETE AND SHOULD BE REMOVED ONCE -------------------------------------
 
 # linux
-baum <- load.mdb.linux.sep(path = "DATA/RAW/Goe_Lau/309313.mdb", name = "Baum") 
-baum_polter <- baum [baum$edvid %in% c(30931301, 30931302), ]
-baum_ansitz <- baum [baum$edvid %in% c(30931303, 30931304), ]
-
-stammv <- load.mdb.linux.sep(path = "DATA/RAW/Goe_Lau/309313.mdb", name = "Stammv") 
-stammv_polter <- stammv [stammv$edvid %in% c(30931301, 30931302), ]
-stammv_ansitz <- stammv [stammv$edvid %in% c(30931303, 30931304), ]
+# baum <- load.mdb.linux.sep(path = "DATA/RAW/Goe_Lau/309313.mdb", name = "Baum") 
+# baum_polter <- baum [baum$edvid %in% c(30931301, 30931302), ]
+# baum_ansitz <- baum [baum$edvid %in% c(30931303, 30931304), ]
+# 
+# stammv <- load.mdb.linux.sep(path = "DATA/RAW/Goe_Lau/309313.mdb", name = "Stammv") 
+# stammv_polter <- stammv [stammv$edvid %in% c(30931301, 30931302), ]
+# stammv_ansitz <- stammv [stammv$edvid %in% c(30931303, 30931304), ]
 
 # # windows
 # baum <- load.mdb.windows.sep(path = "DATA/RAW/Goe_Lau/309313.mdb", name = "Baum") 
@@ -39,7 +39,7 @@ stammv_ansitz <- stammv [stammv$edvid %in% c(30931303, 30931304), ]
 # 
 
 ###### TIDY UP  ----------------------------------------------------------------
-rm(baum, stammv)
+rm(tree_data)
 
 ###### OUTPUT ------------------------------------------------------------------
 # stammv_polter, baum_polter, stammv_ansitz, baum_ansitz, tree_data_polter, 

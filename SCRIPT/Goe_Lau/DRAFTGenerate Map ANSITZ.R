@@ -10,7 +10,7 @@
 
 ###### REQUIRES ----------------------------------------------------------------
 if (.Platform$OS.type == "unix") {
-  source (file = "SCRIPT/Goe_Lau/Load MDB Data.R")
+  source (file = "SCRIPT/Goe_Lau/Load Tree Data.R")
 } else { 
   source (file = "SCRIPT/Goe_Lau/Laden der Stammverteilung Windows.R") 
 }
