@@ -5,6 +5,7 @@
 ################################################################################
 
 ###### LIBRARYS ----------------------------------------------------------------
+require(dplyr)
 
 ###### REQUIRES ----------------------------------------------------------------
 source(file = "SCRIPT/WaldwachstumskundeDB/load_mdb_data.R")
@@ -70,6 +71,8 @@ data_tree_ett_b <-
 ###### GESAMT TABELLE VON SEBASTIAN LADEN -------------------------
 data_tree_ibf <- read.csv(file = "DATA/RAW/ibf_alltrees_final_10-2022.csv")
 
+data_tree_grfw <- data_tree_ibf %>% 
+	filter(ibf_id == "MV_1")
 
 ###### TIDY UP  ----------------------------------------------------------------
 
