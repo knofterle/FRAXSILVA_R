@@ -61,8 +61,8 @@ plot.all1 <- function(tree_data = NA, plots_pos, plots_ref) {
 
 ###### DRAW TREES AND PLOTS WITH GGPLOT  ---------------------------------------
 
-plot.all2 <- function(tree_data = NA, plots_pos, plots_ref) {
-  
+plot.all2 <- function(tree_data = NA, plots_pos, plots_ref, labels = F) {
+   
 	### MERGE ALL DATA -----------------------------------------------------------
 	if (is.na(tree_data)) {
 		all_points <- data.frame(
@@ -98,7 +98,21 @@ plot.all2 <- function(tree_data = NA, plots_pos, plots_ref) {
     ggplot (all_points, aes(x = x, y = y, color = type)) +
     geom_point (shape = 1, size = 2) +
     scale_color_manual (values = color) +
-    coord_fixed (ratio = 1)
+    coord_fixed (ratio = 1) 
+  
+  if (labels == T) {
+  	plot <- plot +
+  		geom_label(
+  			data = all_points %>%
+  				filter(type %in% c("ref_target", "ref_current")),
+  			aes(x = x, y = y, label = nr),
+  			show.legend = F
+  		)
+  } else {
+  }
+  	
+  						 
+  						 
     
   
   return(plot)

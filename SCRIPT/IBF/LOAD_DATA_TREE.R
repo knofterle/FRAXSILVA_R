@@ -73,6 +73,13 @@ data_tree_ibf <- read.csv(file = "DATA/RAW/ibf_alltrees_final_10-2022.csv")
 
 data_tree_grfw <- data_tree_ibf %>% 
 	filter(ibf_id == "MV_1")
+data_tree_steg <- data_tree_ibf %>% 
+	filter(ibf_id == "BB_1")
+data_tree_leu <- data_tree_ibf %>% 
+	filter(ibf_id == "SN_1")
+data_tree_ett <- data_tree_ibf %>% 
+	filter(ibf_id == "TH_1")
+
 
 ###### TIDY UP  ----------------------------------------------------------------
 
