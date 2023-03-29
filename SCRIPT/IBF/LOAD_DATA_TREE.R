@@ -16,8 +16,14 @@ source(file = "SCRIPT/WaldwachstumskundeDB/load_mdb_data.R")
 # 
 # 
 ###### LOAD TREE DISTRIBUTION AND TREE HEIGHT FROM MDB -------------------------
-data_tree_scho <- load.mdb.data(
-  path = "DATA/RAW/Schotten/K19302_new.mdb", all.column = T)
+# data_tree_scho1 <- load.mdb.data(
+#   path = "DATA/RAW/Schotten/K19302_new.mdb", all.column = T)
+# data_tree_scho2 <- load.mdb.data(
+# 	path = "DATA/RAW/Schotten/K19302_old.mdb", all.column = T)
+## Die mdb von Schotten wurde nachträglich noch geändert, daher musste ich 
+## sowieso die Werte neu berechnen. Deswegen habe ich dann statt dessen 
+## Sebastians Tabelle verwendet. Diese beiden sind also obsolet.
+
 data_tree_mol <- load.mdb.data(
   path = "DATA/RAW/Mollenfelde/314313.mdb", all.column = T)
 data_tree_huy <- load.mdb.data(
@@ -79,6 +85,9 @@ data_tree_leu <- data_tree_ibf %>%
 	filter(ibf_id == "SN_1")
 data_tree_ett <- data_tree_ibf %>% 
 	filter(ibf_id == "TH_1")
+
+data_tree_scho3 <- data_tree_ibf %>% 
+	filter(ibf_id == "HE_1")
 
 
 ###### TIDY UP  ----------------------------------------------------------------

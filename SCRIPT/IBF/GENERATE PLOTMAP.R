@@ -17,12 +17,15 @@ source(file = "SCRIPT/IBF/generate_plotmap.R")
 
 
 ###### SCHOTTEN  ---------------------------------------------------------------
-plot.all1(tree_data = data_tree_scho, plots_pos = plots_pos_scho,
-         plots_ref = plots_ref_scho)
-map_scho <- plot.all2(tree_data = data_tree_scho, plots_pos = plots_pos_scho,
-										 plots_ref = plots_ref_scho)
+
+tmp <- data_tree_scho3 %>% 
+	rename(nr = baum_nr, x = x_utm32, y = y_utm32)
+map_scho <- plot.all2(tree_data = tmp, plots_pos = plots_pos_scho,
+											plots_ref = plots_ref_scho)
+
 ggsave(filename = "EXPORT/IBF/figures/map_schotten.pdf", plot = map_scho, 
 			 device = "pdf", units = "cm", width = 18, height = 18)
+map_scho
 
 plots_ref_scho
 

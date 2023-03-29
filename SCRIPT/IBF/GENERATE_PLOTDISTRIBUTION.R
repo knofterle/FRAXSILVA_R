@@ -21,7 +21,7 @@ parameters <-
       plotdistance = 9.93,
       plotangle_gon = 388.5,
       rectangular = 1,
-      stretch_x = 0.99,
+      stretch_x = .99,
       stretch_y = 1
     ),
     bool = c(mirror = F)
