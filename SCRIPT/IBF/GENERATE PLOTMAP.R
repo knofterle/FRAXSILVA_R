@@ -1,11 +1,12 @@
 ############################# GENERATE PLOTMAP #################################
 # J.Osewold
-# 12.04.22
-##### DRAFT #####
+# 30.03.2023
+##### ALMOST DONE #####
 ################################################################################
 
 ###### LIBRARYS ----------------------------------------------------------------
 require(dplyr)
+require(ggplot2)
 ###### REQUIRES ----------------------------------------------------------------
 source(file = "SCRIPT/IBF/LOAD_DATA_TREE.R")
 source(file = "SCRIPT/IBF/GENERATE_PLOTDISTRIBUTION.R")
@@ -114,10 +115,16 @@ plots_ref_ett
 
 
 ###### TIDY UP  ----------------------------------------------------------------
-rm(map_platt, tmp, map_grfw, map_steg, map_leu, map_ett)
+rm(map_platt, tmp, map_grfw, map_steg, map_leu, map_ett, map_huy, map_scho, 
+	 map_weis, map_mol)
+
+rm(plots_ref_ett, plots_ref_grfw, plots_ref_huy, plots_ref_leu, plots_ref_mol,
+	 plots_ref_platt, plots_ref_scho, plots_ref_steg, plots_ref_weis)
+
 
 ###### OUTPUT ------------------------------------------------------------------
-# plot
+# plots in files as pdf
+# 
 # 
 
 

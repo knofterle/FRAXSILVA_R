@@ -1,7 +1,7 @@
 ################ GENERATE PLOT DISTRIBUTION   ##################################
 # J.Osewold
-# 02.03.23
-##### DRAFT #####
+# 30.03.2023
+##### DONE #####
 ################################################################################
 
 ###### LIBRARYS ----------------------------------------------------------------
@@ -322,7 +322,7 @@ plot_coord_rel <- generate.rel.coord(
 
 
 ###### TIDY UP  ----------------------------------------------------------------
-rm(parameters, zero_ref, plot_coord_rel)
+rm(parameters, zero_ref, plot_coord_rel, reference)
 
 
 ###### OUTPUT ------------------------------------------------------------------
@@ -337,6 +337,12 @@ rm(parameters, zero_ref, plot_coord_rel)
 # 
 # plots_pos_weis
 # plots_ref_weis
+#   
+#   .
+#   .
+#   .
+#   .
+# 
 
 
 

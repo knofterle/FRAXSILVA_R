@@ -5,12 +5,12 @@
 #==============================================================================#
 
 ## LIBRARYS --------------------------------------------------------------------
-
+require(dplyr)
 ## REQUIRES --------------------------------------------------------------------
-source("SCRIPT/IBF/LOAD_NV.R")
-
+source("SCRIPT/IBF/SAVE_PLOTPOSITION.R", encoding = "UTF-8")
 # data_nv
-# 
+# plots_pos
+
 
 ## NOTES -----------------------------------------------------------------------
 # This script produces aggregated tables for the nv data. Some steps will be 
@@ -22,7 +22,7 @@ source("SCRIPT/IBF/LOAD_NV.R")
 ## PRODUCE AGGREGATED PLOTS TABLE  ---------------------------------------------
 data_nv_plots <- subset(data_nv, select = c(ID_plot, Plotnummer, Flaeche, Rand, 
                                             Zaun, Rueckegasse, keine.baeume, 
-                                            Flaeche.bedeckt))
+                                            Flaeche.bedeckt, x, y))
 data_nv_plots <- unique(data_nv_plots)
 
 
@@ -147,6 +147,7 @@ for (i in 1:nrow(data_nv_area)) {
 # following loops and a SUM row would disturb this
 
 ### plot data ------------------------------------------------------------------
+colnames(data_nv_plots)
 data_nv_plots <- 
   rbind(data_nv_plots, 
         c(1,
@@ -157,6 +158,8 @@ data_nv_plots <-
           sum(data_nv_plots$Rueckegasse, na.rm = T),
           sum(data_nv_plots$keine.baeume),
           sum(data_nv_plots$Flaeche.bedeckt),
+          NA,
+          NA,
           sum(data_nv_plots$n_trees),
           length(unique(data_nv$Baumart_kurz[!is.na(data_nv$Baumart_kurz)])) -1,
           # -1 for the species "unkown"
@@ -246,6 +249,11 @@ rm(tmp, plotnumber, flaeche, i, temp_ets_new, temp_ets_total, temp_ID_plot,
 # 
 # and all three as csv
 
+# from the earlier scripts:
+# data_nv
+# data_tree_Flächenname
+# data_tree_ibf
+# plots_pos 
 
 
 ## JUNK ------------------------------------------------------------------------
