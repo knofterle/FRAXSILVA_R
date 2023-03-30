@@ -32,7 +32,7 @@ names(nv_plots)
 
 
 ## MARKED ASHES ----------------------------------------------------------------
-# Das Ziel ist eine Tabelle mit den Spalten: ID, Plot,  Quadrant, Plotposition X,
+#  Das Ziel ist eine Tabelle mit den Spalten: ID, Plot,  Quadrant, Plotposition X,
 #  und Y, Flaeche, Rueckegasse, 2021_Hoehe und so weiter, 2022_gefunden, 
 #  2022_tot, 2022_Hoehe und so weiter mit eventuell NA. Wobei die Koordinaten 
 #  erst später dazu kommen.
@@ -87,7 +87,7 @@ tmp_doubl
 nv_marked_2022 <- nv_2022_with_empty %>% 
 	filter(!is.na(Esche.markiert))
 nv_marked_2022$ID <- paste0(nv_marked_2022$Plotnummer, nv_marked_2022$Esche.markiert)
-table(nv_marked_2022$Baumart_kurz)
+table(nv_marked_2022$Baumart_kurz) # Die leeren Baumartenfelder sind gefunden==F
 nv_marked_2022 <- nv_marked_2022 %>% 
 	select(!c(Plotnummer, Esche.markiert, Baumart_kurz, Flaeche, Jahr, Rueckegasse)) %>% 
 	rename_with(.fn = ~ paste0(., "_22"), .cols = all_of(
@@ -121,6 +121,56 @@ tmp_doubl <- nv_marked_2022 %>%
 	filter(n()>1)
 tmp_doubl
 
+### ADD COLUMN "DEATH" ---------------------------------------------------------
+unique(nv_marked_2022$Bemerkungen_22)
+
+nv_marked_2022$Tot_22 <-
+	nv_marked_2022$Bemerkungen_22 %in% c(
+		"komplet Tot",
+		"komplet tot",
+		"komplett tot, stubben von Baumnummer 3 steht auf der süd ost ecke",
+		"komplett tot",
+		"tot an ets",
+		"komplett tot, vermutlich ets",
+		"tot, unter Laub begraben",
+		"Gesamte Wurzel abgefresse, Engerling, tot",
+		"nicht gefunden aber ziemlich sicher tot",
+		"ziemlich sicher tot, aber wir haben den Faden nicht gefunden, nur ist da halt auch sonst keine Esche+",
+		"tot, vielleicht ets aber man weißes nicht",
+		"tot, alsozumindest ziemlich sicher",
+		"nicht geunden daher ziemlich sicher tot",
+		"viele Mäuselöcher, ziemlich sicher tot",
+		"tot, weil überhaupt keine Eschen gefunden wurden",
+		"tot, eigentlich nicht gefunden aber in der Ecke ist gar kein Baum mehr",
+		"tot, ets?",
+		"tot, evtl ets?",
+		"tot, vielleichjt ets?",
+		"tot, vom totholz erschlagen"  ,
+		"tot abgefressen" ,
+		"tot",
+		"ganz  tot",
+		"baum nummer 12 steht im südwest quadrant, tot",
+		"vielleicht im Mauseloch verschwunden",
+		"maus gefressen"
+	)
+
+## Die Entscheidende Frage bei den toten ist, ob es noch mehr Bäume gibt die 
+## vielleicht ganz tot sein könnten. Eigentlich ist das Merkmal ja, dass alle
+## Triebe die bei "Anzahl Triebe" stehen auch irgendwie tot sind
+selection <- 
+	nv_marked_2022$Anzahl.Triebe_22 - 
+	nv_marked_2022$ETS.abgestorben.frisch_22-
+	nv_marked_2022$ETS.abgestorben.alt_22 -
+	nv_marked_2022$Verbiss.tot_22-
+	nv_marked_2022$Sonstige.Gruende.tot_22
+selection
+View(nv_marked[selection == 0,])
+	
+	
+
+
+### MERGE AND EXPORT  ----------------------------------------------------------
+
 nv_marked <- left_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID")
 count(nv_marked)
 count(nv_marked_2021)
@@ -128,33 +178,18 @@ count(nv_marked_2022)
 write.csv(nv_marked, file = "EXPORT/Goe_Lau/tables/nv_marked.csv", 
 					fileEncoding = "UTF-8")
 
-## GRAPHS ----------------------------------------------------
-
-
-nv_plots %>% 
-	arrange(n_ash_2021) %>% 
-	mutate(index = row_number()) %>% 
-	ggplot(data = ., aes(x = index)) +
-	geom_point(aes(y = n_ash_2021), color = "blue") +
-	geom_smooth(aes(y = n_ash_2021), color = "blue") +
-	geom_point(aes(y = n_ash_2022), color = "red") +
-	geom_smooth(aes(y = n_ash_2022), color = "red")
-	
-nv_plots %>% 
-	arrange(height_mean_2021) %>% 
-	filter(height_mean_2021 < 80) %>% 
-	mutate(index = row_number()) %>% 
-	ggplot(data = ., aes(x = index)) +
-	geom_point(aes(y = height_mean_2021), color = "blue") +
-	geom_smooth(aes(y = height_mean_2021), color = "blue") +
-	geom_point(aes(y = height_mean_2022), color = "red") +
-	geom_smooth(aes(y = height_mean_2022), color = "red")
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(tmp_doubl, tmp)
+rm(tmp_doubl)
 
 ## OUTPUT ----------------------------------------------------------------------
+# nv_marked
+# nv_marked.csv
 # 
+# nv_marked_2022
+# nv_marked_2021
+# 
+# nv_plots
 
 
 

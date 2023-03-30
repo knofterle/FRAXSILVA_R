@@ -121,26 +121,28 @@ nv_2021_species <- nv_2021_species[order(nv_2021_species$n, decreasing = T), ]
 ## PRODUCE TABLE WITH ALL MARKED ASHES  ----------------------------------------
 # Ich habe für eine bessere Uebersicht die doppelten oder dreifachen Plotnummern 
 # durch NA ersetzt, dann ist besser zu sehen welche Eschen zu welchem Plot 
-# gehoeren
+# gehoeren. Ich habe diesen Teil des Skriptes jetzte auskommentiert, das ist
+# nicht mehr nötig und wird im "Combine21+22" Skript ersetzt.
 # 
-tmp <- nv_2021 %>% 
-	filter(!is.na(Esche.markiert)) %>% 
-	select(!ETS)
-
-str(tmp)
-plot <- 0
-for (i in 1:nrow(tmp)) {
-	if (plot == tmp$Plotnummer[i]) {
-		tmp$Plotnummer[i] <- NA
-	} else {
-		plot <- tmp$Plotnummer[i]
-	}
-}
-write.csv(x = tmp, file = "EXPORT/Goe_Lau/tables/Marked_Ash_2021.csv")
+# 
+# tmp <- nv_2021 %>% 
+# 	filter(!is.na(Esche.markiert)) %>% 
+# 	select(!ETS)
+# 
+# str(tmp)
+# plot <- 0
+# for (i in 1:nrow(tmp)) {
+# 	if (plot == tmp$Plotnummer[i]) {
+# 		tmp$Plotnummer[i] <- NA
+# 	} else {
+# 		plot <- tmp$Plotnummer[i]
+# 	}
+# }
+# write.csv(x = tmp, file = "EXPORT/Goe_Lau/tables/Marked_Ash_2021.csv")
 
 ## TIDY UP  --------------------------------------------------------------------
 rm(i, temp_ets_new, temp_ets_total, temp_plotnummer,
-   temp_rows, temp_species, tmp, plot, temp_rows2)
+   temp_rows, temp_species, tmp, temp_rows2)
 
 ## OUTPUT ----------------------------------------------------------------------
 # nv_2021

@@ -180,6 +180,30 @@ nv_2022$Einjaehriger.Saemling[is.na(nv_2022$Einjaehriger.Saemling)] <- F
 
 nv_2022$Nicht.gerade <- as.logical(nv_2022$Nicht.gerade)
 
+nv_2022$Anzahl.Triebe <- as.numeric(nv_2022$Anzahl.Triebe)
+
+###### REPLACE SOME NAs  -----------------------------------------------
+
+# Mit diesem Schnipsel werden die NAs aus den Spalten zum Thema Triebanzahl durch 
+# nullen ersetzt, das erleichtert das Rechnen später ungemein.
+selection <- !is.na(nv_2022$Anzahl.Triebe)
+columns <- which(
+	colnames(nv_2022) %in% c(
+		"ETS.abgestorben.frisch",
+		"ETS.abgestorben.alt",
+		"ETS.lebend",
+		"Verbiss.lebend",
+		"Verbiss.tot",
+		"Sonstige.Gruende.tot",
+		"Aceria.fraxinivora"
+	)
+)
+for (i in columns) {
+	tmp <- nv_2022[selection, i]
+	tmp[is.na(tmp)] <- 0
+	nv_2022[selection, i] <- tmp
+}
+
 ###### ADD COLUMN ETS GENERAL ------------------------------------------------------
 nv_2022$ETS <-
 	!is.na(nv_2022$ETS.abgestorben.frisch) |
@@ -230,7 +254,7 @@ nv_2022 <- nv_2022 %>%
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 
-    i, select, select1, select2, t)
+    i, select, select1, select2, t, tmp)
 
 ###### OUTPUT ------------------------------------------------------------------
 # nv_2022

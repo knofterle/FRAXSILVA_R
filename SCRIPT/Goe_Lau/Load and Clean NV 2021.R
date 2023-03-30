@@ -204,6 +204,28 @@ rowcheck_comm <- nrow(nv_2021)
 nv_2021$Einjaehriger.Saemling <- as.logical(nv_2021$Einjaehriger.Saemling)
 nv_2021$Einjaehriger.Saemling[is.na(nv_2021$Einjaehriger.Saemling)] <- F
 
+###### REPLACE SOME NAs  -----------------------------------------------
+
+# Mit diesem Schnipsel werden die NAs aus den Spalten zum Thema Triebanzahl durch 
+# nullen ersetzt, das erleichtert das Rechnen später ungemein.
+selection <- !is.na(nv_2021$Anzahl.Triebe)
+columns <- which(
+	colnames(nv_2021) %in% c(
+		"ETS.abgestorben.frisch",
+		"ETS.abgestorben.alt",
+		"ETS.lebend",
+		"Verbiss.lebend",
+		"Verbiss.tot",
+		"Sonstige.Gruende.tot" # ,
+#		"Aceria.fraxinivora"
+	)
+)
+for (i in columns) {
+	tmp <- nv_2021[selection, i]
+	tmp[is.na(tmp)] <- 0
+	nv_2021[selection, i] <- tmp
+}
+
 ###### ADD COLUMN ETS GENERAL ------------------------------------------------------
 nv_2021$ETS <-
 	!is.na(nv_2021$ETS.abgestorben.frisch) |
@@ -250,7 +272,8 @@ unique(nv_2021$Baumart_kurz)
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 
-     i, select, select1, select2, t )
+   i, select, select1, select2, t, comments_nv_proc, nv_comments_raw, 
+	 rowcheck_comm)
 
 ###### OUTPUT ------------------------------------------------------------------
 # nv_2021
