@@ -53,16 +53,16 @@ rm(parameters, zero_ref, plot_coord_rel)
 parameters <-
   list (
     integer = c(
-      plotdistance = 9.93,
-      plotangle_gon = 223,
+      plotdistance = 10,
+      plotangle_gon = 222.5,
       rectangular = 1,
-      stretch_x = 0.99,
+      stretch_x = 1.01,
       stretch_y = 1
     ),
     bool = c(mirror = F)
   )
 
-zero_ref <- "ref48"
+zero_ref <- "ref93"
 
 # Some plots were measured in the field from trees and are therefore "exact 
 # values", the goal is to align the plot map with the tree map. 
@@ -229,9 +229,9 @@ plot_coord_rel <- generate.rel.coord(
      integer = c(
        plotdistance = 10,
        plotangle_gon = 181,
-       rectangular = 1.04,
+       rectangular = 1.045,
        stretch_x = 1.00,
-       stretch_y = 1.00
+       stretch_y = 1.02
      ),
      bool = c(mirror = F)
    )

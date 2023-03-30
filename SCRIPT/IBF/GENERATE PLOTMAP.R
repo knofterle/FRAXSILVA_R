@@ -50,11 +50,10 @@ ggsave(filename = "EXPORT/IBF/figures/map_huy.pdf", plot = map_huy,
 plots_ref_huy
 
 ###### WEISWEIL  ------------------------------------------------------------
-source(file = "SCRIPT/IBF/GENERATE_PLOTDISTRIBUTION.R")
 plot.all1(tree_data = data_tree_weis, plots_pos = plots_pos_weis,
          plots_ref = plots_ref_weis)
 map_weis <- plot.all2(tree_data = data_tree_weis, plots_pos = plots_pos_weis,
-											 plots_ref = plots_ref_weis, labels = T)
+											 plots_ref = plots_ref_weis, labels = F)
 map_weis
 ggsave(filename = "EXPORT/IBF/figures/map_weisweil.pdf", plot = map_weis, 
 			 device = "pdf", units = "cm", width = 18, height = 18)
