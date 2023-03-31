@@ -122,49 +122,30 @@ tmp_doubl <- nv_marked_2022 %>%
 tmp_doubl
 
 ### ADD COLUMN "DEATH" ---------------------------------------------------------
-unique(nv_marked_2022$Bemerkungen_22)
+# Ursprünglich war die Spalte "ToT" hier eingebaut worden, aber ich habe 
+# vergessen die Kommentare aus 2022 überhaupt zu sortieren. Daher habe ich 
+# nun analog zu 2021 eine Spalte "ToT" bereits im Script "load and clean" 
+# eingebaut.Dieser Teil wurde dadurch stark verkürzt.  
 
-nv_marked_2022$Tot_22 <-
-	nv_marked_2022$Bemerkungen_22 %in% c(
-		"komplet Tot",
-		"komplet tot",
-		"komplett tot, stubben von Baumnummer 3 steht auf der süd ost ecke",
-		"komplett tot",
-		"tot an ets",
-		"komplett tot, vermutlich ets",
-		"tot, unter Laub begraben",
-		"Gesamte Wurzel abgefresse, Engerling, tot",
-		"nicht gefunden aber ziemlich sicher tot",
-		"ziemlich sicher tot, aber wir haben den Faden nicht gefunden, nur ist da halt auch sonst keine Esche+",
-		"tot, vielleicht ets aber man weißes nicht",
-		"tot, alsozumindest ziemlich sicher",
-		"nicht geunden daher ziemlich sicher tot",
-		"viele Mäuselöcher, ziemlich sicher tot",
-		"tot, weil überhaupt keine Eschen gefunden wurden",
-		"tot, eigentlich nicht gefunden aber in der Ecke ist gar kein Baum mehr",
-		"tot, ets?",
-		"tot, evtl ets?",
-		"tot, vielleichjt ets?",
-		"tot, vom totholz erschlagen"  ,
-		"tot abgefressen" ,
-		"tot",
-		"ganz  tot",
-		"baum nummer 12 steht im südwest quadrant, tot",
-		"vielleicht im Mauseloch verschwunden",
-		"maus gefressen"
-	)
+unique(nv_marked_2022$Bemerkungen_22)
+str(nv_marked_2022)
+
 
 ## Die Entscheidende Frage bei den toten ist, ob es noch mehr Bäume gibt die 
 ## vielleicht ganz tot sein könnten. Eigentlich ist das Merkmal ja, dass alle
 ## Triebe die bei "Anzahl Triebe" stehen auch irgendwie tot sind
-selection <- 
-	nv_marked_2022$Anzahl.Triebe_22 - 
-	nv_marked_2022$ETS.abgestorben.frisch_22-
-	nv_marked_2022$ETS.abgestorben.alt_22 -
-	nv_marked_2022$Verbiss.tot_22-
-	nv_marked_2022$Sonstige.Gruende.tot_22
-selection
-View(nv_marked[selection == 0,])
+# Auch das hier wurde nach "load and clean" verschoben
+
+# nv_marked_2022$Triebe.lebend <- 
+# 	nv_marked_2022$Anzahl.Triebe_22 - 
+# 	nv_marked_2022$ETS.abgestorben.frisch_22-
+# 	nv_marked_2022$ETS.abgestorben.alt_22 -
+# 	nv_marked_2022$Verbiss.tot_22-
+# 	nv_marked_2022$Sonstige.Gruende.tot_22
+
+tmp <- nv_marked_2022 %>% 
+	filter(Triebe.lebend == 0)
+write.csv(tmp, file = "TEMP/nv_marked_tot.csv", fileEncoding = "UTF-8")
 	
 	
 

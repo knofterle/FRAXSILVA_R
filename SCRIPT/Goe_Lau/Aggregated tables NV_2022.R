@@ -15,7 +15,8 @@ source(file = "SCRIPT/Goe_Lau/Load and Clean NV 2022.R", echo = T, encoding = "U
 ## NOTES -----------------------------------------------------------------------
 
 ## EXPORT NV  ---------------------------------------------
-write.csv(x = nv_2022, file = "EXPORT/Goe_Lau/tables/NV_2022.csv")
+write.csv(x = nv_2022, file = "EXPORT/Goe_Lau/tables/NV_2022.csv", 
+					fileEncoding = "UTF-8")
 
 ## PRODUCE AGGREGATED PLOTS TABLE  ---------------------------------------------
 nv_2022_plots <- data.frame("Plotnummer" = plotnumbers_with_empty_2022)
@@ -58,15 +59,14 @@ for (i in 1:nrow(nv_2022_plots)) {
 	
 	# How many ashes do either have nekroses OR (|) have just died?
 	temp_ets_new <-
-		nv_2022$ETS.abgestorben.frisch[temp_rows] != "" |
-		nv_2022$ETS.lebend[temp_rows] != ""
+		nv_2022$ETS.abgestorben.frisch[temp_rows] != 0 |
+		nv_2022$ETS.lebend[temp_rows] != 0
 	temp_ets_total <-
-		nv_2022$ETS.abgestorben.frisch[temp_rows] != "" |
-		nv_2022$ETS.lebend[temp_rows] != "" |
-		nv_2022$ETS.abgestorben.alt[temp_rows] != ""
+		nv_2022$ETS[temp_rows]
 	
 	nv_2022_plots$n_ets_new[i] <- sum(temp_ets_new, na.rm = T)
-	nv_2022_plots$n_ets_old[i] <- sum(nv_2022$ETS.abgestorben.alt[temp_rows] != "", na.rm = T)
+	nv_2022_plots$n_ets_old[i] <-
+		sum(nv_2022$ETS.abgestorben.alt[temp_rows] != 0, na.rm = T)
 	nv_2022_plots$n_ets_total[i] <- sum(temp_ets_total, na.rm = T)
 	
 	# In most cases the first comment is related to the whole plot
@@ -91,8 +91,8 @@ for (i in 1:nrow(nv_2022_plots)) {
 	# }
 }
 
-# Now the information about logging trails from the empty plots is needed as 
-# well
+# Now the information about logging trails from the empty plots is needed too
+# 
 for (i in 1:nrow(nv_2022_plots)) {
 	temp_plotnummer <- nv_2022_plots$Plotnummer[i]
 	nv_2022_plots$Rueckegasse [i] <-
@@ -101,7 +101,8 @@ for (i in 1:nrow(nv_2022_plots)) {
 }
 
 nv_2022_plots$height_mean <- round(nv_2022_plots$height_mean, 2) 
-write.csv(x = nv_2022_plots, file = "EXPORT/Goe_Lau/tables/NV_2022_Plots.csv")
+write.csv(x = nv_2022_plots, file = "EXPORT/Goe_Lau/tables/NV_2022_Plots.csv",
+					fileEncoding = "UTF-8")
 
 ## PRODUCE AGGREGATED SPECIES TABLE  -------------------------------------------
 

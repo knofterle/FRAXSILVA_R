@@ -58,15 +58,14 @@ for (i in 1:nrow(nv_2021_plots)) {
   
   # How many ashes do either have nekroses OR (|) have just died?
   temp_ets_new <-
-    nv_2021$ETS.abgestorben.frisch[temp_rows] != "" |
-    nv_2021$ETS.lebend[temp_rows] != ""
+    nv_2021$ETS.abgestorben.frisch[temp_rows] != 0 |
+    nv_2021$ETS.lebend[temp_rows] != 0
   temp_ets_total <-
-    nv_2021$ETS.abgestorben.frisch[temp_rows] != "" |
-    nv_2021$ETS.lebend[temp_rows] != "" |
-    nv_2021$ETS.abgestorben.alt[temp_rows] != ""
+    nv_2021$ETS[temp_rows]
   
   nv_2021_plots$n_ets_new[i] <- sum(temp_ets_new, na.rm = T)
-  nv_2021_plots$n_ets_old[i] <- sum(nv_2021$ETS.abgestorben.alt[temp_rows] != "", na.rm = T)
+  nv_2021_plots$n_ets_old[i] <-
+    sum(nv_2021$ETS.abgestorben.alt[temp_rows] != 0, na.rm = T)
   nv_2021_plots$n_ets_total[i] <- sum(temp_ets_total, na.rm = T)
   
   # In most cases the first comment is related to the whole plot
@@ -121,7 +120,8 @@ nv_2021_species <- nv_2021_species[order(nv_2021_species$n, decreasing = T), ]
 ## PRODUCE TABLE WITH ALL MARKED ASHES  ----------------------------------------
 # Ich habe für eine bessere Uebersicht die doppelten oder dreifachen Plotnummern 
 # durch NA ersetzt, dann ist besser zu sehen welche Eschen zu welchem Plot 
-# gehoeren. Ich habe diesen Teil des Skriptes jetzte auskommentiert, das ist
+# gehoeren. 
+# Ich habe diesen Teil des Skriptes jetzte auskommentiert, das ist
 # nicht mehr nötig und wird im "Combine21+22" Skript ersetzt.
 # 
 # 

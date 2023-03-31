@@ -171,6 +171,37 @@ for (i in c("ETS.abgestorben.frisch",
 	nv_2022[i] <- as.numeric(nv_2022[[i]])
 }
 
+## KATEGORIEN AUS DEN KOMMENTAREN ----------------------------------------------
+# Die Vorgehensweise ist ähnlich wie bei den IBF Daten, ich generiere aus den 
+# Kommentaren Kategorien T/F und hänge sie an die Tabelle an. 
+
+nv_comments_raw <- unique(nv_2022$Bemerkungen)
+write.csv(nv_comments_raw, file = "DATA/PROCESSED/GoeLau/comments_raw_22.csv",
+					fileEncoding = "UTF-8")
+
+comments_nv_proc <-
+	read.csv(file = "DATA/PROCESSED/GoeLau/comments_proc_22.csv",
+					 stringsAsFactors = F,
+					 fileEncoding = "UTF-8")
+colnames(comments_nv_proc)
+rowcheck_comm <- nrow(nv_2022)
+
+# Beim Mergen wird die Reihenfolge der Bäume komplett durcheinander geworfen,
+# die ist aber später noch relevant um die 1. Kommentare des Plots (die jeweils
+# für den ganzen Plot gelten) heraus zu fischen. Daher wird hier die Reihenfolge
+# erst gespeichert und dann wieder hergestellt.
+nv_2022$Reihenfolge <- 1:nrow(nv_2022) 
+nv_2022 <- merge(
+	nv_2022,
+	comments_nv_proc,
+	by.x = "Bemerkungen",
+	by.y = "Bemerkungen",
+	all.x = T,
+	all.y = T
+)
+(rowcheck_comm <- rowcheck_comm == nrow(nv_2022))
+nv_2022 <- nv_2022[order(nv_2022$Reihenfolge),]
+
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
 nv_2022$Gefunden <- as.logical(nv_2022$Gefunden)
 table(nv_2022$Gefunden)
@@ -204,36 +235,22 @@ for (i in columns) {
 	nv_2022[selection, i] <- tmp
 }
 
-###### ADD COLUMN ETS GENERAL ------------------------------------------------------
+###### ADD COLUMN ETS GENERAL --------------------------------------------------
 nv_2022$ETS <-
-	!is.na(nv_2022$ETS.abgestorben.frisch) |
-	!is.na(nv_2022$ETS.abgestorben.alt) |
-	!is.na(nv_2022$ETS.lebend)
+	(nv_2022$ETS.abgestorben.frisch != 0) |
+	(nv_2022$ETS.abgestorben.alt != 0) |
+	(nv_2022$ETS.lebend != 0)
 
-###### ADD MISSING PLOTS  -----------------------------------------------------
-# Diese Plots haben aus unterschiedlichen Gründen gefehlt, ich habe sie dann 
-# ergänzt
-# 292 Zaun
-# 8816 RAND
-# 8817 Rand
-# aber manuell in der Tabelle (nur 292), der ist also schon drin
-# standard_line <- nv_2022[3,]
-# standard_line
-# standard_line$Jahr <- 2022
-# standard_line$Baumart_kurz <- ""
-# standard_line$Hoehe <- NA
-# 
-# new_plots <- 
-# 	standard_line %>% 
-# 	slice(rep(1, each=3))
-# 
-# new_plots$Plotnummer <- c(292, 8816, 8817)
-# new_plots$Bemerkungen <- c("Zaun", "RAND", "RAND")
-# new_plots$Flaeche <- c("lau", "goe_ans", "goe_ans")
-# new_plots$Baumart_kurz <- c("", "", "")
-# new_plots
-# 
-# nv_2022 <- rbind(nv_2022,new_plots)
+###### ADD LEBENDE TRIEBE  -----------------------------------------------------
+nv_2022$Triebe.lebend <-
+	nv_2022$Anzahl.Triebe - 
+	nv_2022$ETS.abgestorben.frisch-
+	nv_2022$ETS.abgestorben.alt -
+	nv_2022$Verbiss.tot-
+	nv_2022$Sonstige.Gruende.tot
+
+# Tote Bäume aus der Anzahl der Triebe und den grünen Höhen und so weiter 
+# ergänzen
 
 
 ###### DELETE EMPTY PLOTS  -----------------------------------------------------
@@ -254,7 +271,8 @@ nv_2022 <- nv_2022 %>%
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(temp_plotnummer, temp_rueckegasse, 
-    i, select, select1, select2, t, tmp)
+    i, select, select1, select2, t, tmp, rowcheck_comm, nv_comments_raw,
+	 comments_nv_proc)
 
 ###### OUTPUT ------------------------------------------------------------------
 # nv_2022
