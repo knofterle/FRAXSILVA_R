@@ -11,6 +11,9 @@ source(file = "SCRIPT/Goe_Lau/Aggregated tables NV_2022.R", encoding = "UTF-8")
 # nv_2021 and 2022
 # nv_2021_plots and 2022
 # nv_2021_with_empty and 2022
+
+source(file = "SCRIPT/Goe_Lau/GENERATE_PLOTDISTRIBUTION.R")
+# plots_pos_goelau
  
 ## LIBRARYS --------------------------------------------------------------------
 require(dplyr)
@@ -30,6 +33,15 @@ nv_plots <-
 						 by = "Plotnummer")
 names(nv_plots)
 
+## ADD PLOTPOSITIONS TO NV_PLOTS -----------------------------------------------
+
+plots_pos_goelau <- rename(.data = plots_pos_goelau, Plotnummer = nr)
+
+nv_plots <- left_join(x = nv_plots, y = plots_pos_goelau, by = "Plotnummer")
+
+### EXPORT ---------------------------------------------------------------------
+write.csv(nv_plots, file = "EXPORT/Goe_Lau/tables/nv_plots.csv", 
+					fileEncoding = "UTF-8")
 
 ## MARKED ASHES ----------------------------------------------------------------
 #  Das Ziel ist eine Tabelle mit den Spalten: ID, Plot,  Quadrant, Plotposition X,

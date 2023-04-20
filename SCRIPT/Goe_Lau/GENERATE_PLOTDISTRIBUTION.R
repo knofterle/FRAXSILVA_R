@@ -125,12 +125,17 @@ plots_pos_lau <- generate.abs.coord(
 plots_ref_lau <- check.reference(plot_coord_abs = plots_pos_lau, 
 																 reference = reference)  
 
-
-
+###### RBIND POSITIONSDATA  ---------------------------------------------------
+plots_pos_goelau <- rbind(plots_pos_goeans, plots_pos_goepol, plots_pos_lau)
+# Die tabelle müsste jetzt bei Bedarf relativ einfach mit den NV Daten zu mergen
+# sein.
+ 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(parameters, zero_ref, plot_coord_rel, reference)
 
 ###### OUTPUT ------------------------------------------------------------------
+# plots_pos_XX
+# plots_ref_XX
 # 
 
 

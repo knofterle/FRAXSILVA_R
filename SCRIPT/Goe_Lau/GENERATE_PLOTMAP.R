@@ -1,20 +1,26 @@
 ############################# GENERATE PLOTMAP Goe Lau #########################
 # J.Osewold
 # 20.03.2023
-##### DONE FOR GOE #####
+##### DONE FOR GOE AND LAU #####
 ################################################################################
 
 ###### LIBRARYS ----------------------------------------------------------------
 
 ###### REQUIRES ----------------------------------------------------------------
 source(file = "SCRIPT/Goe_Lau/Load Tree Data.R")
-# 
+# tree_data_ansitz, tree_data_polter
 source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R")
 # tree_lau
 source(file = "SCRIPT/Goe_Lau/GENERATE_PLOTDISTRIBUTION.R")
+# plots_pos_goeans, 
+# plots_pos_goepol
+# plots_ref_goeans
+# plots_ref_goepol
+# plots_pos_lau
+# plots_ref_lau
 
 source(file = "SCRIPT/IBF/generate_plotmap.R")
-
+# plot.all1 und 2
 
 ###### NOTES -------------------------------------------------------------------
 
