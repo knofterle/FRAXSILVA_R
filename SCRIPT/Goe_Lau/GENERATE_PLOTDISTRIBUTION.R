@@ -93,6 +93,39 @@ plots_ref_goepol <- check.reference(plot_coord_abs = plots_pos_goepol,
 																		reference = reference)  
 plots_ref_goepol
 
+####### Lauenburg ------------------------------------------------------------
+parameters <-
+	list (
+		integer = c(
+			plotdistance = 4.95,
+			plotangle_gon = 391.5,
+			rectangular = 1,
+			stretch_x = 1,
+			stretch_y = 0.99
+		),
+		bool = c(mirror = T)
+	)
+
+zero_ref <- "ref308"
+
+# Some plots were measured in the field from trees and are therefore "exact 
+# values", the goal is to align the plot map with the tree map. 
+reference <- read.csv(
+	file = "DATA/RAW/Goe_Lau/Plot Distribution/Reference_points_Lau.csv",
+	header = T, stringsAsFactors = F)
+row.names(reference) <- reference$nr
+
+plot_coord_rel <-
+	generate.rel.coord(file = "DATA/RAW/Goe_Lau/Plot Distribution/Plotverteilung_Lau.csv")
+
+plots_pos_lau <- generate.abs.coord(
+	plot_coord_rel = plot_coord_rel, reference = reference, zero_ref = zero_ref,
+	parameters = parameters)
+
+plots_ref_lau <- check.reference(plot_coord_abs = plots_pos_lau, 
+																 reference = reference)  
+
+
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm(parameters, zero_ref, plot_coord_rel, reference)

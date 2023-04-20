@@ -14,6 +14,9 @@ library(dplyr)
 # Dieses Skript soll ein paar Basisinformationen aus den Baumdaten der IBF holen
 # 
 # Vermutlich wird jede Fläche einen eigenes Kapitel bekommen
+# 
+# Das hier war ein kurzes hässliches Skript für die Basispublikation, es wird
+# nicht mehr gebraucht
 
 
 ## BB Steglitz  ---------------------------------------------------------------------

@@ -101,6 +101,14 @@ load.mdb.data <- function (path, columns, all.column) {
 
 	#### MERGE AUF AND THE REST  ------------------------------------------------
 	mdb.data <- merge(mdb.data, auf, by = "aufid", all.x = T, all.y = T)
+	
+	#### DELETE SPACES IN NR COLUMN  ------------------------------------------------
+	# Die Nr Spalte war ja sehr seltsam formatiert mit vielen leerzeichen, die 
+	# stören hinterher erheblich, ich hoffe mal dass es klappt wenn ich die 
+	# einfach schon hier entferne.
+	mdb.data$nr <- gsub (" ", "", mdb.data$nr)
+	mdb.data$nr.stammv <- gsub (" ", "", mdb.data$nr.stammv)
+	
 
 	#### SELECT THE COLUMNS   ------------------------------------------------
 	if (all.column == F) {
