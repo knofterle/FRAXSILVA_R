@@ -86,7 +86,9 @@ nv_marked_2021 <- nv_marked_2021 %>%
 			"Sonstige.Gruende.tot.terminal",
 			"Rueckegasse",
 			"Blattflecken",
-			"ETS"
+			"ETS",
+			"mehr.ressourcen",
+			"Triebe.lebend"
 		)
 	))
 
@@ -123,7 +125,9 @@ nv_marked_2022 <- nv_marked_2022 %>%
 			"Verbiss.tot.terminal",
 			"Sonstige.Gruende.tot.terminal",
 			"Aceria.fraxinivora.terminal",
-			"ETS"
+			"ETS",
+			"mehr.ressourcen",
+			"Triebe.lebend"
 		)
 	))
 names(nv_marked_2022)
@@ -162,12 +166,21 @@ write.csv(tmp, file = "TEMP/nv_marked_tot.csv", fileEncoding = "UTF-8")
 	
 
 
-### MERGE AND EXPORT  ----------------------------------------------------------
+### MERGE AND GEFUNDEN? ----------------------------------------------------------
 
-nv_marked <- left_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID")
-count(nv_marked)
-count(nv_marked_2021)
-count(nv_marked_2022)
+nv_marked <- full_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID")
+count(nv_marked) # 1497
+count(nv_marked_2021) # 1491
+count(nv_marked_2022) # 1471
+# 26 Bäume passen nicht so richtig, Dreck! 
+nv_marked_test <- anti_join(x = nv_marked_2022, y = nv_marked_2021, by = "ID")
+View(nv_marked_test)
+nv_marked_test2 <- anti_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID")
+View(nv_marked_test2)
+
+
+### EXPORT   ----------------------------------------------------------
+
 write.csv(nv_marked, file = "EXPORT/Goe_Lau/tables/nv_marked.csv", 
 					fileEncoding = "UTF-8")
 

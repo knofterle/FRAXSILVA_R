@@ -201,6 +201,7 @@ nv_2022 <- merge(
 )
 (rowcheck_comm <- rowcheck_comm == nrow(nv_2022))
 nv_2022 <- nv_2022[order(nv_2022$Reihenfolge),]
+nv_2022 <- select(nv_2022, !Reihenfolge)
 
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
 nv_2022$Gefunden <- as.logical(nv_2022$Gefunden)

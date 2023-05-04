@@ -213,6 +213,7 @@ nv_2021 <- merge(
 (rowcheck_comm <- rowcheck_comm == nrow(nv_2021))
 
 nv_2021 <- nv_2021[order(nv_2021$Reihenfolge), ]
+nv_2021 <- select(nv_2021, !Reihenfolge)
 
 
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
