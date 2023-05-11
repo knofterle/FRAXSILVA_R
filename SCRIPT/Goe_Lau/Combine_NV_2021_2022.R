@@ -160,7 +160,7 @@ str(nv_marked_2022)
 # 	nv_marked_2022$Sonstige.Gruende.tot_22
 
 tmp <- nv_marked_2022 %>% 
-	filter(Triebe.lebend == 0)
+	filter(Triebe.lebend_22 == 0)
 write.csv(tmp, file = "TEMP/nv_marked_tot.csv", fileEncoding = "UTF-8")
 	
 	
