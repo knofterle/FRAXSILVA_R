@@ -169,15 +169,20 @@ write.csv(tmp, file = "TEMP/nv_marked_tot.csv", fileEncoding = "UTF-8")
 ### MERGE AND GEFUNDEN? ----------------------------------------------------------
 
 nv_marked <- full_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID")
-count(nv_marked) # 1497
-count(nv_marked_2021) # 1491
-count(nv_marked_2022) # 1471
-# 26 Bäume passen nicht so richtig, Dreck! 
-nv_marked_test <- anti_join(x = nv_marked_2022, y = nv_marked_2021, by = "ID")
-View(nv_marked_test)
-nv_marked_test2 <- anti_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID")
-View(nv_marked_test2)
-
+# count(nv_marked) # 1491
+# count(nv_marked_2021) # 1491
+# count(nv_marked_2022) # 1468
+# # 26 Bäume passen nicht so richtig, Dreck! (Ne sogar noch mehr..)
+# nv_marked_test <- anti_join(x = nv_marked_2022, y = nv_marked_2021, by = "ID")
+# View(nv_marked_test) length = 0
+# Es gibt immer noch ein paar Eschen die wir 2022 wohl einfach vergessen haben 
+# zu suchen oder einzutragen oder wie auch immer, die jedenfalls nicht gefunden
+# wurden aber den entsprechenden Eintrag noch nicht haben. Das passiert jetzt:
+# Es gab ursprünglich auch markierte Eschen die 2022 gefunden wurden aber im 
+# Datensatz von 2021 fehten. Die wurden aber manuell korrigiert oder gelöscht.
+nv_marked_antijoin <- anti_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID")
+tmp <- nv_marked_antijoin$ID
+nv_marked$Gefunden[nv_marked$ID %in% tmp] <- FALSE
 
 ### EXPORT   ----------------------------------------------------------
 
@@ -186,7 +191,7 @@ write.csv(nv_marked, file = "EXPORT/Goe_Lau/tables/nv_marked.csv",
 
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(tmp_doubl)
+rm(tmp_doubl, nv_marked_antijoin)
 
 ## OUTPUT ----------------------------------------------------------------------
 # nv_marked

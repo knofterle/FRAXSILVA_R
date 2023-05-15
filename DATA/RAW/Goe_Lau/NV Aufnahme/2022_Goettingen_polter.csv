@@ -380,7 +380,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,nw,t,esch,22,2,,,,,,,2,,,,tot
 ,,,,esch,5,1,,,,,,,,,,,
 ,,sw,t,esch,11,1,,,,,,,,,,,
-8957,,no,t,esch,10,1,,,,,,,,,,,"Buche 101 steht auf der Nordostecke des Plots, Nordost Esche wurde letztes Mal übersehen, aber markeirt"
+8957,,,t,esch,10,1,,,,,,,,,,,"Buche 101 steht auf der Nordostecke des Plots, Nordost Esche wurde letztes Mal übersehen, aber markeirt"
 ,,,,esch,7,1,,,,,,,,,,,
 ,,mitte,t,esch,8,1,,,,,,,,,,,
 ,,sw,t,esch,9,1,,,,,,,t1,,,,tot
@@ -1657,7 +1657,7 @@ Plotnummer,Rueckegasse,Esche markiert,Gefunden,Baumart,Hoehe,Anzahl Triebe,Einja
 ,,,,rbu,120,,,,,,,,,,,,
 ,,,,rbu,111,,,,,,,,,,,,
 ,,,,rbu,98,,,,,,,,,,,,
-,,nw,t,esch,11,1,,,,,,,,,,,war makiert aber nicht im datensatz
+,,,t,esch,11,1,,,,,,,,,,,war makiert aber nicht im datensatz
 ,,,,esch,8,1,,,,,,,,,,,
 ,,,,esch,8,1,,,,,,,,,,,
 ,,,,esch,12,1,,,,,,,,,,,
