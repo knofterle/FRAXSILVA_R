@@ -36,6 +36,9 @@ nv_plots <-
 						 y = nv_2022_plots,
 						 by = "Plotnummer")
 names(nv_plots)
+nv_plots <- nv_plots %>% 
+	select(!location_2021) %>% 
+	rename(location = location_2022)
 
 ### ADD PLOTPOSITIONS TO NV_PLOTS ----------------------------------------------
 
@@ -45,7 +48,7 @@ nv_plots <- left_join(x = nv_plots, y = plots_pos_goelau, by = "Plotnummer")
 
 ### ADD SOLARISKOP DATA TO NV_PLOTS --------------------------------------------
 tmp <- thr_selected %>% 
-	select(Plotnummer, TSF)
+	select(Plotnummer, TSF, DSF)
 nv_plots <- left_join(x = nv_plots, y = tmp, by = "Plotnummer")
 
 ### EXPORT ---------------------------------------------------------------------

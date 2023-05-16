@@ -118,7 +118,137 @@ plot.all2 <- function(tree_data = NA, plots_pos, plots_ref, labels = F) {
   return(plot)
 }
 
-  
+###### DRAW TREES AND PLOTS WITH GGPLOT PLUS VALUES FOR PLOTS ------------------
+# Notes 
+# gedrehte Quadrate für die Verjüngungsplots sind sehr schwer zu erreichen...
+# Ich schreibe die Funktion erstmal für Goe und Lau
+# 
+# Die Bäume im Graphen können mit NA abgeschaltet werden, 
+# mit NA bei der Baumfarbe werden die Bäume grau,
+# color und size adapt sind jeweils exponenten transformieren also die 
+# Verteilung ein bisschen. Size to tree verändet die Einheit die die Plotsize 
+# bestimmt aber nur mit multiplikation, das musste sein weil sonst die Werte
+# von treesize und plotsize extrem weit auseinader liegen können und daher 
+# eins von beiden nicht mehr richtig dargestellt wird.
+# generalsize setzt die maximale range der size werte fest. Wird als Vector 
+# eingegeben
+# Wenn keine plotsize gewünscht ist kann das durch eine konkrete Zahl 
+# eingestellt werden.
+
+
+plot.all3 <-
+	function(tree_data,
+					 nv_plots,
+					 flaeche,
+					 plotcolor,
+					 plotcoloradapt,
+					 plotsize,
+					 plotsizeadapt,
+					 plotsizetotree,
+					 treesize = "d",
+					 treecolor = "art",
+					 general_size = c(2, 30)) {
+		output <- ggplot() +
+			scale_size(range = general_size) +
+			scale_color_gradient (low = "blue", high = "red") +
+			theme_void()
+		
+		if (identical(nv_plots, NA)) {
+			# keine NV_plots gewünscht
+		} else  {
+			plots <- nv_plots %>%
+				filter(location == flaeche)
+			plots[[plotcolor]] <- plots[[plotcolor]] ** (1 / plotcoloradapt)
+			
+			if (is.character(plotsize)) {
+				plots[[plotsize]] <- plots[[plotsize]] ** (1 / plotsizeadapt)
+				plots[[plotsize]] <- plots[[plotsize]] * plotsizetotree
+				
+				output <- output +
+					geom_point(data = plots,
+										 aes(
+										 	x = x,
+										 	y = y,
+										 	color = .data[[plotcolor]],
+										 	size = .data[[plotsize]]
+										 	# diese .data[[]] waren notwendig weil die Variablen nur als "text"
+										 	# transportiert werden und ggplot2 damit nicht umgehen kann. So scheint
+										 	# es zu funktionieren und ist auch so empfohlen.
+										 ),
+										 shape = 15)  # nv_plots
+			} else {
+				# keine nv_plotsize gewünscht
+				output <- output +
+					geom_point(
+						data = plots,
+						aes(
+							x = x,
+							y = y,
+							color = .data[[plotcolor]]
+						),
+						shape = 15,
+						size = plotsize
+					)  # nv_plots
+				
+			}
+		}
+		if (identical(tree_data, NA)) {
+			
+		} else  {
+			tree <- tree_data # oder halt andere
+			tree$art <- as.factor(tree$art)
+			
+			if (identical(treecolor, NA)) {
+				output <- output + geom_point(
+					data = tree,
+					aes(x = x,
+							y = y,
+							size = .data[[treesize]]),
+					shape = 21,
+					alpha = .1,
+					fill = "gray"
+				) + # Baumkrone
+					geom_point(
+						data = tree,
+						aes(x = x, y = y),
+						shape = 21,
+						size = 2,
+						fill = "gray"
+					) # Baumstamm
+			} else {
+				output <- output +
+					geom_point(
+						data = tree,
+						aes(
+							x = x,
+							y = y,
+							fill = .data[[treecolor]],
+							size = .data[[treesize]]
+						),
+						shape = 21,
+						alpha = .1,
+					) + # Baumkrone
+					geom_point(
+						data = tree,
+						aes(x = x, y = y, fill = .data[[treecolor]]),
+						shape = 21,
+						size = 2
+					)  # Baumstamm
+			}
+		}
+		output <-
+			output + guides(colour = "colorbar",
+											fill = "legend",
+											size = FALSE)
+		output
+	}
+
+# BEISPIEL
+ # plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 
+ # 					plotcolor = "height_median_2022", plotcoloradapt = 4, plotsize = "DSF",
+ # 					plotsizeadapt = 1, plotsizetotree = 100, treesize = "d", 
+ # 					general_size = c(2,30), treecolor = NA )
+
 
 ###### TIDY UP  ----------------------------------------------------------------
 rm()
