@@ -6,7 +6,7 @@
 
 ###### LIBRARYS -------------------------------------------------------------------
 library(stringr)
-
+require(dplyr)
 ###### NOTES -------------------------------------------------------------------
 # The data has to be loaded and afterwards only the correct thresholds selected
 # I had multiple issues with the automatic naming of the solariskop, plus many 
@@ -79,7 +79,8 @@ for (i in 1:6) {
   thr_selected$name <- gsub (rep, "", thr_selected$name) 
 } 
 thr_selected$name <- as.numeric(thr_selected$name)
-rownames(thr_selected) <- thr_selected$name
+
+thr_selected <- rename(thr_selected, Plotnummer = name)
 
 
 ### Tidy up 

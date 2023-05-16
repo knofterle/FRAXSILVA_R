@@ -14,14 +14,18 @@ source(file = "SCRIPT/Goe_Lau/Aggregated tables NV_2022.R", encoding = "UTF-8")
 
 source(file = "SCRIPT/Goe_Lau/GENERATE_PLOTDISTRIBUTION.R")
 # plots_pos_goelau
+
+source(file = "SCRIPT/Goe_Lau/Load Solariskop Data.R")
+# thr_selected
  
 ## LIBRARYS --------------------------------------------------------------------
 require(dplyr)
 
 ## NOTES -----------------------------------------------------------------------
 
+## NV_PLOTS --------------------------------------------------------------------
 
-## CHANGE COLNAMES AND JOIN ----------------------------------------------------
+### CHANGE COLNAMES AND JOIN PLOTS ---------------------------------------------
 names(nv_2021_plots) <- paste0(names(nv_2021_plots), "_2021")
 names(nv_2022_plots) <- paste0(names(nv_2022_plots), "_2022")
 names(nv_2021_plots)[1] <- "Plotnummer"
@@ -33,11 +37,16 @@ nv_plots <-
 						 by = "Plotnummer")
 names(nv_plots)
 
-## ADD PLOTPOSITIONS TO NV_PLOTS -----------------------------------------------
+### ADD PLOTPOSITIONS TO NV_PLOTS ----------------------------------------------
 
 plots_pos_goelau <- rename(.data = plots_pos_goelau, Plotnummer = nr)
 
 nv_plots <- left_join(x = nv_plots, y = plots_pos_goelau, by = "Plotnummer")
+
+### ADD SOLARISKOP DATA TO NV_PLOTS --------------------------------------------
+tmp <- thr_selected %>% 
+	select(Plotnummer, TSF)
+nv_plots <- left_join(x = nv_plots, y = tmp, by = "Plotnummer")
 
 ### EXPORT ---------------------------------------------------------------------
 write.csv(nv_plots, file = "EXPORT/Goe_Lau/tables/nv_plots.csv", 
