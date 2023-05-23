@@ -26,11 +26,15 @@ vergleiche_zuwachs <- function(Plotnumber = 1, nv_data_2021 = nv_2021, nv_data_2
 	tmp1 <- nv_2021[nv_2021$Plotnummer == Plotnumber, ]
 	tmp1 <- tmp1 [order(tmp1$Hoehe),]
 	
-	if (exclude_Saemlinge == T) {
-		tmp1 <- tmp1 [tmp1$Einjaehriger.Saemling != T, ]
-		tmp1 <- tmp1 [!is.na(tmp1$Einjaehriger.Saemling), ]
-	}
+	# if (exclude_Saemlinge == T) {
+	# 	tmp1 <- tmp1 [tmp1$Einjaehriger.Saemling != T, ]
+	# 	tmp1 <- tmp1 [!is.na(tmp1$Einjaehriger.Saemling), ]
+	# }
 	# plot(tmp1$Hoehe)
+	# 
+	# Ich war so dumm bei den 2021 Daten auch die Sämlinge auszusortieren. Das ist 
+	# jetzt auskommentiert. 
+	# 
 	tmp1$index <- 1:nrow(tmp1)
 	
 	tmp2 <- nv_2022[nv_2022$Plotnummer == Plotnumber, ]

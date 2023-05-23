@@ -48,8 +48,70 @@ nv_plots <- left_join(x = nv_plots, y = plots_pos_goelau, by = "Plotnummer")
 
 ### ADD SOLARISKOP DATA TO NV_PLOTS --------------------------------------------
 tmp <- thr_selected %>% 
-	select(Plotnummer, TSF, DSF)
+	select(Plotnummer, TSF, DSF, ISF)
 nv_plots <- left_join(x = nv_plots, y = tmp, by = "Plotnummer")
+
+### ADD ETS RATIO AND N-ASH ----------------------------------------------------
+nv_plots$ets_2021_ratio <- 	nv_plots$n_ets_total_2021 / nv_plots$n_ash_2021
+nv_plots$ets_2022_ratio <- 	nv_plots$n_ets_total_2022 / nv_plots$n_ash_2022
+nv_plots$ETS_ratio <- (nv_plots$ets_2022_ratio + nv_plots$ets_2021_ratio) / 2
+nv_plots$n_ash <- (nv_plots$n_ash_2021 + nv_plots$n_ash_2022) / 2
+nv_plots$n_trees <- (nv_plots$n_trees_2021 + nv_plots$n_trees_2022) /2
+
+### ADD GROWTH ----------------------------------------------------
+# Die Idee ist, dass die höchsten X prozent (30?) der Bäume zwischen 2021 und 
+# 2022 verglichen werden, dabei werden die Sämlinge 2022 ausgeschlossen. 
+# Aus diesem Unterschied wird dann ein mean berechnet. 
+# 
+# Teile der Funktion sind von der Graphenerstellung in SCRIPT/GOE_LAU/
+# Auswertungen.R: vergleiche_zuwachs() übernommen.
+
+# Durch die intersect Funktion fallen alle Plotnummern raus die 2022 oder 2021 
+# keine Bäume hatten. Das würde sonst die Zuwachsberechnung weiter unten 
+# schrotten.
+plotnumbers_temp <-
+	intersect(unique(nv_2021$Plotnummer), unique(nv_2022$Plotnummer))
+
+for (i in plotnumbers_temp) {
+	# Die Daten werden nach Plotnummer ausgewählt und nach Hoehe soriert
+	tmp1 <- nv_2021[nv_2021$Plotnummer == i,]
+	tmp1 <- tmp1 [order(tmp1$Hoehe), ]
+	tmp1$index <- 1:nrow(tmp1)
+	tmp2 <- nv_2022[nv_2022$Plotnummer == i,]
+	tmp2 <- tmp2 [order(tmp2$Hoehe), ]
+	
+	# Einjährige Sämlinge der 2022 Daten werden gelöscht. Und zur Sicherheit auch
+	# irgendwelche NAs
+	tmp2 <- tmp2 [tmp2$Einjaehriger.Saemling != T,]
+	tmp2 <- tmp2 [!is.na(tmp2$Einjaehriger.Saemling),]
+	
+	# Die jeweils höchsten der beiden Gruppen bekommen nun den selben Index
+	tmp2$index <- (nrow(tmp1) - nrow(tmp2) + 1):nrow(tmp1)
+	
+	# Damit ich auch die anderen Parameter weiterhin verwenden kann werden hier 
+	# die beiden tabellen komplett gejoint.
+	tmp <-
+		full_join(
+			x = tmp1,
+			y = tmp2,
+			by  = "index",
+			suffix = c("2021", "2022")
+		)
+	tmp$Zuwachs <- tmp$Hoehe2022 - tmp$Hoehe2021
+	
+	# Die Anzahl der 30% höchsten Bäume wird durch einen Grenzwert im Index 
+	# festgelegt. Wenn der Datensatz 2022 mehr Bäume als 2021 hat wird durch 
+	# diese Berechnung nur die 30% der Anzahl von 2021 verwendet. Aber das ist 
+	# vermutlich fast immer egal.
+	upper <- max(tmp$index) - max(tmp$index) * 0.3
+	
+	tmp <- tmp[tmp$index > upper,]
+	
+	# An diser Stelle bin ich mir nicht sicher ob es mehr Sinn ergibt einen mean
+	# oder einen Median zu verwenden. Der Mean ist nicht sonderlich erfolgreich,
+	# daher versuche ich mal median
+	nv_plots$Zuwachs[nv_plots$Plotnummer == i] <-  median(tmp$Zuwachs)
+}
 
 ### EXPORT ---------------------------------------------------------------------
 write.csv(nv_plots, file = "EXPORT/Goe_Lau/tables/nv_plots.csv", 
@@ -203,7 +265,7 @@ write.csv(nv_marked, file = "EXPORT/Goe_Lau/tables/nv_marked.csv",
 
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(tmp_doubl, nv_marked_antijoin)
+rm(tmp_doubl, nv_marked_antijoin, plotnumbers_temp)
 
 ## OUTPUT ----------------------------------------------------------------------
 # nv_marked

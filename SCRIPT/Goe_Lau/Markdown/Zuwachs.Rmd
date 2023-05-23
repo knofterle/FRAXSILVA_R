@@ -9,6 +9,10 @@ output: html_document
 source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global())
 source(file = "SCRIPT/Goe_Lau/Auswertungen.R", local = knitr::knit_global())
 require(ggplot2)
+source(file = "SCRIPT/IBF/generate_plotmap.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/Load Tree Data.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R", local = knitr::knit_global())
+
 ```
 
 Zunächst folgen hier zwei Graphen die ich bereits vor einer Weile gebastelt habe und die nur dazu dienten einen ersten Einblick in die Eschen und Zuwachssituation des Göttingen und Lauenburg Datasets zu bekommen.
@@ -38,6 +42,7 @@ nv_plots %>%
 ```
 
 Um den Zuwachs tatsächlich pro Plot einzuschätzen hilft die folgenden Graphik. In Rot ist sind wieder die Bäume 2022 eingezeichnet und in blau die 2021er. Sie sind nach Größe sortiert und die 2022 (meistens weniger) wurden am rechten Rand in den Graphen inkludiert. In der zweiten Graphik wurden außerdem die einjährigen Sämlinge ausgeschlossen, wobei das natürlich nur für die Eschen geht. Für den Zuwachs wurden in diesen Graphen aber alle Baumarten verwendet. Das erschien sinnvoll um erstmal einen übergreifenden Zuwachs zu berechnen, der anschließend mit dem TSF verglichen werden kann.
+
 ```{r Zuwachsvergleiche, echo=F, warning=F, message=FALSE}
 vergleiche_zuwachs(Plotnumber = 237)
 vergleiche_zuwachs(Plotnumber = 237, exclude_Saemlinge = T)
@@ -45,6 +50,36 @@ vergleiche_zuwachs(Plotnumber = 237, exclude_Saemlinge = T)
 ```
 
 
-Man könnte nun die höchsten paar Prozent nehmen und nur die für den Zuwachs verwenden.
- Das wird dann aber ein Problem wenn Bäume mit rein genommen wurden, die letztes Jahr 
- noch außerhalb lagen. Aber das kann man ja vielleicht noch filtern. Manuell dann vermutlich.
+Man könnte nun die höchsten paar Prozent nehmen und nur die für den Zuwachs verwenden. Das wird dann aber ein Problem wenn Bäume mit rein genommen wurden, die letztes Jahr noch außerhalb lagen. Aber das kann man ja vielleicht noch filtern. Manuell dann vermutlich.
+
+Am Ende habe ich nun die 30% höchsten Bäume verwendet und noch nicht manuell gefiltert sondern nur in der folgenden Darstellung nach Zuwachs größer 0 und n-trees größer 20 gefilter. 
+Der Vollständigkeit halber gibt es noch eine zweite Darstellung ganz ohne filter. 
+
+Leider sieht das noch nicht besonders gut aus. Und fürs Gefühl dass das nicht alles kompletter Unsinn ist gibt es noch einen Graphen mit Zuwachs zu Baumhöhe. Das ist vernünftig korreliert. 
+
+```{r Zuwachsberechnung, echo=F, warning=F, message=FALSE}
+plot.all3(
+	tree_data = tree_data_ansitz,
+	nv_plots = nv_plots,
+	flaeche = "goe_ans",
+	plotcolor = "Zuwachs",
+	plotcoloradapt = 1,
+	plotsize = 3,
+	treecolor = NA
+)
+tmp <- nv_plots
+nv_plots %>% 
+	filter (Zuwachs >= 0) %>% 
+	filter (n_trees > 20) %>% 
+	ggplot(data = .) +
+		geom_point(aes(x = TSF, y = Zuwachs))
+nv_plots %>% 
+	# filter (Zuwachs >= 0) %>% 
+	filter (n_trees > 20) %>% 
+	ggplot(data = .) +
+		geom_point(aes(x = height_median_2022, y = Zuwachs))
+```
+
+
+
+

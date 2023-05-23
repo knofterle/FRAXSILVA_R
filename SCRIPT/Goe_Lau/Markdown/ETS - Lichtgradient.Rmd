@@ -2,7 +2,9 @@
 title: "ETS ~ Lichtgradient"
 author: "Johannes Osewold"
 date: "2023-05-23"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -18,8 +20,6 @@ source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R", local = knitr::knit_global())
 Zunächst schaue ich mir mal an wie denn der ETS Anteil räumlich verteilt ist. Für Lauenburg und Göttingen. Die Plotgröße ist die Anzahl Bäume pro Plot.
 
 ```{r plotmap, echo=F, warning=F}
-nv_plots$ets_2022_ratio <- 
-	nv_plots$n_ets_total_2022 / nv_plots$n_ash_2022
 plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 
 					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "n_trees_2022", 
 					plotsizeadapt = 1, plotsizetotree = 0.2, treecolor = NA)
@@ -50,10 +50,7 @@ Plots mit 100 Eschen und 10 ETS stärker ausfallen als plots mit 10 zu 3.
 Es scheint als würde die Beleuchtung echt keinen Unterschied machen, zumindest keinen den  man direkt sehen könnte. Die Plots ohne ETS dominieren vermutlich ziemlich die Statistik, aber das ist ja auch nur wahr, denn wenn die Beleuchtung die Wahrscheinlichkeit für eine Infektion erhöhen würde, würden ja auch die Plots mit null.
 
 ```{r Diagramm, echo=F, warning=F, message=FALSE}
-nv_plots$ets_2021_ratio <- 	nv_plots$n_ets_total_2021 / nv_plots$n_ash_2021
-
 nv_plots$ETS_gewichtet <- (nv_plots$ets_2022_ratio + nv_plots$ets_2021_ratio) / 2
-nv_plots$n_ash <- (nv_plots$n_ash_2021 + nv_plots$n_ash_2022) / 2
 # nv_plots$ETS_gewichtet <- nv_plots$ETS_gewichtet * nv_plots$n_ash^.5
 
 # Wenn Plots gar keine Eschen enthalten dürfen sie auch in der Grafik nicht vorkommen.
@@ -70,10 +67,7 @@ ggplot(data = nv_plots) +
 Ich habe festgestellt das meine Gewichtung beim ersten Versuch dumm war. Statt dessen werden nun die Plots die ein hohes statistisches Gewicht haben mehrfach  gezählt, sie kommen also einfach öfter vor. Die Range wird im folgenden ebenfalls  ausgegeben. Und nur der Vollständigkeit halber werden alle nuller im zweiten  Diagramm entfernt obwohl natürlich klar ist, dass das nicht korrekt wäre.
 
 ```{r Diagramm 2, echo=F, warning=F, message=FALSE}
-nv_plots$ets_2021_ratio <- 	nv_plots$n_ets_total_2021 / nv_plots$n_ash_2021
-
 nv_plots$ETS_gewichtet <- (nv_plots$ets_2022_ratio + nv_plots$ets_2021_ratio) / 2
-nv_plots$n_ash <- (nv_plots$n_ash_2021 + nv_plots$n_ash_2022) / 2
 # nv_plots$ETS_gewichtet <- nv_plots$ETS_gewichtet * nv_plots$n_ash^.5
 
 # rep wiederholt jedes Element des Vektors so oft wie der Wert des zweiten 
