@@ -1,0 +1,108 @@
+---
+title: "ETS ~ Lichtgradient"
+author: "Johannes Osewold"
+date: "2023-05-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global())
+source(file = "SCRIPT/IBF/generate_plotmap.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/Load Tree Data.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R", local = knitr::knit_global())
+
+```
+
+## ETS ~ Lichtgradient
+
+Zunächst schaue ich mir mal an wie denn der ETS Anteil räumlich verteilt ist. Für Lauenburg und Göttingen. Die Plotgröße ist die Anzahl Bäume pro Plot.
+
+```{r plotmap, echo=F, warning=F}
+nv_plots$ets_2022_ratio <- 
+	nv_plots$n_ets_total_2022 / nv_plots$n_ash_2022
+plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 
+					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "n_trees_2022", 
+					plotsizeadapt = 1, plotsizetotree = 0.2, treecolor = NA)
+plot.all3(tree_data = tree_data_ansitz, nv_plots = nv_plots, flaeche = "goe_ans", 
+					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "n_trees_2022", 
+					plotsizeadapt = 1, plotsizetotree = 0.2, treecolor = NA)
+plot.all3(tree_data = tree_data_polter, nv_plots = nv_plots, flaeche = "goe_pol", 
+					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "n_trees_2022", 
+					plotsizeadapt = 1, plotsizetotree = 0.2, treecolor = NA)
+
+```
+
+Anschließend wird der Total Site Factor als Plotgröße dargestellt.
+
+```{r TSF, echo=F, warning=F}
+plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 
+					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "TSF", 
+					plotsizeadapt = 1, plotsizetotree = 100, treecolor = NA)
+
+```
+
+Jetzt gibt es aber das Problem, dass die Plots mit sehr wenig Eschen aber davon 
+50% ETS die Verteilung in einem Diagramm massiv verschieben, daher folgt hier ein Versuch 
+die Plots zusätzlich nach ihren absoluten Eschenmengen zu gewichten. Es wäre natürlich 
+auch denkbar nur die absoluten ETS Zahlen zu verwenden, aber dann würden wieder 
+Plots mit 100 Eschen und 10 ETS stärker ausfallen als plots mit 10 zu 3. 
+
+Es scheint als würde die Beleuchtung echt keinen Unterschied machen, zumindest keinen den  man direkt sehen könnte. Die Plots ohne ETS dominieren vermutlich ziemlich die Statistik, aber das ist ja auch nur wahr, denn wenn die Beleuchtung die Wahrscheinlichkeit für eine Infektion erhöhen würde, würden ja auch die Plots mit null.
+
+```{r Diagramm, echo=F, warning=F, message=FALSE}
+nv_plots$ets_2021_ratio <- 	nv_plots$n_ets_total_2021 / nv_plots$n_ash_2021
+
+nv_plots$ETS_gewichtet <- (nv_plots$ets_2022_ratio + nv_plots$ets_2021_ratio) / 2
+nv_plots$n_ash <- (nv_plots$n_ash_2021 + nv_plots$n_ash_2022) / 2
+# nv_plots$ETS_gewichtet <- nv_plots$ETS_gewichtet * nv_plots$n_ash^.5
+
+# Wenn Plots gar keine Eschen enthalten dürfen sie auch in der Grafik nicht vorkommen.
+nv_plots$ETS_gewichtet[nv_plots$n_ash == 0] <- NA 
+# sum(is.na(nv_plots$ETS_gewichtet))
+
+ggplot(data = nv_plots) +
+	geom_point(aes(x = TSF, y = ETS_gewichtet)) +
+	geom_smooth(aes(x = TSF, y = ETS_gewichtet))
+
+
+```
+
+Ich habe festgestellt das meine Gewichtung beim ersten Versuch dumm war. Statt dessen werden nun die Plots die ein hohes statistisches Gewicht haben mehrfach  gezählt, sie kommen also einfach öfter vor. Die Range wird im folgenden ebenfalls  ausgegeben. Und nur der Vollständigkeit halber werden alle nuller im zweiten  Diagramm entfernt obwohl natürlich klar ist, dass das nicht korrekt wäre.
+
+```{r Diagramm 2, echo=F, warning=F, message=FALSE}
+nv_plots$ets_2021_ratio <- 	nv_plots$n_ets_total_2021 / nv_plots$n_ash_2021
+
+nv_plots$ETS_gewichtet <- (nv_plots$ets_2022_ratio + nv_plots$ets_2021_ratio) / 2
+nv_plots$n_ash <- (nv_plots$n_ash_2021 + nv_plots$n_ash_2022) / 2
+# nv_plots$ETS_gewichtet <- nv_plots$ETS_gewichtet * nv_plots$n_ash^.5
+
+# rep wiederholt jedes Element des Vektors so oft wie der Wert des zweiten 
+# Vektors an der gleichen Stelle vorgibt (1:3, c(1,2,1) = 1, 2, 2, 3)
+range(round(nv_plots$n_ash^.5, digits = 0), na.rm = T)
+# die NAs machen bei rep probleme daher werden alle Plots ohne Eschen im tmp
+# gelöscht.
+tmp <- nv_plots[nv_plots$n_ash != 0, ] 
+tmp <- tmp[!is.na(tmp$n_ash), ] 
+indx <- rep(1:nrow(tmp), round(tmp$n_ash^.5, digits = 0))
+tmp <- tmp[indx, ]
+
+# Wenn Plots gar keine Eschen enthalten dürfen sie auch in der Grafik nicht vorkommen.
+# nv_plots$ETS_gewichtet[nv_plots$n_ash == 0] <- NA 
+# sum(is.na(nv_plots$ETS_gewichtet))
+
+ggplot(data = tmp) +
+	geom_point(aes(x = TSF, y = ETS_gewichtet)) +
+	geom_smooth(aes(x = TSF, y = ETS_gewichtet))
+
+tmp <- tmp[tmp$ETS_gewichtet != 0,]
+ggplot(data = tmp) +
+	geom_point(aes(x = TSF, y = ETS_gewichtet)) +
+	geom_smooth(aes(x = TSF, y = ETS_gewichtet))
+
+
+
+```
+
+FAZIT 
+
+Es gibt wohl einfach keinen relevanten Zusammenhang.

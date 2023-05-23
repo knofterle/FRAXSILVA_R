@@ -128,7 +128,7 @@ plot.all2 <- function(tree_data = NA, plots_pos, plots_ref, labels = F) {
 # color und size adapt sind jeweils exponenten transformieren also die 
 # Verteilung ein bisschen. Size to tree verändet die Einheit die die Plotsize 
 # bestimmt aber nur mit multiplikation, das musste sein weil sonst die Werte
-# von treesize und plotsize extrem weit auseinader liegen können und daher 
+# von treesize und plotsize extrem weit auseinander liegen können und daher 
 # eins von beiden nicht mehr richtig dargestellt wird.
 # generalsize setzt die maximale range der size werte fest. Wird als Vector 
 # eingegeben
@@ -141,10 +141,10 @@ plot.all3 <-
 					 nv_plots,
 					 flaeche,
 					 plotcolor,
-					 plotcoloradapt,
+					 plotcoloradapt = 1,
 					 plotsize,
-					 plotsizeadapt,
-					 plotsizetotree,
+					 plotsizeadapt = 1,
+					 plotsizetotree = 100,
 					 treesize = "d",
 					 treecolor = "art",
 					 general_size = c(2, 30)) {

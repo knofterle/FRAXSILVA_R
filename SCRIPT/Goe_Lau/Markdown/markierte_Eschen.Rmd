@@ -5,6 +5,9 @@ date: '2023-05-04'
 output:
   html_document: default
   pdf_document: default
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -13,9 +16,11 @@ source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_globa
 ```
 
 ## Grobe Zahlen zu den markierten Eschen
-Für die markierten Eschen konnte der genaue Erkrankungsverlauf zwischen 2021 und 2022
-nachverfolgt werden. Die folgende Tabelle bildet die jeweiligen Teilmengen die 2021 und 2022 
-krank waren, gesund geblieben sind oder ihren Status verändert haben.
+
+Für die markierten Eschen konnte der genaue Erkrankungsverlauf zwischen
+2021 und 2022 nachverfolgt werden. Die folgende Tabelle bildet die
+jeweiligen Teilmengen die 2021 und 2022 krank waren, gesund geblieben
+sind oder ihren Status verändert haben.
 
 ```{r table, echo=F}
 gesund <- nv_marked %>% 
@@ -65,16 +70,19 @@ data.frame(
 )
 ```
 
-Wie man sieht gibt es hier ein Problem: Ich habe mehr Eschen im nächsten Jahr als nicht 
-mehr infiziert eingestuft als ich Eschen als infiziert wieder erkannt habe.
-Das weckt erstmal massive Zweifel daran ob das Bonitursystem überhaupt geklappt hat.
-Man kann vielleicht trotzdem den Satz: "Wenn ein Baum 2021 ETS hatte ist es wahrscheinlicher,
-dass er 2022 ebenfalls krank wird als dass ein bisher gesunder Baum krank wird." 
-Die einzige Rettung die mir gerade einfällt wäre, dass die Infektionen im nächsten 
-Jahr einfach nicht mehr so gut zu sehen waren und sie daher eher als sonstige Schäden eingestuft wurden.
-Dann müsste ich jetzt die Mengentabelle erweitern.
+Wie man sieht gibt es hier ein Problem: Ich habe mehr Eschen im nächsten
+Jahr als nicht mehr infiziert eingestuft als ich Eschen als infiziert
+wieder erkannt habe. Das weckt erstmal massive Zweifel daran ob das
+Bonitursystem überhaupt geklappt hat. Man kann vielleicht trotzdem den
+Satz: "Wenn ein Baum 2021 ETS hatte ist es wahrscheinlicher, dass er
+2022 ebenfalls krank wird als dass ein bisher gesunder Baum krank wird."
+Die einzige Rettung die mir gerade einfällt wäre, dass die Infektionen
+im nächsten Jahr einfach nicht mehr so gut zu sehen waren und sie daher
+eher als sonstige Schäden eingestuft wurden. Dann müsste ich jetzt die
+Mengentabelle erweitern.
 
-Wie viele der Eschen die 2021 krank waren, haben 2022 sonstige Schäden? (absolut und relativ)
+Wie viele der Eschen die 2021 krank waren, haben 2022 sonstige Schäden?
+(absolut und relativ)
 
 ```{r Sonstige Schaeden1, echo=F}
 tmp <- nv_marked %>% 
@@ -89,7 +97,10 @@ tmp / nv_marked %>%
 	filter(ETS_21 == T) %>%
 	nrow(.)
 ```
-Und wie viele der 2021 Gesunden haben 2022 sonstige Schäden? (absolut und relativ)
+
+Und wie viele der 2021 Gesunden haben 2022 sonstige Schäden? (absolut
+und relativ)
+
 ```{r Sonstige Schaeden2, echo=F}
 tmp <- nv_marked %>% 
 	filter(ETS_21 == F) %>%
@@ -103,8 +114,9 @@ tmp / nv_marked %>%
 	filter(ETS_21 == F) %>%
 	nrow(.)
 ```
-Und wie viele der Eschen die 2022 krank geworden sind, hatten vorher bereits sonstige Schäden?
 
+Und wie viele der Eschen die 2022 krank geworden sind, hatten vorher
+bereits sonstige Schäden?
 
 ```{r Sonstige Schaeden3, echo=F}
 tmp <- nv_marked %>% 
@@ -120,10 +132,11 @@ tmp / nv_marked %>%
 	nrow(.)
 ```
 
-Das ist weniger, das ist viel weniger, das heißt ja mehr oder weniger, dass 
-von den Nekrosen die 2022 verschwunden sind, sehr viele als sonstige Schäden wieder 
-aufgetaucht sind. Jetzt nüsste man noch schauen wie viele der Eschen die 
-2022 "gesund" geworden sind, danach sonstige Schäden hatten.
+Das ist weniger, das ist viel weniger, das heißt ja mehr oder weniger,
+dass von den Nekrosen die 2022 verschwunden sind, sehr viele als
+sonstige Schäden wieder aufgetaucht sind. Jetzt nüsste man noch schauen
+wie viele der Eschen die 2022 "gesund" geworden sind, danach sonstige
+Schäden hatten.
 
 ```{r gesundet, echo=F}
 nv_marked %>% 
@@ -140,6 +153,3 @@ nv_marked %>%
 	filter(Sonstige.Gruende.tot_22 != 0) %>% 
 	nrow() / gesundet
 ```
-
-
-

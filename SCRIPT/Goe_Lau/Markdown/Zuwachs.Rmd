@@ -1,0 +1,50 @@
+---
+title: "Zuwachs"
+author: "Johannes Osewold"
+date: "2023-05-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/Auswertungen.R", local = knitr::knit_global())
+require(ggplot2)
+```
+
+Zunächst folgen hier zwei Graphen die ich bereits vor einer Weile gebastelt habe und die nur dazu dienten einen ersten Einblick in die Eschen und Zuwachssituation des Göttingen und Lauenburg Datasets zu bekommen.
+
+Der Erste Graph vergleicht die Anzahl der Eschen zwischen 2021 (blau) und 2022 (rot). Der zweite Graph macht das gleich mit den durchschnittlichen Höhen pro Plot.
+
+```{r Erster Eindruck, echo=F, warning=F, message=FALSE}
+nv_plots %>% 
+	arrange(n_ash_2021) %>% 
+	mutate(index = row_number()) %>% 
+	ggplot(data = ., aes(x = index)) +
+	geom_point(aes(y = n_ash_2021), color = "blue") +
+	geom_smooth(aes(y = n_ash_2021), color = "blue") +
+	geom_point(aes(y = n_ash_2022), color = "red") +
+	geom_smooth(aes(y = n_ash_2022), color = "red")
+
+nv_plots %>% 
+	arrange(height_mean_2021) %>% 
+	filter(height_mean_2021 < 80) %>% 
+	mutate(index = row_number()) %>% 
+	ggplot(data = ., aes(x = index)) +
+	geom_point(aes(y = height_mean_2021), color = "blue") +
+	geom_smooth(aes(y = height_mean_2021), color = "blue") +
+	geom_point(aes(y = height_mean_2022), color = "red") +
+	geom_smooth(aes(y = height_mean_2022), color = "red")
+
+```
+
+Um den Zuwachs tatsächlich pro Plot einzuschätzen hilft die folgenden Graphik. In Rot ist sind wieder die Bäume 2022 eingezeichnet und in blau die 2021er. Sie sind nach Größe sortiert und die 2022 (meistens weniger) wurden am rechten Rand in den Graphen inkludiert. In der zweiten Graphik wurden außerdem die einjährigen Sämlinge ausgeschlossen, wobei das natürlich nur für die Eschen geht. Für den Zuwachs wurden in diesen Graphen aber alle Baumarten verwendet. Das erschien sinnvoll um erstmal einen übergreifenden Zuwachs zu berechnen, der anschließend mit dem TSF verglichen werden kann.
+```{r Zuwachsvergleiche, echo=F, warning=F, message=FALSE}
+vergleiche_zuwachs(Plotnumber = 237)
+vergleiche_zuwachs(Plotnumber = 237, exclude_Saemlinge = T)
+# 8734
+```
+
+
+Man könnte nun die höchsten paar Prozent nehmen und nur die für den Zuwachs verwenden.
+ Das wird dann aber ein Problem wenn Bäume mit rein genommen wurden, die letztes Jahr 
+ noch außerhalb lagen. Aber das kann man ja vielleicht noch filtern. Manuell dann vermutlich.
