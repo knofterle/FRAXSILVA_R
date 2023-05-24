@@ -99,8 +99,37 @@ plot.all3(
 )
 ```
 
-Also hat es offenbar irgendwas mit dem alter der Löcher zu tun. Es scheint so als wären die nicht gleichzeitig aufgelichtet worden. Gerade am Weg ist das Licht sehr wahrscheinlich schon länger da.
+Also hat es offenbar irgendwas mit dem Alter der Löcher zu tun. Es scheint so als wären die nicht gleichzeitig aufgelichtet worden. Gerade am Weg ist das Licht sehr wahrscheinlich schon länger da.
+
+Man könnte jetzt noch gucken ob sich der Zuwachs zwischen der Hauptkonkurrenzbaumart Bergahorn irgendwie in Abhängigkeit vom Licht verändert, dafür wurde hier einfach mal der Zuwachs von BAh vom Esch zuwachs abgezogen und das auf x = TSF geplottet. Plus ein paar filter natürlich. Erstmal in Lauenburg verteilt, und dann noch als normaler Plot.
+
+```{r BAh-GEs, , echo=F, warning=F, message=FALSE}
+tmp <- nv_plots %>% 
+	mutate(BAh_GEs = ZuwachsGEs - ZuwachsBAh)
+
+tmp %>%
+	filter(n_ash > 5) %>%
+	filter(n_bah > 5) %>% 
+	filter(BAh_GEs < 100) %>%
+	plot.all3(
+		tree_data = tree_lau,
+		flaeche = "lau",
+		plotcolor = "BAh_GEs",
+		nv_plots = .,
+		plotcoloradapt = 2
+	)
+
+tmp %>%
+	filter(n_ash > 5) %>%
+	filter(n_bah > 5) %>% 
+	filter(BAh_GEs < 100) %>%
+	ggplot(aes(x = TSF, y = BAh_GEs)) +
+				 	geom_point()
+
+```
+
 
 Nun war aber ja die Hauptfrage eigentlich Zuwachs ~ ETS, und alles vorherige in diesem Dokument diente eher dazu den Zuwachs zu verifizieren, also zu belegen, dass der Weg wie ich den berechne halbwegs Sinn ergibt.
+
 
 

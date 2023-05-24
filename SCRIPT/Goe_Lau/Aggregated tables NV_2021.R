@@ -28,7 +28,7 @@ for (i in 1:nrow(nv_2021_plots)) {
   nv_2021_plots$n_trees[i] <- sum(temp_rows, na.rm = T)
   nv_2021_plots$n_species[i] <- length(unique(nv_2021$Baumart_kurz[temp_rows]))
   nv_2021_plots$n_ash[i] <- sum(nv_2021$Baumart_kurz[temp_rows] == "GEs", na.rm = T)
-  
+  nv_2021_plots$n_bah[i] <- sum(nv_2021$Baumart_kurz[temp_rows] == "BAh", na.rm = T)
    # # The location can be taken from the plotnumber, each is unique
    # if (temp_plotnummer %in% 1:315) {
    #   nv_2021_plots$location[i] <- "Lau_Steinhorst"
@@ -98,7 +98,8 @@ for (i in 1:nrow(nv_2021_plots)) {
 }
 
 nv_2021_plots$height_mean <- round(nv_2021_plots$height_mean, 2) 
-write.csv(x = nv_2021_plots, file = "EXPORT/Goe_Lau/tables/NV_2021_Plots.csv")
+write.csv(x = nv_2021_plots, file = "EXPORT/Goe_Lau/tables/NV_2021_Plots.csv",
+          fileEncoding = "UTF-8")
 
 ## PRODUCE AGGREGATED SPECIES TABLE  -------------------------------------------
 

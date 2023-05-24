@@ -22,7 +22,7 @@ Für die markierten Eschen konnte der genaue Erkrankungsverlauf zwischen
 jeweiligen Teilmengen die 2021 und 2022 krank waren, gesund geblieben
 sind oder ihren Status verändert haben.
 
-```{r table, echo=F}
+```{r table, echo=F, warning=F, message=FALSE}
 gesund <- nv_marked %>% 
 	filter(ETS_21 == F) %>% 
 	filter(ETS_22 == F) %>% 
@@ -84,7 +84,7 @@ Mengentabelle erweitern.
 Wie viele der Eschen die 2021 krank waren, haben 2022 sonstige Schäden?
 (absolut und relativ)
 
-```{r Sonstige Schaeden1, echo=F}
+```{r Sonstige Schaeden1, echo=F, warning=F, message=FALSE}
 tmp <- nv_marked %>% 
 	filter(ETS_21 == T) %>%
 	filter(Sonstige.Gruende.tot_22 != 0) %>% 
@@ -101,7 +101,7 @@ tmp / nv_marked %>%
 Und wie viele der 2021 Gesunden haben 2022 sonstige Schäden? (absolut
 und relativ)
 
-```{r Sonstige Schaeden2, echo=F}
+```{r Sonstige Schaeden2, echo=F, warning=F, message=FALSE}
 tmp <- nv_marked %>% 
 	filter(ETS_21 == F) %>%
 	filter(Sonstige.Gruende.tot_22 != 0) %>% 
@@ -118,7 +118,7 @@ tmp / nv_marked %>%
 Und wie viele der Eschen die 2022 krank geworden sind, hatten vorher
 bereits sonstige Schäden?
 
-```{r Sonstige Schaeden3, echo=F}
+```{r Sonstige Schaeden3, echo=F, warning=F, message=FALSE}
 tmp <- nv_marked %>% 
 	filter(ETS_22 == T) %>%
 	filter(Sonstige.Gruende.tot_22 != 0) %>% 
@@ -138,7 +138,7 @@ sonstige Schäden wieder aufgetaucht sind. Jetzt nüsste man noch schauen
 wie viele der Eschen die 2022 "gesund" geworden sind, danach sonstige
 Schäden hatten.
 
-```{r gesundet, echo=F}
+```{r gesundet, echo=F, warning=F, message=FALSE}
 nv_marked %>% 
 	filter(ETS_21 == T) %>% 
 	filter(ETS_22 == F) %>% 
@@ -153,3 +153,38 @@ nv_marked %>%
 	filter(Sonstige.Gruende.tot_22 != 0) %>% 
 	nrow() / gesundet
 ```
+
+Da ich bei den zuwächsen des gesamten Samples auch schon ein paar Verifizierungsschritte gemacht habe, kommt das hier auch nochmal. Zunächst das wenig aufschlussreiche Zuwachs zu Licht und dann noch das bessere: Zuwachs zu Hoehe.
+
+```{r Zuwachs, echo=F, warning=F, message=FALSE}
+nv_marked %>% 
+	filter(Zuwachs > 0) %>% 
+	filter(Tot_22 != T) %>% 
+	ggplot() +
+	geom_point(aes(x = TSF, y = Zuwachs))
+
+
+nv_marked %>% 
+	# filter(Zuwachs > 0) %>% 
+	filter(Tot_22 != T) %>% 
+	ggplot(aes(x = Hoehe_22, y = Zuwachs)) +
+	geom_point() +
+	geom_smooth()
+
+```
+
+Aber eigentlich ging es ja darum zu sehen ob der Zuwachs geringer oder höher ist wenn ETS ins Spiel kommt. Dafür dient die folgende Graphik. Bei der zweiten Graphik sind alle Eschen raus gefiltert die ETS in einem Terminalen trieb haben oder hatten. Das sollte ja dann hoffentlich die Eschen entfernen die nur kleiner geworden sind weil ihre Spitze abgetrocknet ist.
+```{r Zuwachs ~ ETS, echo=F, warning=F, message=FALSE}
+nv_marked %>% 
+	filter(Zuwachs > -10 & Zuwachs < 40) %>% 
+	ggplot(aes(x = Zuwachs)) +
+	geom_bar(aes(fill = ETS))
+
+nv_marked %>% 
+	filter(Zuwachs > -10 & Zuwachs < 40) %>% 
+	filter(!ETS_terminal) %>% 
+	ggplot(aes(x = Zuwachs)) +
+	geom_bar(aes(fill = ETS))
+
+```
+

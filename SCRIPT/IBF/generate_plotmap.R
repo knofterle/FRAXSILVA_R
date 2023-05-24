@@ -137,63 +137,24 @@ plot.all2 <- function(tree_data = NA, plots_pos, plots_ref, labels = F) {
 
 
 plot.all3 <-
-	function(tree_data,
-					 nv_plots,
-					 flaeche,
-					 plotcolor,
+	function(tree_data = tree_lau,
+					 plot_data = nv_plots,
+					 flaeche = "lau",
+					 plotcolor = "TSF",
 					 plotcoloradapt = 1,
-					 plotsize,
+					 plotsize = 4,
 					 plotsizeadapt = 1,
 					 plotsizetotree = 100,
 					 treesize = "d",
-					 treecolor = "art",
+					 treecolor = NA,
 					 general_size = c(2, 30)) {
 		output <- ggplot() +
 			scale_size(range = general_size) +
 			scale_color_gradient (low = "blue", high = "red") +
 			theme_void()
 		
-		if (identical(nv_plots, NA)) {
-			# keine NV_plots gewünscht
-		} else  {
-			plots <- nv_plots %>%
-				filter(location == flaeche)
-			plots[[plotcolor]] <- plots[[plotcolor]] ** (1 / plotcoloradapt)
-			
-			if (is.character(plotsize)) {
-				plots[[plotsize]] <- plots[[plotsize]] ** (1 / plotsizeadapt)
-				plots[[plotsize]] <- plots[[plotsize]] * plotsizetotree
-				
-				output <- output +
-					geom_point(data = plots,
-										 aes(
-										 	x = x,
-										 	y = y,
-										 	color = .data[[plotcolor]],
-										 	size = .data[[plotsize]]
-										 	# diese .data[[]] waren notwendig weil die Variablen nur als "text"
-										 	# transportiert werden und ggplot2 damit nicht umgehen kann. So scheint
-										 	# es zu funktionieren und ist auch so empfohlen.
-										 ),
-										 shape = 15)  # nv_plots
-			} else {
-				# keine nv_plotsize gewünscht
-				output <- output +
-					geom_point(
-						data = plots,
-						aes(
-							x = x,
-							y = y,
-							color = .data[[plotcolor]]
-						),
-						shape = 15,
-						size = plotsize
-					)  # nv_plots
-				
-			}
-		}
 		if (identical(tree_data, NA)) {
-			
+		
 		} else  {
 			tree <- tree_data # oder halt andere
 			tree$art <- as.factor(tree$art)
@@ -236,11 +197,51 @@ plot.all3 <-
 					)  # Baumstamm
 			}
 		}
+		
+		if (identical(plot_data, NA)) {
+			# keine NV_plots gewünscht
+		} else  {
+			plots <- plot_data %>%
+				filter(location == flaeche)
+			plots[[plotcolor]] <- plots[[plotcolor]] ** (1 / plotcoloradapt)
+			
+			if (is.character(plotsize)) {
+				plots[[plotsize]] <- plots[[plotsize]] ** (1 / plotsizeadapt)
+				plots[[plotsize]] <- plots[[plotsize]] * plotsizetotree
+				
+				output <- output +
+					geom_point(data = plots,
+										 aes(
+										 	x = x,
+										 	y = y,
+										 	color = .data[[plotcolor]],
+										 	size = .data[[plotsize]]
+										 	# diese .data[[]] waren notwendig weil die Variablen nur als "text"
+										 	# transportiert werden und ggplot2 damit nicht umgehen kann. So scheint
+										 	# es zu funktionieren und ist auch so empfohlen.
+										 ),
+										 shape = 15)  # nv_plots
+			} else {
+				# keine nv_plotsize gewünscht
+				output <- output +
+					geom_point(
+						data = plots,
+						aes(
+							x = x,
+							y = y,
+							color = .data[[plotcolor]]
+						),
+						shape = 15,
+						size = plotsize
+					)  # nv_plots
+				
+			}
+		}
 		output <-
 			output + guides(colour = "colorbar",
 											fill = "legend",
 											size = FALSE)
-		output
+		return(output)
 	}
 
 # BEISPIEL

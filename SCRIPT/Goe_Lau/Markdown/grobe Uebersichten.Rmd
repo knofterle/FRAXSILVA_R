@@ -1,0 +1,27 @@
+---
+title: "Ein paar grobe Übersichten"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global())
+source(file = "SCRIPT/IBF/generate_plotmap.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/Load Tree Data.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R", local = knitr::knit_global())
+
+```
+
+
+```{r grobe Übersichten, echo=F, warning=F, message=FALSE}
+plot.all3(plotcolor = "n_bah", tree_data = tree_data_ansitz, flaeche = "goe_ans")
+plot.all3(plotcolor = "n_bah", tree_data = tree_data_polter, flaeche = "goe_pol")
+plot.all3(plotcolor = "n_bah", tree_data = tree_lau, flaeche = "lau")
+plot.all3(plotcolor = "n_ash", tree_data = tree_data_ansitz, flaeche = "goe_ans")
+plot.all3(plotcolor = "n_ash", tree_data = tree_data_polter, flaeche = "goe_pol")
+plot.all3(plotcolor = "n_ash", tree_data = tree_lau, flaeche = "lau", plotsize = "TSF")
+plot.all3(plotcolor = "n_ash", tree_data = tree_lau, flaeche = "lau")
+
+```
+
+

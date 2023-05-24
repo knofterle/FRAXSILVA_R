@@ -54,11 +54,12 @@ tmp <- thr_selected %>%
 	select(Plotnummer, TSF, DSF, ISF)
 nv_plots <- left_join(x = nv_plots, y = tmp, by = "Plotnummer")
 
-### ADD ETS RATIO AND N-ASH ----------------------------------------------------
+### ADD ETS RATIO AND N-ASH N-BAH ----------------------------------------------
 nv_plots$ets_2021_ratio <- 	nv_plots$n_ets_total_2021 / nv_plots$n_ash_2021
 nv_plots$ets_2022_ratio <- 	nv_plots$n_ets_total_2022 / nv_plots$n_ash_2022
 nv_plots$ETS_ratio <- (nv_plots$ets_2022_ratio + nv_plots$ets_2021_ratio) / 2
 nv_plots$n_ash <- (nv_plots$n_ash_2021 + nv_plots$n_ash_2022) / 2
+nv_plots$n_bah <- (nv_plots$n_bah_2021 + nv_plots$n_bah_2022) / 2
 nv_plots$n_trees <- (nv_plots$n_trees_2021 + nv_plots$n_trees_2022) /2
 
 ### ADD GROWTH ----------------------------------------------------
@@ -145,7 +146,11 @@ nv_marked_2021 <- nv_marked_2021 %>%
 			"Blattflecken",
 			"ETS",
 			"mehr.ressourcen",
-			"Triebe.lebend"
+			"Triebe.lebend",
+			"gruene.hoehe",
+			"Aceria.fraxinivora",
+			"tot",
+			"nicht.gerade"
 		)
 	))
 
@@ -220,8 +225,6 @@ tmp <- nv_marked_2022 %>%
 	filter(Triebe.lebend_22 == 0)
 write.csv(tmp, file = "TEMP/nv_marked_tot.csv", fileEncoding = "UTF-8")
 	
-	
-
 
 ### MERGE AND GEFUNDEN? ----------------------------------------------------------
 
@@ -241,6 +244,45 @@ nv_marked_antijoin <- anti_join(x = nv_marked_2021, y = nv_marked_2022, by = "ID
 tmp <- nv_marked_antijoin$ID
 nv_marked$Gefunden[nv_marked$ID %in% tmp] <- FALSE
 
+### ADD SOLARISKOP DATA ---------------------------------------------------------
+tmp <- thr_selected %>% 
+	select(Plotnummer, TSF, DSF, ISF)
+nv_marked <- left_join(x = nv_marked, y = tmp, by = "Plotnummer")
+
+### ADD GROWTH  ----------------------------------------------------------------
+# Hier ist die Idee, dass immer der kleinste Wert zwischen grüner Hoehe und 
+# normaler Hoehe genommen wird. Das funktioniert auch prima wenn gruene Hoehe NA
+# hat. 
+# Die Werte werden anschließend voneinander abgezogen.
+for (i in 1:nrow(nv_marked)) {
+	if (nv_marked$Gefunden[i] != T) {
+		nv_marked$Zuwachs[i] <- NA
+	} else {
+		Zuwachs <-
+			min(nv_marked[i,] %>%
+						select(Gruene.Hoehe_22, Hoehe_22),
+					na.rm = T) -
+			min(nv_marked[i,] %>%
+						select(gruene.hoehe_21, Hoehe_21),
+					na.rm = T)
+		nv_marked$Zuwachs[i] <- Zuwachs
+	}
+}
+
+### ADD ETS  + TERMINAL --------------------------------------------------------
+# T | F == T
+nv_marked$ETS <- nv_marked$ETS_22 | nv_marked$ETS_21
+
+nv_marked <- 
+	nv_marked %>% 
+	mutate(ETS_terminal = 
+				 	ETS.abgestorben.frisch.terminal_21  | 
+				 	ETS.abgestorben.alt.terminal_21 |
+				 	ETS.lebend.terminal_21 |
+				 	ETS.abgestorben.frisch.terminal_22  | 
+				 	ETS.abgestorben.alt.terminal_22 |
+				 	ETS.lebend.terminal_22)
+
 ### EXPORT   ----------------------------------------------------------
 
 write.csv(nv_marked, file = "EXPORT/Goe_Lau/tables/nv_marked.csv", 
@@ -248,7 +290,7 @@ write.csv(nv_marked, file = "EXPORT/Goe_Lau/tables/nv_marked.csv",
 
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(tmp_doubl, nv_marked_antijoin)
+rm(tmp_doubl, nv_marked_antijoin, i , selection, Zuwachs)
 
 ## OUTPUT ----------------------------------------------------------------------
 # nv_marked

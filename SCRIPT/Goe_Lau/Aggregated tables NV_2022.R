@@ -29,6 +29,7 @@ for (i in 1:nrow(nv_2022_plots)) {
 	nv_2022_plots$n_trees[i] <- sum(temp_rows, na.rm = T)
 	nv_2022_plots$n_species[i] <- length(unique(nv_2022$Baumart_kurz[temp_rows]))
 	nv_2022_plots$n_ash[i] <- sum(nv_2022$Baumart_kurz[temp_rows] == "GEs", na.rm = T)
+	nv_2022_plots$n_bah[i] <- sum(nv_2022$Baumart_kurz[temp_rows] == "BAh", na.rm = T)
 	
 	# # The location can be taken from the plotnumber, each is unique
 	# if (temp_plotnummer %in% 1:315) {
