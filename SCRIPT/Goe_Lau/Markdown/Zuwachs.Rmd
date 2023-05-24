@@ -67,12 +67,18 @@ plot.all3(
 	plotsize = 3,
 	treecolor = NA
 )
-tmp <- nv_plots
 nv_plots %>% 
 	filter (Zuwachs >= 0) %>% 
 	filter (n_trees > 20) %>% 
 	ggplot(data = .) +
 		geom_point(aes(x = TSF, y = Zuwachs))
+
+nv_plots %>% 
+#	filter (Zuwachs >= 0) %>% 
+#	filter (n_trees > 20) %>% 
+	ggplot(data = .) +
+		geom_point(aes(x = TSF, y = Zuwachs))
+
 nv_plots %>% 
 	# filter (Zuwachs >= 0) %>% 
 	filter (n_trees > 20) %>% 
@@ -80,6 +86,21 @@ nv_plots %>%
 		geom_point(aes(x = height_median_2022, y = Zuwachs))
 ```
 
+Das legt ja nun den Verdacht nahe das, der TSF Unsinn ist, immerhin passt der Zuwachs ja wunderbar zu der bestehenden Baumhöhe. Das lässt sich aber ziemlich gut mit einer Verteilung des TSF in Lauenburg widerlegen. 
+```{r TSF, , echo=F, warning=F, message=FALSE}
+plot.all3(
+    tree_data = tree_lau,
+    nv_plots = nv_plots,
+    flaeche = "lau",
+    plotcolor = "TSF",
+    plotcoloradapt = 1,
+    plotsize = 3,
+    treecolor = NA
+)
+```
 
+Also hat es offenbar irgendwas mit dem alter der Löcher zu tun. Es scheint so als wären die nicht gleichzeitig aufgelichtet worden. Gerade am Weg ist das Licht sehr wahrscheinlich schon länger da.
+
+Nun war aber ja die Hauptfrage eigentlich Zuwachs ~ ETS, und alles vorherige in diesem Dokument diente eher dazu den Zuwachs zu verifizieren, also zu belegen, dass der Weg wie ich den berechne halbwegs Sinn ergibt.
 
 
