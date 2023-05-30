@@ -70,6 +70,13 @@ for (i in 1:nrow(nv_2022_plots)) {
 		sum(nv_2022$ETS.abgestorben.alt[temp_rows] != 0, na.rm = T)
 	nv_2022_plots$n_ets_total[i] <- sum(temp_ets_total, na.rm = T)
 	
+	# Wie sieht das mit dem Verbiss aus? lebend oder (|) egal. Jeder Baum wird 
+	# als T / F eingetragen und dann pro Plot summiert.
+	temp_verbiss <- 
+		nv_2022$Verbiss.lebend[temp_rows] != 0 | 
+		nv_2022$Verbiss.tot[temp_rows] != 0
+	nv_2022_plots$Verbiss[i] <- sum(temp_verbiss, na.rm = T)
+	
 	# In most cases the first comment is related to the whole plot
 	nv_2022_plots$comment[i] <- (nv_2022_with_empty$Bemerkungen[temp_rows2])[1]
 	

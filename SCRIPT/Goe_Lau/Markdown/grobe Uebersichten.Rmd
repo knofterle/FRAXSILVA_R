@@ -25,3 +25,99 @@ plot.all3(plotcolor = "n_ash", tree_data = tree_lau, flaeche = "lau")
 ```
 
 
+Im folgenden gibt es den Graphen der immer vor mir hängt einmal nur für die Goe Lau Daten. Das sind jetzt Zusammenfassungen von nv_2022, also keine Darstellung der bereits berechneten Plotwerte! Der Code ist eine Variante des Scripts "ETS_Anteil_Hoehe" aus dem Kombi Ordner.
+```{r, echo=F, warning=F, message=FALSE, fig.width=10}
+## DATA FILTER  ----------------------------------------------------------------
+tmp  <- nv_2022
+tmp <- tmp %>% 
+	filter(Baumart_kurz == "GEs") %>% 
+	filter(Hoehe <= 50) 
+
+## SUMMARIZE DATA BY HEIGHT GROUPS  --------------------------------------------
+steps <- seq(from = 0, to = 50, by = 1)
+table_ets_hist_gl <-
+	tmp %>%
+	mutate(hist_step = cut(
+		x = Hoehe,
+		breaks = steps,
+		labels = steps[1:50] + .5
+	)) %>% 
+	# Die labels müssen etwas versetzt zu den breaks und versetzt zueinander 
+	# (siehe table_ets_hist_ibf) sein damit die columns am Ende an der richtigen 
+	# Stelle und dich beieinander stehen.
+	group_by(hist_step, .drop = F) %>%
+	summarise(n = n(), ETS_ratio = sum(ETS, na.rm = T) / n() *100) %>%  
+	mutate(hist_step = as.numeric(as.character(hist_step)))  %>% 
+	mutate(hist_step_point = hist_step)
+# Es war nötig die hist_steps für die Punkte zu erhöhen damit zumindest die 
+# Punkte auf einer x-Höhe liegen, die Columns mussten ein bisschen nach rechts
+# bzw links damit sie sich nicht überdecken
+
+# table_ets_hist_ibf <- 
+# 	tmp %>% 
+# 	filter(Versuch == "IBF") %>% 
+# 	mutate(hist_step = cut(
+# 		x = Hoehe,
+# 		breaks = steps,
+# 		labels = steps[1:50] + 7
+# 	)) %>% 
+# 	group_by(hist_step, .drop = F) %>% 
+# 	summarise(n = n(), ETS_ratio = sum(ETS)/ n() * 100) %>% 
+# 	mutate(Versuch = "IBF") %>% 
+# 	mutate(hist_step = as.numeric(as.character(hist_step))) %>% 
+# 	mutate(hist_step_point = hist_step - 2)
+# 
+# table_ets_hist <- rbind(table_ets_hist_gl, table_ets_hist_ibf)
+
+## GGPLOT  ---------------------------------------------------------------------
+plot <-
+	ggplot(table_ets_hist_gl) +
+	geom_col(aes(x = hist_step,
+							 y = n),
+					 width = 0.75,
+					 fill = "lightblue") +
+	geom_point(
+		aes(x = hist_step_point,
+				y = ETS_ratio * 10),
+		shape =  21,
+		color = "black",
+		fill = "blue",
+		color = "blue",
+		size = 2
+	) +
+	 geom_smooth(aes(
+	 	x = hist_step_point,
+	 	y = ETS_ratio * 10),
+	 alpha = 0.2,
+	 method = "gam",
+	 fill = "blue") +
+	scale_y_continuous(name = "Anzahl [total = 7438]",
+										 sec.axis =  sec_axis(trans = ~ . / 10,
+										 										 name = "ETS Anteil [%]")) +
+	scale_x_continuous(
+		name = "Hoehenklassen [cm]",
+		breaks = seq(0, 50, 1),
+		labels = seq(0, 50, 1)
+	) +
+	scale_fill_manual(
+		# 	name = "Versuch",
+		values = c("cadetblue", "chocolate"),
+		# 	labels = c("Goe_Lau", "IBF")
+	) +
+	scale_color_manual(
+		# 	name = "Versuch",
+		values = c("cadetblue", "chocolate"),
+		# 	labels = c("Goe_Lau", "IBF")
+	) # +
+# 	annotate(
+# 		geom = "text",
+# 		x = 150,
+# 		y = 450,
+# 		hjust = 0,
+# 		label =
+# 			"> filter (hoehe < 500)
+# > filter (alter > 2j) oder filter (alter != 1j)",
+# size = 4
+#	)
+plot
+```

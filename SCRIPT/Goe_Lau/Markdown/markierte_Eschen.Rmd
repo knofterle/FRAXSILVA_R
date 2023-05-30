@@ -161,14 +161,14 @@ nv_marked %>%
 	filter(Zuwachs > 0) %>% 
 	filter(Tot_22 != T) %>% 
 	ggplot() +
-	geom_point(aes(x = TSF, y = Zuwachs))
+	geom_point(aes(x = TSF, y = Zuwachs), size = 3, alpha = 0.2, shape = 16)
 
 
 nv_marked %>% 
 	# filter(Zuwachs > 0) %>% 
 	filter(Tot_22 != T) %>% 
 	ggplot(aes(x = Hoehe_22, y = Zuwachs)) +
-	geom_point() +
+	geom_point(size = 3, alpha = 0.2, shape = 16) +
 	geom_smooth()
 
 ```
@@ -185,6 +185,88 @@ nv_marked %>%
 	filter(!ETS_terminal) %>% 
 	ggplot(aes(x = Zuwachs)) +
 	geom_bar(aes(fill = ETS))
+
+```
+
+Nun habe ich den Graphen der vor meinem Schreibtisch hängt auch noch für die markierten Eschen nachgebaut. Es sind dieses Mal alle Eschen mit drin, sowohl die die gestorbenen als auch solche mit terminalen Schäden etc. Die Höhenklassen wurden nach den Höhen von 2021 gebildet.
+
+```{r, echo=F, warning=F, message=FALSE, fig.width=10}
+
+
+## ADAPT DATA  --------------------------------------------
+tmp <- nv_marked
+tmp$Hoehe_22 <- tmp$Hoehe_22 *10
+tmp$Hoehe_21 <- tmp$Hoehe_21 *10
+tmp$Zuwachs <- tmp$Zuwachs *10
+tmp <- tmp %>% 
+	filter(Hoehe_21 <= 500)
+
+## SUMMARIZE DATA BY HEIGHT GROUPS  --------------------------------------------
+steps <- seq(from = 0, to = 500, by = 20)
+table_ets_hist <- 
+	tmp %>% 
+	filter(ETS == T) %>% 
+	mutate(hist_step = cut(
+		x = Hoehe_22,
+		breaks = steps,
+		labels = steps[1:25] + 10
+	)) %>% 
+	group_by(hist_step, .drop = F) %>% 
+	summarise(growth = mean(Zuwachs, na.rm = T), n = n()) %>% 
+	mutate(ETS = T) 
+
+table_hist <-
+	tmp %>% 
+	filter(ETS == F) %>% 
+	mutate(hist_step = cut(
+		x = Hoehe_22,
+		breaks = steps,
+		labels = steps[1:25] + 10
+	)) %>% 
+	group_by(hist_step, .drop = F) %>% 
+	summarise(growth = mean(Zuwachs, na.rm = T), n= n()) %>% 
+	mutate(ETS = F) 
+
+table_both_hist <- rbind(table_hist, table_ets_hist)
+table_both_hist$hist_step <- as.numeric(as.character(table_both_hist$hist_step))
+
+## GGPLOT  ---------------------------------------------------------------------
+plot <-
+	ggplot(table_both_hist) +
+	geom_col(aes(
+		x = hist_step,
+		y = n,
+		fill = ETS
+	)) +
+	geom_point(aes(x = hist_step, y = growth*0.5, color = ETS), size = 2) +
+	geom_smooth(aes(x = hist_step, y = growth*0.5, color = ETS), method = "gam") +
+	scale_y_continuous(name = "Anzahl [total = 1491]",
+										 sec.axis =  sec_axis(trans = ~ 2*.,
+										 										 name = "Durchschnittl. Zuwachs [mm pro Jahr]"),
+										 limits = c(-50, 250)) +
+	scale_x_continuous(
+		name = "Hoehenklassen [mm]",
+		breaks = seq(0, 500, 25),
+		labels = seq(0, 500, 25)
+	) +
+	scale_fill_manual(name = "Anzahl",
+										values = c("gray60", "red4"),
+										labels = c("Ohne ETS", "Mit ETS")) +
+	scale_color_manual(name = "Zuwachs", 
+										 values = c("black", "red3"),
+										 labels = c("Ohne ETS", "Mit ETS")) +
+	annotate(
+		geom = "text",
+		x = 200,
+		y = 150,
+		hjust = 0,
+		label = "> filter (Hoehe < 500)",
+		size = 4
+	)
+# ggsave(plot = plot, 
+# 			 filename = "EXPORT/IBF/figures/Hoehenverteilung_Zuwachs_ETS.pdf",
+# 			 units = "mm", width = 300, height = 150)
+plot
 
 ```
 

@@ -20,13 +20,13 @@ source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R", local = knitr::knit_global())
 Zunächst schaue ich mir mal an wie denn der ETS Anteil räumlich verteilt ist. Für Lauenburg und Göttingen. Die Plotgröße ist die Anzahl Bäume pro Plot.
 
 ```{r plotmap, echo=F, warning=F}
-plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 
+plot.all3(tree_data = tree_lau, plot_data = nv_plots, flaeche = "lau", 
 					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "n_trees_2022", 
 					plotsizeadapt = 1, plotsizetotree = 0.2, treecolor = NA)
-plot.all3(tree_data = tree_data_ansitz, nv_plots = nv_plots, flaeche = "goe_ans", 
+plot.all3(tree_data = tree_data_ansitz, plot_data = nv_plots, flaeche = "goe_ans", 
 					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "n_trees_2022", 
 					plotsizeadapt = 1, plotsizetotree = 0.2, treecolor = NA)
-plot.all3(tree_data = tree_data_polter, nv_plots = nv_plots, flaeche = "goe_pol", 
+plot.all3(tree_data = tree_data_polter, plot_data = nv_plots, flaeche = "goe_pol", 
 					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "n_trees_2022", 
 					plotsizeadapt = 1, plotsizetotree = 0.2, treecolor = NA)
 
@@ -35,7 +35,7 @@ plot.all3(tree_data = tree_data_polter, nv_plots = nv_plots, flaeche = "goe_pol"
 Anschließend wird der Total Site Factor als Plotgröße dargestellt.
 
 ```{r TSF, echo=F, warning=F}
-plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 
+plot.all3(tree_data = tree_lau, plot_data = nv_plots, flaeche = "lau", 
 					plotcolor = "ets_2022_ratio", plotcoloradapt = 1, plotsize = "TSF", 
 					plotsizeadapt = 1, plotsizetotree = 100, treecolor = NA)
 
@@ -85,12 +85,12 @@ tmp <- tmp[indx, ]
 # sum(is.na(nv_plots$ETS_gewichtet))
 
 ggplot(data = tmp) +
-	geom_point(aes(x = TSF, y = ETS_gewichtet)) +
+	geom_point(aes(x = TSF, y = ETS_gewichtet), size = 3, alpha = 0.2) +
 	geom_smooth(aes(x = TSF, y = ETS_gewichtet))
 
 tmp <- tmp[tmp$ETS_gewichtet != 0,]
 ggplot(data = tmp) +
-	geom_point(aes(x = TSF, y = ETS_gewichtet)) +
+	geom_point(aes(x = TSF, y = ETS_gewichtet), size = 3, alpha = 0.2) +
 	geom_smooth(aes(x = TSF, y = ETS_gewichtet))
 
 

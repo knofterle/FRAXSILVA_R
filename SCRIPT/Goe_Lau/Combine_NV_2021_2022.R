@@ -283,6 +283,7 @@ nv_marked <-
 				 	ETS.abgestorben.alt.terminal_22 |
 				 	ETS.lebend.terminal_22)
 
+
 ### EXPORT   ----------------------------------------------------------
 
 write.csv(nv_marked, file = "EXPORT/Goe_Lau/tables/nv_marked.csv", 

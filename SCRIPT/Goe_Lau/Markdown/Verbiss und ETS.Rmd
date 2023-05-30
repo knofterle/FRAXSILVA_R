@@ -1,0 +1,117 @@
+---
+title: "Verbiss und ETS"
+author: "Johannes Osewold"
+date: "30 5 2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global())
+source(file = "SCRIPT/IBF/generate_plotmap.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/Load Tree Data.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R", local = knitr::knit_global())
+
+```
+
+## ETS ~ Verbiss
+
+Um dem Verhältnis zwischen Verbiss und ETS auf den Grund zu gehen werden die Verjüngungsaufnahmen von 2022 herangezogen. Zunächst nur die drei Teilflächen und der Anteil der Eschen die Verbiss haben als farbige Kodierung. Die Größe der Plots kodiert Zaun oder nicht Zaun.
+```{r, echo=F, warning=F, message=FALSE}
+nv_plots$Verbiss_2022_ratio <- nv_plots$Verbiss_2022 / nv_plots$n_ash_2022
+
+plot.all3(plotcolor = "Verbiss_2022_ratio",
+					plot_data = nv_plots,
+					flaeche = "goe_pol",
+					tree_data = tree_data_polter,
+					plotsize = "Zaun_2021", 
+					general_size = c(8, 3))
+
+plot.all3(plotcolor = "Verbiss_2022_ratio",
+					plot_data = nv_plots,
+					plotsize = "Zaun_2021", 
+					general_size = c(5, 1))
+
+
+plot.all3(plotcolor = "Verbiss_2022_ratio",
+					plot_data = nv_plots,
+					flaeche = "goe_ans",
+					tree_data = tree_data_ansitz,
+					plotsize = "Zaun_2021", 
+					general_size = c(8, 3))
+```
+
+Anschließend schauen wir mal wie der Verbiss pro Plot mit dem ETS pro Plot zusammen hängt, als einfachen Graphen. Einmal mit allen Nullern und einmal gefiltert.
+
+```{r, echo=F, warning=F, message=FALSE}
+nv_plots %>% 
+	ggplot(aes(x = ETS_ratio, y = Verbiss_2022_ratio)) +
+	geom_point()
+
+nv_plots %>% 
+	filter(ETS_ratio != 0) %>% 
+	filter(Verbiss_2022_ratio != 0) %>% 
+	ggplot(aes(x = ETS_ratio, y = Verbiss_2022_ratio)) +
+	geom_point()
+```
+Und zu guter Letzt gibt es eine Mengentabelle die hoffentlich zeigt was hier wen beeinflusst oder ob das eher Zufall ist.
+
+```{r, echo=F, warning=F, message=FALSE}
+tibble(
+	"2022" = c("Verbiss", "Kein_Verbiss", "Summe"),
+	ETS = c(
+		nv_2022 %>%
+			filter(Verbiss.lebend | Verbiss.tot) %>%
+			filter(ETS) %>%
+			count() %>%
+			as.numeric()
+		,
+		nv_2022 %>%
+			filter(!(Verbiss.lebend | Verbiss.tot)) %>%
+			filter(ETS) %>%
+			count() %>%
+			as.numeric()
+		,
+		nv_2022 %>%
+			filter(ETS) %>%
+			count() %>%
+			as.numeric()
+	) ,
+	Kein_ETS = c(
+		nv_2022 %>%
+			filter(Verbiss.lebend | Verbiss.tot) %>%
+			filter(!ETS) %>%
+			count() %>%
+			as.numeric()
+		,
+		nv_2022 %>%
+			filter(!(Verbiss.lebend | Verbiss.tot)) %>%
+			filter(!ETS) %>%
+			count() %>%
+			as.numeric()
+		,
+		nv_2022 %>%
+			filter(!ETS) %>%
+			count() %>%
+			as.numeric()
+	),
+	Summe = c(
+		nv_2022 %>%
+			filter(Verbiss.lebend | Verbiss.tot) %>%
+			count() %>%
+			as.numeric()
+		,
+		nv_2022 %>%
+			filter(!(Verbiss.lebend | Verbiss.tot)) %>%
+			count() %>%
+			as.numeric()
+		,
+		nv_2022 %>%
+			filter(Baumart_kurz == "GEs") %>% 
+			count() %>%
+			as.numeric()
+	)
+)
+```
+
+FAZIT: Wenn man die Anteile von ETS und Verbiss miteinander kombiniert und davon ausgeht, dass sie sich nicht gegenseitig beeinflussen wäre der rechnerische Anteil der Plots die beide Eigenschaften haben 25 Plots von 7727 Plots mit Eschen. Es scheint als würden die 32 Stück relativ nah daran reichen. Es scheint als hätte das kaum oder gar keinen Effekt.
+Aber zumindest der Zaun hat größtenteils funktioniert...
