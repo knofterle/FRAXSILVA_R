@@ -15,10 +15,16 @@ library(dplyr)
 # The first steps will be merging all tables from the NV-Assessment. 
 # Some data cleaning steps will be similar to the script of Lau/Goe I am still 
 # thinking if it makes sense to share some of the code...
+#
+# Ich denke inzwischen dass es keinen Sinn ergibt die Skripte von Goe/Lau und IBf 
+# an diesem Punkt zu verbinden. 
 # 
+# Die Daten aus der zweiten Aufnahmephase 2022/23 sehen etwas anders aus, ich 
+# habe gerade erst begonnen sie einzuladen. Die Anpassungen müssen dann später
+# folgen.
 
 
-## LOAD AND RBIND CSV  -----------------------------------------------------
+## LOAD AND RBIND CSV TEIL 1 -----------------------------------------------------
 data_nv_scho <-
   read.csv(file = "DATA/RAW/Schotten/NV Aufnahme Schotten/Alle_Aufnahmen_scho.csv",
            stringsAsFactors = F, fileEncoding = "UTF-8")
@@ -46,6 +52,53 @@ data_nv_platt$Flaeche <- "Plattenwald"
 
 data_nv <- rbind(data_nv_scho, data_nv_mol, data_nv_huy, data_nv_weis, 
                  data_nv_platt)
+
+rm(data_nv_scho, data_nv_mol, data_nv_huy, data_nv_weis, data_nv_platt)
+
+## LOAD AND RBIND CSV TEIL 2 -----------------------------------------------------
+
+data_nv_leu1 <- read.csv(file = "DATA/RAW/IBF/Leutzsch/NV/NV_Leutzsch_osw.csv",
+                        fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_leu1$team <- "osw"
+data_nv_leu2 <- read.csv(file = "DATA/RAW/IBF/Leutzsch/NV/NV_Aufnahmeblatt_Leipzig_Schrewe.csv",
+                         fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_leu2$team <- "schrw"
+data_nv_leu <- rbind(data_nv_leu1, data_nv_leu2)
+
+data_nv_ett1 <- read.csv(file = "DATA/RAW/IBF/Ettersberg/NV/NV_Ettersberg_osw.csv",
+                        fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_ett1$team <- "osw"
+data_nv_ett2 <- read.csv(file = "DATA/RAW/IBF/Ettersberg/NV/NV_Aufnahmeblatt_Ettersberg_schrewe.csv",
+                         fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_ett2$team <- "schrw"
+data_nv_ett <- rbind(data_nv_ett1, data_nv_ett2)
+
+data_nv_steg1 <- read.csv(file = "DATA/RAW/IBF/Stegelitz/NV/NV_Aufnahmeblatt_bb_osw.csv",
+                         fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_steg1$team <- "osw"
+data_nv_steg2 <- read.csv(file = "DATA/RAW/IBF/Stegelitz/NV/NV_Aufnahmeblatt_Stiegelitz_schrewe.csv",
+                         fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_steg2$team <- "schrw"
+data_nv_steg <- rbind(data_nv_steg1, data_nv_steg2)
+
+data_nv_grfw1 <- read.csv(file = "DATA/RAW/IBF/Greifswald/NV/NV_Aufnahmeblatt_osw.csv",
+                          fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_grfw1$team <- "osw"
+data_nv_grfw2 <- read.csv(file = "DATA/RAW/IBF/Greifswald/NV/NV_Aufnahmeblatt_Greifswald_schrewe.csv",
+                          fileEncoding = "UTF-8", stringsAsFactors = F)
+data_nv_grfw2$team <- "schrw"
+data_nv_grfw <- rbind(data_nv_grfw1, data_nv_grfw2)
+
+data_nv_leu$Flaeche <- "Leutzsch"
+data_nv_ett$Flaeche <- "Ettersberg"
+data_nv_steg$Flaeche <- "Stegelitz"
+data_nv_grfw$Flaeche <- "Greifswald"
+
+data_nv2 <- rbind(data_nv_leu, data_nv_ett, data_nv_steg, data_nv_grfw)
+
+rm(data_nv_ett1, data_nv_ett2, data_nv_ett, data_nv_leu, data_nv_leu1, 
+   data_nv_leu2, data_nv_steg, data_nv_steg1, data_nv_steg2, data_nv_grfw,
+   data_nv_grfw1, data_nv_grfw2)
 
 ## TERMINAL TRUE/FALSE --------------------------------------------------------
 # create columns that represent the "t" mark for terminal in the number of 

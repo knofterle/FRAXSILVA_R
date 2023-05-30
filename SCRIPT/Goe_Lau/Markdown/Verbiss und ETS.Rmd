@@ -16,6 +16,7 @@ source(file = "SCRIPT/Goe_Lau/LOAD_TREES_LAU.R", local = knitr::knit_global())
 ## ETS ~ Verbiss
 
 Um dem Verhältnis zwischen Verbiss und ETS auf den Grund zu gehen werden die Verjüngungsaufnahmen von 2022 herangezogen. Zunächst nur die drei Teilflächen und der Anteil der Eschen die Verbiss haben als farbige Kodierung. Die Größe der Plots kodiert Zaun oder nicht Zaun.
+
 ```{r, echo=F, warning=F, message=FALSE}
 nv_plots$Verbiss_2022_ratio <- nv_plots$Verbiss_2022 / nv_plots$n_ash_2022
 
@@ -53,7 +54,9 @@ nv_plots %>%
 	ggplot(aes(x = ETS_ratio, y = Verbiss_2022_ratio)) +
 	geom_point()
 ```
+
 Und zu guter Letzt gibt es eine Mengentabelle die hoffentlich zeigt was hier wen beeinflusst oder ob das eher Zufall ist.
+
 
 ```{r, echo=F, warning=F, message=FALSE}
 tibble(
