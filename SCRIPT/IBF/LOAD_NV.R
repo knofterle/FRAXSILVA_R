@@ -1,7 +1,7 @@
 #============================ IBF LOAD NV DATA ================================#
 # J.Osewold
 # 19.04.22
-# STATUS :: Close to done
+# STATUS :: Close to done AAAND Open again!
 #==============================================================================#
 
 ## LIBRARYS ----------------------------------------------------------------
@@ -100,6 +100,94 @@ rm(data_nv_ett1, data_nv_ett2, data_nv_ett, data_nv_leu, data_nv_leu1,
    data_nv_leu2, data_nv_steg, data_nv_steg1, data_nv_steg2, data_nv_grfw,
    data_nv_grfw1, data_nv_grfw2)
 
+## MERGE TEIL 1 UND 2 --------------------------------------------------------
+data_nv2 <- rename(
+  data_nv2,
+  "Rueckegasse" = "Rückegasse",
+  "Hoehe" = "Höhe",
+  "Hoehe.Vorvorjahr" = "Höhe.Vorvorjahr",
+  "Hoehe.Vorjahr" = "Höhe.Vorjahr",
+  "Anzahl.Triebe" = "Gesamtanzahl.Triebe",
+  "ETS.abgestorben.frisch" = "ets.abgestorben.frisch",
+  "ETS.abgestorben.alt" = "ets.abgestorben.alt",
+  "ETS.lebend" = "ets.lebend",
+  "Verbiss.lebend" = "verbiss.lebend",
+  "Verbiss.tot" = "verbiss.abgestorben",
+  "Sonstige.Gruende.tot" = "sonstiges.abgestorben",
+  "Laenge" = "Länge",
+  "Laenge.Vorjahr" = "Länge.Vorjahr",
+  "Laenge.Vorvorjahr" = "Länge.Vorvorjahr"
+)
+
+data_nv$Laenge <- NA
+data_nv$Laenge.Vorjahr <- NA
+data_nv$Laenge.Vorvorjahr <- NA
+data_nv$Foto <- NA
+data_nv$team <- NA
+
+data_nv2$Rand <- NA
+data_nv2$Zaun <- NA
+data_nv2$Esche.markiert <- NA
+
+data_nv2 <-
+  select(data_nv2,
+    Plotnummer,
+    Quadrant,
+    Baumart,
+    Hoehe,
+    Hoehe.Vorjahr,
+    Hoehe.Vorvorjahr,
+    Laenge,
+    Laenge.Vorjahr,
+    Laenge.Vorvorjahr,
+    Anzahl.Triebe,
+    ETS.abgestorben.frisch,
+    ETS.abgestorben.alt,
+    ETS.lebend,
+    Verbiss.lebend,
+    Verbiss.tot,
+    Sonstige.Gruende.tot,
+    Bemerkungen,
+    Rand,
+    Zaun,
+    Rueckegasse,
+    Flaeche,
+    Foto,
+    team,
+    Esche.markiert
+  )
+
+data_nv <-
+  select(data_nv,
+         Plotnummer,
+         Quadrant,
+         Baumart,
+         Hoehe,
+         Hoehe.Vorjahr,
+         Hoehe.Vorvorjahr,
+         Laenge,
+         Laenge.Vorjahr,
+         Laenge.Vorvorjahr,
+         Anzahl.Triebe,
+         ETS.abgestorben.frisch,
+         ETS.abgestorben.alt,
+         ETS.lebend,
+         Verbiss.lebend,
+         Verbiss.tot,
+         Sonstige.Gruende.tot,
+         Bemerkungen,
+         Rand,
+         Zaun,
+         Rueckegasse,
+         Flaeche,
+         Foto,
+         team,
+         Esche.markiert
+  )
+
+data_nv <- rbind(data_nv, data_nv2)
+
+
 ## TERMINAL TRUE/FALSE --------------------------------------------------------
 # create columns that represent the "t" mark for terminal in the number of 
 # shoots
@@ -157,26 +245,33 @@ data_nv$Quadrant[data_nv$Quadrant %in% c("nord",
                                          "Nord", 
                                          "norden", 
                                          "Norden", 
-                                         "Norden              ")] <- "nord"
+                                         "Norden              ",
+                                         "n",
+                                         "N")] <- "nord"
 data_nv$Quadrant[data_nv$Quadrant %in% c("no",
                                          "NO")]                   <- "nordost"
 data_nv$Quadrant[data_nv$Quadrant %in% c("ost",
                                          "Ost",
                                          "osten",
-                                         "Osten")]                <- "ost"
+                                         "Osten",
+                                         "O", "o")]                <- "ost"
 data_nv$Quadrant[data_nv$Quadrant %in% c("so",
                                          "SO")]                   <- "suedost"
 data_nv$Quadrant[data_nv$Quadrant %in% c("süd",
                                          "Süd",
                                          "süden",
                                          "Süden",
-                                         "sued")]                 <- "sued"
+                                         "sued",
+                                         "S", "s")]                 <- "sued"
 data_nv$Quadrant[data_nv$Quadrant %in% c("sw",
-                                         "SW")]                   <- "suedwest"
+                                         "SW",
+                                         " SW")]                   <- "suedwest"
 data_nv$Quadrant[data_nv$Quadrant %in% c("west",
                                          "West",
                                          "westen",
-                                         "Westen")]               <- "west"
+                                         "Westen",
+                                         "wesr",
+                                         "w", "W")]               <- "west"
 data_nv$Quadrant[data_nv$Quadrant %in% c("nw",
                                          "NW")]                   <- "nordwest"
 data_nv$Quadrant[data_nv$Quadrant %in% c(" ", "", "zaun")]        <- NA
@@ -234,7 +329,7 @@ data_nv$Esche.markiert[data_nv$Esche.markiert %in% c(
 # I added a ID column.
 # 
 species_nv <- 
-  read.csv("DATA/PROCESSED/IBF/Baumarten_bearbeitet.csv", 
+  read.csv("DATA/PROCESSED/IBF/Baumarten_bearbeitet_2.csv", 
            stringsAsFactors = F, fileEncoding = "UTF-8")
 rowcheck_spec <- nrow(data_nv)
 data_nv$ID_plant <- 1:nrow(data_nv)
@@ -245,6 +340,18 @@ data_nv <- dplyr::select(data_nv, !Baumart)
 data_nv$Baumart_kurz[data_nv$Baumart_kurz == ""] <- NA
 data_nv$Baumart_lang[data_nv$Baumart_lang == ""] <- NA
 data_nv <- data_nv[order(data_nv$ID_plant),]
+
+# Ich musste natürlich noch die zusätzlichen Daten von data_nv2 auf falsche
+# Species names checken. Das kommt im folgenden ist dann aber wieder 
+# auskommentiert. Nur als Erinnerung dass das passiert ist.
+#
+# remaining.names  <- data_nv %>%
+#   filter(is.na(Baumart_kurz)) %>%
+#   select(Baumart) %>% 
+#  table(.) %>% 
+#   names(.)
+# 
+# write.csv(remaining.names, file = "DATA/PROCESSED/IBF/Baumarten_Reste.csv")
 
 ## CATEGORIES FROM COMMENTS -------------------------------------------------
 # The comments were exported and categorized
@@ -264,7 +371,7 @@ data_nv <- data_nv[order(data_nv$ID_plant),]
 # Except of "Bemerkungen" no information were doubled
 
 comments_nv <-
-  read.csv(file = "DATA/PROCESSED/IBF/Bemerkungen_bearbeitet.csv",
+  read.csv(file = "DATA/PROCESSED/IBF/Bemerkungen_bearbeitet_3.csv",
            stringsAsFactors = F, fileEncoding = "UTF-8")
 rowcheck_comm <- nrow(data_nv)
 data_nv <- merge(data_nv, comments_nv, by.x = "Bemerkungen", 
@@ -272,6 +379,17 @@ data_nv <- merge(data_nv, comments_nv, by.x = "Bemerkungen",
 rowcheck_comm <- (rowcheck_comm == nrow(data_nv))
 data_nv <- data_nv[order(data_nv$ID_plant),]
 
+# Und hier gibt es das gleiche Spiel noch einmal. Die neuen Kommentare werden
+# wieder ausgegeben und manuell getaggt. Anschließend wieder eingelesen.
+# 
+# comments_old <- comments_nv$Bemerkungen
+# comments_all <- data_nv$Bemerkungen %>% 
+#   table(.) %>% 
+#   names(.)
+# remaining.comments <- setdiff(x = comments_all, y = comments_old)
+#  write.csv(x = remaining.comments, 
+#           file = "DATA/PROCESSED/IBF/Bemerkungen_Reste.csv",
+#           fileEncoding = "UTF-8")
 
 ## CATEGORIES FROM SOMEWHERE ELSE  ---------------------------------------------
 # Johannistrieb from Anzahl.triebe
