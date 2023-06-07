@@ -274,7 +274,12 @@ data_nv$Quadrant[data_nv$Quadrant %in% c("west",
                                          "w", "W")]               <- "west"
 data_nv$Quadrant[data_nv$Quadrant %in% c("nw",
                                          "NW")]                   <- "nordwest"
-data_nv$Quadrant[data_nv$Quadrant %in% c(" ", "", "zaun")]        <- NA
+data_nv$Quadrant[data_nv$Quadrant %in% c(" ",
+                                         "",
+                                         "zaun",
+                                         "nso",
+                                         "nswo",
+                                         "nwso")] <- NA
 
 ### clean Rueckegasse --------------------------------------------------------------
 data_nv$Rueckegasse[data_nv$Rueckegasse %in% c(
@@ -391,6 +396,12 @@ data_nv <- data_nv[order(data_nv$ID_plant),]
 #           file = "DATA/PROCESSED/IBF/Bemerkungen_Reste.csv",
 #           fileEncoding = "UTF-8")
 
+# Es hat sich das Problem ergeben, dass die Zeilen die gar keine Kommentare 
+# hatten nur NAs in den Kategorien aus den Kommentaren bekommen haben. Das war
+# erst kein Problem, dann aber irgendwie doch. Die Lösung war eine leere Zeile 
+# in die comments_csv einzufügen.
+# Nicht behoben wurde dadurch die Kategorie "ZAUN" und "RAND"
+
 ## CATEGORIES FROM SOMEWHERE ELSE  ---------------------------------------------
 # Johannistrieb from Anzahl.triebe
 data_nv$Johannistrieb [data_nv$Anzahl.Triebe == "J"] <- TRUE
@@ -463,6 +474,100 @@ for (i in 1:nrow(data_nv)) {
   }
 }
 
+## REDUCE EMPTY PLOTS TO ONE LINE ----------------------------------------------
+
+# Alle Plots die nur leere Zeilen haben, also ausschließlich NAs in den Baumarten
+# sollen aussortiert werden. Die bekommen dann ein TRUE bei keine.Baeume und 
+# werden auf eine Zeile reduziert.
+# 
+# Dabei finden sich sowohl die normalen Plots mit nur einer Zeile NA, aber auch
+# solche die wir später erstellt haben bei dem jeder Quadrant ein NA bekommen 
+# hat. Nicht alle von denen haben schon ein TRUE bei keine.Baeume. Die Liste der
+# Plot_IDs heißt "test"
+# 
+# Es gibt aber auch den dummen Fall, dass nur ein oder zwei Quadranten keine 
+# Baeume hatten. Falk hat dann einen Eintrag in die Kommentare gemacht und den
+# einen Quadrant mit NA aufgenommen. Die werden im folgenden ersatzlos gelöscht. 
+# War aber schwer diesen Sonderfall erstmal zu finden...
+# Die Liste dieser Plot_IDs heißt "gegentest" und die Liste aller "Zeilen" die
+# diese Probleme verursachen, also explizit nur die Quadranten ohne Bäume, 
+# heißt gegentest_rows und beinhaltet die ID-plants.
+# 
+# Dann musste ich natürlich noch testen ob es leere Quadranten gibt die aber 
+# keinen Eintrag bei keine.Baeume hatten. Bei denen das quasi vergessen wurde
+
+# Die PlotIDs kamen eigentlich erst später, aber ich brauche die ja hier schon:
+data_nv$ID_plot <- c(paste0(data_nv$Plotnummer, substr(data_nv$Flaeche, 1, 3)))
+
+test <- "0"
+for (i in unique(data_nv$ID_plot)) {
+  tmp <- data_nv %>% 
+    filter(ID_plot == i) %>% 
+    select(Baumart_kurz)
+  if (sum(is.na(tmp)) == nrow(tmp)) { # Das hier testet: (NA,NA -> T,T) == T,T? T
+    test <- c(test,i)
+  }
+}
+test <- test[-1]
+
+gegentest <- data_nv %>% 
+  filter(!ID_plot %in% test) %>% 
+  filter(keine.baeume == T) %>% 
+  select(ID_plot) %>% 
+  unique(.)
+gegentest <- gegentest[,1] # Das macht es zu einem normalen Vektor
+gegentest_rows <- data_nv %>% 
+  filter(!ID_plot %in% test) %>% 
+  filter(keine.baeume == T) %>% 
+  select(ID_plant)
+gegentest_rows <- gegentest_rows[,1]
+
+# Nun werden die Daten geaendert und gelöscht.
+
+data_nv$keine.baeume[data_nv$ID_plot %in% test] <- TRUE
+data_nv$Quadrant[data_nv$ID_plot %in% test] <- "NA"
+# Dazu wird erst ein df ohne die Plots aus test (leere) erstellt.
+# Anschließend wird für jeden Plot aus test nur der erste ausgewählt. Diese 
+# werden dann in einem df gesammelt. Und anschließend wieder verbunden und 
+# nach ID_plant sortiert. (Bei der Plant_Id fehlen jetzt natürlich ein paar..)
+data_nv_tmp <- data_nv %>% filter(!ID_plot %in% test)
+data_nv_tmp2 <- data_nv[1,]
+for (i in test) {
+  tmp <- data_nv %>% 
+    filter(ID_plot == i) %>% 
+    slice(1) # selectiert die erste zeile
+  data_nv_tmp2 <- rbind(data_nv_tmp2, tmp)
+}
+data_nv_tmp2 <- data_nv_tmp2 [-1, ]
+data_nv <- rbind(data_nv_tmp, data_nv_tmp2)
+data_nv <- data_nv %>% 
+  arrange(ID_plant) 
+# Hiermit wird die richtige Reihenfolge wieder hergestellt, wichtig (!) jetzt
+# fehlen ein paar Zahlen der ID_plant und die maximale Zahl ist höher als die 
+# Anzahl der noch vorhandenen Zeilen. Das hat mal Probleme verursacht, daher der
+# Hinweis
+
+# Und jetzt noch die einzelnen leeren Quadranten löschen, die restlichen Zeilen
+# des Plots verbleiben, denn da sind ja Bäume drin
+data_nv <- data_nv %>% filter(!ID_plant %in% gegentest_rows)
+
+# Nun bleiben aber immer noch Quadranten die keine Bäume haben, aufgenommen 
+# wurden, bei denen aber der Taq Keine.Bäume = T fehlt. Die sind einfach leer
+# und es gibt andere Quadranten des gleichen Plots die Bäume haben. Die müssen
+# also auch einfach gelöscht werden. Es gehen dadurch ein paar Bemerkungen 
+# verloren, aber die habe ich gecheckt, das ist okay.
+# Manche Zeilen sollen auch gar nicht den Quadranten als leer beschreiben 
+# sondern sind nur dazu angelegt worden eine Bemerkung zum gesamten Plot zu 
+# machen, manchmal auch ohne Quadrant. Wird alles gelöscht.
+
+empty_rows <- data_nv %>%
+  filter(keine.baeume == F) %>%
+  filter(is.na(Baumart_kurz)) %>%
+  filter(is.na(Hoehe)) %>%
+  select(ID_plant)
+empty_rows <- empty_rows[,1]
+data_nv <- data_nv %>% filter(!ID_plant %in% empty_rows)
+
 ## ADD COLUMN ETS GENERAL ------------------------------------------------------
 data_nv$ETS <-
   !is.na(data_nv$ETS.abgestorben.frisch) |
@@ -471,102 +576,60 @@ data_nv$ETS <-
 
 
 ## ORDER OF COLUMNS ------------------------------------------------------------
-# And generate plotIDs
-data_nv$ID_plot <- c(paste0(data_nv$Plotnummer, substr(data_nv$Flaeche, 1, 3)))
-# data_nv <- data_nv[ ,c("ID_plant",
-#                        "ID_plot",
-#                        "Flaeche",
-#                        "Plotnummer",
-#                        "Rand",
-#                        "Zaun",
-#                        "Rueckegasse",
-#                        "keine.baeume",
-#                        "Flaeche.bedeckt",
-#                        "Referenz",
-#                        "Quadrant",
-#                        "Esche.markiert",
-#                        "Baumart_kurz",
-#                        "Baumart_lang",
-#                        "Hoehe",
-#                        "Hoehe.Vorjahr",
-#                        "Hoehe.Vorvorjahr",
-#                        "Anzahl.Triebe",
-#                        "ETS.abgestorben.frisch",
-#                        "ETS.abgestorben.alt",
-#                        "ETS.lebend",
-#                        "ETS",
-#                        "Verbiss.lebend",
-#                        "Verbiss.tot",                    
-#                        "Sonstige.Gruende.tot",
-#                        "von.Nekrose.bedroht",
-#                        "ETS.abgestorben.frisch.terminal",
-#                        "ETS.abgestorben.alt.terminal",
-#                        "ETS.lebend.terminal",
-#                        "Verbiss.lebend.terminal",
-#                        "Verbiss.tot.terminal",
-#                        "Sonstige.Gruende.tot.terminal",
-#                        "eigentlich.aelter",
-#                        "Johannistrieb",
-#                        "nicht.gerade",
-#                        "mehr.ressourcen",
-#                        "Pseudomonas.syringae",
-#                        "gruene.Hoehe",
-#                        "tot",
-#                        "Foto",
-#                        "KONTROLLIEREN",
-#                        "Bemerkungen"
-#                        )]
-# 
-#  c( "Bemerkungen", 
-#  "Plotnummer",                     
-#  "Quadrant", 
-#  "Hoehe",                          
-#  "Hoehe.Vorjahr", 
-#  "Hoehe.Vorvorjahr",               
-#  "Laenge", 
-#  "Laenge.Vorjahr",                 
-#  "Laenge.Vorvorjahr", 
-#  "Anzahl.Triebe",                  
-#  "ETS.abgestorben.frisch", 
-#  "ETS.abgestorben.alt",            
-#  "ETS.lebend", 
-#  "Verbiss.lebend",                 
-#  "Verbiss.tot", 
-#  "Sonstige.Gruende.tot",           
-#  "Rand", 
-#  "Zaun",                           
-#  "Rueckegasse", 
-#  "Flaeche",                        
-#  "Foto.x", 
-#  "team",                           
-#  "Esche.markiert", 
-#  "ETS.abgestorben.frisch.terminal",
-#  "ETS.abgestorben.alt.terminal", 
-#  "ETS.lebend.terminal",            
-#  "Verbiss.lebend.terminal", 
-#  "Verbiss.tot.terminal",           
-#  "Sonstige.Gruende.tot.terminal", 
-#  "eigentlich.aelter",              
-#  "ID_plant", 
-#  "Baumart_kurz",                   
-#  "Baumart_lang", 
-#  "Johannistrieb",                  
-#  "nicht.gerade", 
-#  "Referenz",                       
-#  "mehr.ressourcen", 
-#  "Flaeche.bedeckt",                
-#  "Pseudomonas.syringae", 
-#  "gruene.Hoehe",                   
-#  "tot", 
-#  "keine.baeume",                   
-#  "von.Nekrose.bedroht", 
-#  "Foto.y",                         
-#  "KONTROLLIEREN", 
-#  "Bärlauchdiebe",                  
-#  "tote.Hooehe", 
-#  "ETS",                            
-#  "ID_plot")
-
+data_nv <- data_nv %>%
+  select(
+    c(
+      "ID_plant",
+      "ID_plot",
+      "Flaeche",
+      "Baumart_kurz",
+      "Baumart_lang",
+      "Plotnummer",
+      "Quadrant",
+      "Hoehe",
+      "Hoehe.Vorjahr",
+      "Hoehe.Vorvorjahr",
+      "gruene.Hoehe",
+      "tote.Hoehe",
+      "Laenge",
+      "Laenge.Vorjahr",
+      "Laenge.Vorvorjahr",
+      "Anzahl.Triebe",
+      "ETS.abgestorben.frisch",
+      "ETS.abgestorben.alt",
+      "ETS.lebend",
+      "Verbiss.lebend",
+      "Verbiss.tot",
+      "Sonstige.Gruende.tot",
+      "ETS.abgestorben.frisch.terminal",
+      "ETS.abgestorben.alt.terminal",
+      "ETS.lebend.terminal",
+      "Verbiss.lebend.terminal",
+      "Verbiss.tot.terminal",
+      "Sonstige.Gruende.tot.terminal",
+      "Bemerkungen",
+      "Foto.x",
+      "team",
+      "Esche.markiert",
+      "eigentlich.aelter",
+      "Johannistrieb",
+      "nicht.gerade",
+      "Referenz",
+      "mehr.ressourcen",
+      "Flaeche.bedeckt",
+      "Pseudomonas.syringae",
+      "tot",
+      "keine.baeume",
+      "von.Nekrose.bedroht",
+      "Foto.y",
+      "KONTROLLIEREN",
+      "Bärlauchdiebe",
+      "ETS",
+      "Rand",
+      "Zaun",
+      "Rueckegasse"
+    )
+  )
 
 ## EXPORT CSV ---------------------------------------------------------------
 # Export the data_nv file
@@ -576,7 +639,7 @@ write.csv(x = data_nv, file = "EXPORT/IBF/tables/data_nv.csv",
 
 
 ## TIDY UP  ----------------------------------------------------------------
-rm(data_nv_huy, i, t, select, select1, select2, comments_nv, tmp_bedeckt, 
+rm(i, t, select, select1, select2, comments_nv, tmp_bedeckt, 
    tmp_plotnummer,
    species_nv, tmp_quadrant, tmp_rand, tmp_referenz, tmp_rueckegasse, tmp_zaun,
    rowcheck_comm, rowcheck_spec)

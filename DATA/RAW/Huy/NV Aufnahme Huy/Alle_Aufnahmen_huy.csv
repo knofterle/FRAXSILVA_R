@@ -325,7 +325,7 @@ Plotnummer,Quadrant,Rueckegasse,Esche markiert,Baumart,Hoehe,Hoehe Vorjahr,Hoehe
 ,,,,esch,99,72,,1,,,,,,,,FALSE,FALSE
 ,,,,bah,63,50,,,,,,,,,,FALSE,FALSE
 ,,,,esch,35,25,20,1,,,,,,,liegt,FALSE,FALSE
-12,,,nw,esch,86,67,,1,,,,,,,,FALSE,FALSE
+12,nw,,nw,esch,86,67,,1,,,,,,,,FALSE,FALSE
 ,,,,esch,298,274,265,3,,,,,,,,FALSE,FALSE
 ,,,,esch,120,110,102,4,,,,,,3,,FALSE,FALSE
 ,,,,esch,59,54,,2,,,,,,,,FALSE,FALSE
