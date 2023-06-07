@@ -411,8 +411,6 @@ data_nv$Anzahl.Triebe [data_nv$Anzahl.Triebe == "J"] <- NA
 data_nv$Anzahl.Triebe [data_nv$Anzahl.Triebe == "e"] <- NA
 data_nv$Anzahl.Triebe <- as.numeric(data_nv$Anzahl.Triebe)
 
-
-
 ## FILL QUADRANT ---------------------------------------------------------------
 # The approach is very similar to the one applied for the plotinformation, this
 # time the information of the "Quadrant" is copied to all following empty lines
@@ -473,6 +471,15 @@ for (i in 1:nrow(data_nv)) {
     tmp_bedeckt <- data_nv$Flaeche.bedeckt[i]
   }
 }
+
+# Es hat sich das Problem ergeben, dass ich für die neueren NV Daten die Plots
+# die durch Zaun oder Rand raus gefallen sind nicht mehr in den Daten eingetragen
+# habe. Und im Grunde sind die ja auch egal. Deshalb werde ich jetzt die NAs,
+# denn die machen Probleme, einfach alle durch FALSE ersetzen.
+
+data_nv$Rand [is.na(data_nv$Rand)] <- FALSE 
+data_nv$Zaun [is.na(data_nv$Zaun)] <- FALSE 
+data_nv$Rueckegasse[is.na(data_nv$Rueckegasse)] <- FALSE
 
 ## REDUCE EMPTY PLOTS TO ONE LINE ----------------------------------------------
 
@@ -642,7 +649,9 @@ write.csv(x = data_nv, file = "EXPORT/IBF/tables/data_nv.csv",
 rm(i, t, select, select1, select2, comments_nv, tmp_bedeckt, 
    tmp_plotnummer,
    species_nv, tmp_quadrant, tmp_rand, tmp_referenz, tmp_rueckegasse, tmp_zaun,
-   rowcheck_comm, rowcheck_spec)
+   rowcheck_comm, rowcheck_spec,
+   data_nv2, data_nv_tmp, data_nv_tmp2, empty_rows, gegentest, gegentest_rows, 
+   test, tmp)
 
 ## OUTPUT ------------------------------------------------------------------
 # data_nv

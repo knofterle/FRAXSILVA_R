@@ -135,6 +135,10 @@ plot.all2 <- function(tree_data = NA, plots_pos, plots_ref, labels = F) {
 # Wenn keine plotsize gewünscht ist kann das durch eine konkrete Zahl 
 # eingestellt werden.
 
+# Ich habe begonnen die IBF Flaechen auch damit darzustellen, es fehlt jetzt
+# noch hauptsächlich die Umsetzung von tree_x_col, das steht nur in der Präambel
+# ist aber nicht eingebaut. Das Problem ist, dass die tree daten von den IBF 
+# alle etwas unterschiedlich aussehen und die spalten unterschiedlich heißen.
 
 plot.all3 <-
 	function(tree_data = tree_lau,
@@ -147,14 +151,26 @@ plot.all3 <-
 					 plotsizetotree = 100,
 					 treesize = "d",
 					 treecolor = NA,
-					 general_size = c(2, 30)) {
+					 general_size = c(2, 30),
+					 tree_x_col = "x",
+					 tree_y_col = "y",
+					 IBF = F) {
+		
+		# Falls die Daten aus den IBF Flaechen stammen müssen ein paar Änderungen
+		# vorgenommen werden:
+		if (IBF == T) {
+			colnames(plot_data)[colnames(plot_data) == "Flaeche"] <- "location"
+		}
+		# Die Spaltenbezeichnungen bei den Baumdaten sind leider bei jeder Fläche 
+		# etwas anders, da lässt sich nichts gemeinsames finden.
+		
 		output <- ggplot() +
 			scale_size(range = general_size) +
 			scale_color_gradient (low = "blue", high = "red") +
 			theme_void()
 		
 		if (identical(tree_data, NA)) {
-		
+			
 		} else  {
 			tree <- tree_data # oder halt andere
 			tree$art <- as.factor(tree$art)
@@ -243,6 +259,7 @@ plot.all3 <-
 											size = FALSE)
 		return(output)
 	}
+
 
 # BEISPIEL
  # plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 

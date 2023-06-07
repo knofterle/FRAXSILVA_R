@@ -1,33 +1,38 @@
 "Baumart_kurz","Baumart_lang","n","n_plots","height_mean","height_median","height_max","height_min"
-"BAh","Acer pseudoplatanus",3923,237,203,116,6110,5
-"GEs","Fraxinus excelsior",2908,243,134,98,4060,3
-"SAh","Acer platanoides",1505,133,159,122,1057,19
-"HBu","Carpinus betulus",530,119,355,183,6782,20
-"RBu","Fagus sylvatica",275,92,655,314,8630,13
-"WKi","Prunus avium",9,9,364,316,711,115
-"Roter Hartriegel","Cornus sanguinea",60,18,945,635,6105,50
-"FAh","Acer minor",40,23,1315,761,7201,54
+"BAh","Acer pseudoplatanus",5629,409,207,129,6110,5
+"GEs","Fraxinus excelsior",5918,477,138,94,4060,3
+"SAh","Acer platanoides",1891,210,151,118,1057,19
+"HBu","Carpinus betulus",789,185,339,167,6782,20
+"RBu","Fagus sylvatica",299,108,631,295,8630,13
+"WKi","Prunus avium",17,14,319,291,711,115
+"Roter Hartriegel","Cornus sanguinea",61,19,932,633,6105,50
+"FAh","Acer minor",51,32,1101,614.5,7201,54
 "Himbeere","Rubus idaeus",5,3,342,298,496,135
 "Hundsrose","Rosa canina",2,1,663,663,780,546
-"Weissdorn","Crataegus spec",34,21,1063,605,5599,55
+"Weissdorn","Crataegus spec",38,24,989,485,5599,55
 "Brombeere","Rubus rubus",6,4,558,604.5,910,138
-"Holunder","Sambucus spec",40,8,654,610,1743,169
-"Pfaffenhuetchen","Euonymus europaeus",192,15,233,181.5,1058,60
+"Holunder","Sambucus spec",46,14,992,646.5,4650,169
+"Pfaffenhuetchen","Euonymus europaeus",724,46,256,195.5,1415,1
 "unknown","unknown",1,1,176,176,176,176
-"GHa","Corylus avellana",13,8,491,121,3290,39
+"GHa","Corylus avellana",18,13,536,379.5,3290,39
 "GFi","Picea abies",1,1,41,41,41,41
-"WLi","Tilia cordata",3,3,256,55,663,51
+"WLi","Tilia cordata",35,21,507,154,3556,46
 "Weide","Salix spec",1,1,87,87,87,87
 "SEi","Quercus robur",1,1,128,128,128,128
-"Vogelbeere","Sorbus aucuparia",3,3,282,146,570,131
-"Eiche","Quercus spec",157,31,146,133,589,43
-"BUl","Ulmus glabra",5,4,361,420,708,48
+"Vogelbeere","Sorbus aucuparia",4,4,237,138.5,570,102
+"Eiche","Quercus spec",161,35,150,134,589,43
+"BUl","Ulmus glabra",70,33,799,530,3951,48
 "Liguster","Ligustrum vulgare",23,2,586,500,1437,124
 "Waldrebe","Clematis vitalba ",1,1,1410,1410,1410,1410
-"Faulbaum","Frangula alnus",75,24,813,453,5936,45
+"Faulbaum","Frangula alnus",77,25,823,453,5936,45
 "FlatterUl","Ulmus laevis",2,1,318,318.5,368,269
-"FeldUl","Ulmus minor",2,1,1110,1110,1653,567
+"FeldUl","Ulmus minor",22,8,939,490.5,9990,85
 "BHa","Corylus colurna",1,1,233,233,233,233
 "Seidelbast","Daphne mezereum",5,5,764,733,1139,344
 "Schlehe","Prunus spinosa",70,15,851,506.5,4500,72
-"SUMME","31",9893,100,221.950455005056,120,8630,3
+"Sommerlinde","Tilia platiphyllos",7,4,247,146,646,107
+"Speierling","Sorbus domestica",1,1,285,285,285,285
+"SBi","Betula pendula",3,3,70,59,95,57
+"Pflaume","Prunus domestica",2,2,219,219,268,170
+"Rbu","Fagus sylvatica",2,1,415,415,526,304
+"1","36",15984,102,211.897490456224,120,9990,1

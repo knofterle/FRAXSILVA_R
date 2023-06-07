@@ -23,7 +23,7 @@ plots_pos_platt$ID_plot <- paste0(plots_pos_platt$nr, "Pla")
 plots_pos_scho$ID_plot <- paste0(plots_pos_scho$nr, "Sch")
 plots_pos_weis$ID_plot <- paste0(plots_pos_weis$nr, "Wei")
 plots_pos_ett$ID_plot <- paste0(plots_pos_ett$nr, "Ett")
-plots_pos_grfw$ID_plot <- paste0(plots_pos_grfw$nr, "Grf")
+plots_pos_grfw$ID_plot <- paste0(plots_pos_grfw$nr, "Gre")
 plots_pos_leu$ID_plot <- paste0(plots_pos_leu$nr, "Leu")
 plots_pos_steg$ID_plot <- paste0(plots_pos_steg$nr, "Ste")
 

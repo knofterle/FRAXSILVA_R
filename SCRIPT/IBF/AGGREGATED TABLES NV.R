@@ -57,7 +57,16 @@ for (i in 1:nrow(data_nv_plots)) {
     sum(!is.na(data_nv$ETS.abgestorben.alt[temp_rows]), na.rm = T)
   data_nv_plots$n_ets_total[i] <- sum(temp_ets_total, na.rm = T)
 }
-  
+
+# Alle Plots ohne Baeume werden mit NAs aufgefüllt statt dieser komischen
+# Inf, NaN und NA
+
+selection <- which(data_nv_plots$n_trees == 0)
+data_nv_plots$height_mean [selection] <- NA
+data_nv_plots$height_median [selection] <- NA
+data_nv_plots$height_max [selection] <- NA
+data_nv_plots$height_min [selection] <- NA
+
 ## PRODUCE AGGREGATED SPECIES TABLE  -------------------------------------------
 data_nv_temp <- data_nv[!is.na(data_nv$Baumart_kurz),]
 data_nv_species <-
@@ -145,10 +154,13 @@ for (i in 1:nrow(data_nv_area)) {
 ## ADD SUM ROW  ----------------------------------------------------------------
 # I do this at the end, because the plot table was used as a index for the 
 # following loops and a SUM row would disturb this
+# 
+# Die Summenzeilen machen später viele Probleme, daher gibt es eine getrennte 
+# Tabelle mit Summen.
 
 ### plot data ------------------------------------------------------------------
 colnames(data_nv_plots)
-data_nv_plots <- 
+data_nv_plots_sum <- 
   rbind(data_nv_plots, 
         c(1,
           nrow(data_nv_plots),
@@ -177,7 +189,7 @@ data_nv_plots$ID_plot[nrow(data_nv_plots)] <- "SUMME"
 
 ### species data ---------------------------------------------------------------
 colnames(data_nv_species)
-data_nv_species <-
+data_nv_species_sum <-
   rbind(data_nv_species,
         c(
           1,
@@ -195,7 +207,7 @@ data_nv_species$Baumart_kurz[nrow(data_nv_species)] <- "SUMME"
 
 ### area data ------------------------------------------------------------------
 colnames(data_nv_area)
-data_nv_area <- 
+data_nv_area_sum <- 
   rbind(data_nv_area,
         c(
           1,
@@ -232,6 +244,25 @@ write.csv(
 )
 write.csv(
   data_nv_area,
+  file = "EXPORT/IBF/tables/data_nv_area.csv",
+  fileEncoding = "UTF-8",
+  row.names = F
+)
+
+write.csv(
+  data_nv_plots_sum,
+  file = "EXPORT/IBF/tables/data_nv_plots.csv",
+  fileEncoding = "UTF-8",
+  row.names = F
+)
+write.csv(
+  data_nv_species_sum,
+  file = "EXPORT/IBF/tables/data_nv_species.csv",
+  fileEncoding = "UTF-8",
+  row.names = F
+)
+write.csv(
+  data_nv_area_sum,
   file = "EXPORT/IBF/tables/data_nv_area.csv",
   fileEncoding = "UTF-8",
   row.names = F
