@@ -127,7 +127,7 @@ plot <-
 plot
 ggsave(
 	plot = plot,
-	filename = "EXPORT/NV_combined/figures/ETS_Anteil_Hoehe.pdf",
+	filename = "EXPORT/NV_combined/figures/ETS_Anteil_Hoehe_all_2022.pdf",
 	units = "mm",
 	width = 300,
 	height = 150

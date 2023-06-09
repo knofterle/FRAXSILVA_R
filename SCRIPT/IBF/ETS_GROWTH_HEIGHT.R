@@ -8,7 +8,7 @@
 library(ggplot2)
 
 ## REQUIRES --------------------------------------------------------------------
-source(file = "SCRIPT/IBF/LOAD_NV.R")
+source(file = "SCRIPT/IBF/LOAD_NV.R", encoding = "UTF-8")
 # data_nv
 # and data_nv$ETS
 

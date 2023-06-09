@@ -5,7 +5,7 @@
 #==============================================================================#
 
 ## REQUIRES --------------------------------------------------------------------
-source(file = "SCRIPT/Goe_Lau/Load and Clean NV Data.R")
+source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R")
 source(file = "SCRIPT/IBF/LOAD_NV.R")
 # 
 # data_nv
@@ -19,7 +19,7 @@ library(dplyr)
 # nicht mehrfach machen muss.
 
 ## HARMONIZE DATESET  ----------------------------------------------------------
-nv_gl <- nv
+nv_gl <- nv_2022
 nv_gl$Hoehe <- nv_gl$Hoehe * 10 # cm to mm
 
 nv_ibf <- data_nv
