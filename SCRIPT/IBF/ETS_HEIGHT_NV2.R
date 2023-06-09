@@ -7,7 +7,7 @@
 ## LIBRARYS --------------------------------------------------------------------
 library(ggplot2)
 ## REQUIRES --------------------------------------------------------------------
-source(file = "SCRIPT/IBF/LOAD_NV.R")
+source(file = "SCRIPT/IBF/LOAD_NV.R", encoding = "UTF-8")
 # data_nv
 # 
 ## NOTES -----------------------------------------------------------------------
@@ -24,12 +24,12 @@ plot_height_distr <-
   labs(
     y = "n",
     title = "Verteilung aller Eschen nach Hoehenklassen",
-    subtitle = "42 Eschen über 500 mm wurden ausgeschlossen",
+    subtitle = "Eschen über 500 mm wurden ausgeschlossen",
     x = ("Hoehe [mm]")
   )
 ggsave(
   plot = plot_height_distr,
-  filename = "EXPORT/IBF/figures/Hoehenverteilung_Esche2.pdf",
+  filename = "EXPORT/IBF/figures/Hoehenverteilung_Esche2_all.pdf",
   units = "mm",
   width = 250,
   height = 150
@@ -81,6 +81,8 @@ for (i in 1:nrow(table_ets_height)) {
 
 ##  BOTH PLOTS  ----------------------------------------------------------------
 # ETS
+tmp <- nrow(data_nv_tmp)
+tmp <- paste0("Anzahl [total = ", tmp, "]")
 plot_height_ets_distr <- 
   ggplot(data = table_ets_height, aes(x = xmid, y = ratio)) +
   geom_col(aes(y = n_ash)) +
@@ -89,7 +91,7 @@ plot_height_ets_distr <-
     # Add a second axis and specify its features
     sec.axis = sec_axis(trans = ~ . / 3,
                         name = "ETS Ratio [%]")) +
-  labs(x = "Hoehe [mm]", y = "Anzahl [total = 1825]") +
+  labs(x = "Hoehe [mm]", y = tmp) +
   annotate(
     geom = "text",
     x = 200,
@@ -101,7 +103,7 @@ plot_height_ets_distr <-
 plot_height_ets_distr
 ggsave(
   plot = plot_height_ets_distr,
-  filename = "EXPORT/IBF/figures/Hoehenverteilung_ETS2.pdf",
+  filename = "EXPORT/IBF/figures/Hoehenverteilung_ETS2_all.pdf",
   units = "mm",
   width = 250,
   height = 150
@@ -117,7 +119,7 @@ plot_height_growth_distr <-
     # Add a second axis and specify its features
     sec.axis = sec_axis(trans = ~ . / 3,
                         name = "Zuwachs [mm]")) +
-  labs(x = "Hoehe [mm]", y = "Anzahl [total = 1825]") +
+  labs(x = "Hoehe [mm]", y = tmp) +
   annotate(
     geom = "text",
     x = 200,
@@ -129,7 +131,7 @@ plot_height_growth_distr <-
 plot_height_growth_distr
 ggsave(
   plot = plot_height_growth_distr,
-  filename = "EXPORT/IBF/figures/Hoehenverteilung_Zuwachs2.pdf",
+  filename = "EXPORT/IBF/figures/Hoehenverteilung_Zuwachs2_all.pdf",
   units = "mm",
   width = 250,
   height = 150

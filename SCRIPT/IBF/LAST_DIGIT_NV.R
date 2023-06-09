@@ -25,6 +25,9 @@ for (i in 1:length(heights)) {
 }
 
 digits <- data.frame(digit = as.numeric(digits))
+baeumchen <-  nrow(data_nv %>% filter(keine.baeume == F))
+hoehen <- sum(!is.na(heights))
+subtitel <- paste0("Baeumchen = ", baeumchen, ", Hoehen = ", hoehen)
 
 plot_last_digit <-
   ggplot(data = digits, aes(x = digit)) +
@@ -32,16 +35,16 @@ plot_last_digit <-
   scale_x_continuous(breaks = c(0:9)) +
   labs(
     title = "Histogram der letzten Ziffer aller NV Messungen",
-    subtitle = "Baeumchen = 9,813 Hoehen = 24,733",
+    subtitle = subtitel,
     x = "Letzte Ziffer",
     y = "n"
   )
-ggsave(plot = plot_last_digit, filename = "EXPORT/IBF/figures/last_digit.pdf", 
+plot_last_digit
+ggsave(plot = plot_last_digit, filename = "EXPORT/IBF/figures/last_digit_all.pdf", 
        units = "mm", width = 250, height = 150) 
 
-ggsave(plot = plot_last_digit, filename = "EXPORT/IBF/figures/last_digit.png", 
+ggsave(plot = plot_last_digit, filename = "EXPORT/IBF/figures/last_digit_all.png", 
        units = "mm", width = 250, height = 150)
-
 
 ## TIDY UP  --------------------------------------------------------------------
 rm(heights, digits, tmp, i, digit, plot_last_digit)

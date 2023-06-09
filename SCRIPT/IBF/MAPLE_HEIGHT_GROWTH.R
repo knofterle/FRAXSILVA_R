@@ -7,7 +7,7 @@
 ## LIBRARYS --------------------------------------------------------------------
 
 ## REQUIRES --------------------------------------------------------------------
-source(file = "SCRIPT/IBF/LOAD_NV.R")
+source(file = "SCRIPT/IBF/LOAD_NV.R", encoding = "UTF-8")
 # data_nv
 
 ## NOTES -----------------------------------------------------------------------
@@ -18,7 +18,7 @@ source(file = "SCRIPT/IBF/LOAD_NV.R")
 data_nv %>%
   filter(Baumart_kurz == "BAh") %>%
   filter(Hoehe < 500) %>% # -198
-  count() # total 3725
+  count() # total 3725 neu 5357
 
 plot_height_distr <- 
   data_nv %>%
@@ -27,7 +27,7 @@ plot_height_distr <-
   ggplot(aes(x = Hoehe)) +
   geom_histogram(binwidth = 12.5, boundary = 0) +
   labs(
-    y = "Anzahl [total = 3725]",
+    y = "Anzahl [total = 5357]",
     title = "Verteilung aller Bergahorne nach Hoehenklassen",
     subtitle = "",
     x = ("Hoehe [mm]")
@@ -39,7 +39,7 @@ plot_height_distr <-
 plot_height_distr
 ggsave(
   plot = plot_height_distr,
-  filename = "EXPORT/IBF/figures/BAh_Hoehe.pdf",
+  filename = "EXPORT/IBF/figures/BAh_Hoehe_all.pdf",
   units = "mm",
   width = 250,
   height = 150
@@ -99,7 +99,7 @@ plot_height_growth_distr <-
 plot_height_growth_distr
 ggsave(
   plot = plot_height_growth_distr,
-  filename = "EXPORT/IBF/figures/BAh_Hoehe_Zuwachs.pdf",
+  filename = "EXPORT/IBF/figures/BAh_Hoehe_Zuwachs_all.pdf",
   units = "mm",
   width = 250,
   height = 150
