@@ -5,7 +5,7 @@
 #==============================================================================#
 
 ## REQUIRES --------------------------------------------------------------------
-source(file = "SCRIPT/IBF/GENERATE PLOTMAP.R", encoding = "UTF-8")
+source(file = "SCRIPT/IBF/GENERATE_PLOTDISTRIBUTION.R", encoding = "UTF-8")
 # plots_pos_xx
 
 source(file = "SCRIPT/IBF/LOAD_NV.R", encoding = "UTF-8")

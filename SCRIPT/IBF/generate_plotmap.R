@@ -155,15 +155,6 @@ plot.all3 <-
 					 tree_x_col = "x",
 					 tree_y_col = "y",
 					 IBF = F) {
-		
-		# Falls die Daten aus den IBF Flaechen stammen müssen ein paar Änderungen
-		# vorgenommen werden:
-		if (IBF == T) {
-			colnames(plot_data)[colnames(plot_data) == "Flaeche"] <- "location"
-		}
-		# Die Spaltenbezeichnungen bei den Baumdaten sind leider bei jeder Fläche 
-		# etwas anders, da lässt sich nichts gemeinsames finden.
-		
 		output <- ggplot() +
 			scale_size(range = general_size) +
 			scale_color_gradient (low = "blue", high = "red") +
@@ -172,6 +163,13 @@ plot.all3 <-
 		if (identical(tree_data, NA)) {
 			
 		} else  {
+			# Die Spaltenbezeichnungen bei den Baumdaten sind leider bei jeder Fläche
+			# etwas anders, da lässt sich nichts gemeinsames finden.
+			# Daher lassen die sich optional hier ändern. Der Name der mitgegeben wird,
+			# wird hier in das standardmäßig verwendete x und y geändert.
+			colnames(tree_data)[colnames(tree_data) == tree_x_col] <- "x"
+			colnames(tree_data)[colnames(tree_data) == tree_y_col] <- "y"
+			
 			tree <- tree_data # oder halt andere
 			tree$art <- as.factor(tree$art)
 			
@@ -217,6 +215,12 @@ plot.all3 <-
 		if (identical(plot_data, NA)) {
 			# keine NV_plots gewünscht
 		} else  {
+			# Falls die Daten aus den IBF Flaechen stammen müssen ein paar Änderungen
+			# vorgenommen werden:
+			if (IBF == T) {
+				colnames(plot_data)[colnames(plot_data) == "Flaeche"] <- "location"
+			}
+			
 			plots <- plot_data %>%
 				filter(location == flaeche)
 			plots[[plotcolor]] <- plots[[plotcolor]] ** (1 / plotcoloradapt)
@@ -259,7 +263,6 @@ plot.all3 <-
 											size = FALSE)
 		return(output)
 	}
-
 
 # BEISPIEL
  # plot.all3(tree_data = tree_lau, nv_plots = nv_plots, flaeche = "lau", 
