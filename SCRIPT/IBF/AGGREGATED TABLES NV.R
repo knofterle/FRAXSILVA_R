@@ -185,7 +185,7 @@ data_nv_plots_sum <-
           sum(data_nv_plots$n_ets_total)
           )
   )
-data_nv_plots$ID_plot[nrow(data_nv_plots)] <- "SUMME"
+data_nv_plots_sum$ID_plot[nrow(data_nv_plots)] <- "SUMME"
 
 ### species data ---------------------------------------------------------------
 colnames(data_nv_species)
@@ -231,39 +231,39 @@ data_nv_area$Flaeche[nrow(data_nv_area)] <- "SUMME"
 
 ## EXPORT CSV  -----------------------------------------------------------------
 write.csv(
-  data_nv_plots,
-  file = "EXPORT/IBF/tables/data_nv_plots.csv",
-  fileEncoding = "UTF-8",
-  row.names = F
+ data_nv_plots,
+ file = "EXPORT/IBF/tables/data_nv_plots_with_coord.csv",
+ fileEncoding = "UTF-8",
+ row.names = F
 )
 write.csv(
-  data_nv_species,
-  file = "EXPORT/IBF/tables/data_nv_species.csv",
-  fileEncoding = "UTF-8",
-  row.names = F
+ data_nv_species,
+ file = "EXPORT/IBF/tables/data_nv_species.csv",
+ fileEncoding = "UTF-8",
+ row.names = F
 )
 write.csv(
-  data_nv_area,
-  file = "EXPORT/IBF/tables/data_nv_area.csv",
-  fileEncoding = "UTF-8",
-  row.names = F
+ data_nv_area,
+ file = "EXPORT/IBF/tables/data_nv_area.csv",
+ fileEncoding = "UTF-8",
+ row.names = F
 )
 
 write.csv(
   data_nv_plots_sum,
-  file = "EXPORT/IBF/tables/data_nv_plots.csv",
+  file = "EXPORT/IBF/tables/data_nv_plots_with_coord_sum.csv",
   fileEncoding = "UTF-8",
   row.names = F
 )
 write.csv(
   data_nv_species_sum,
-  file = "EXPORT/IBF/tables/data_nv_species.csv",
+  file = "EXPORT/IBF/tables/data_nv_species_sum.csv",
   fileEncoding = "UTF-8",
   row.names = F
 )
 write.csv(
   data_nv_area_sum,
-  file = "EXPORT/IBF/tables/data_nv_area.csv",
+  file = "EXPORT/IBF/tables/data_nv_area_sum.csv",
   fileEncoding = "UTF-8",
   row.names = F
 )
