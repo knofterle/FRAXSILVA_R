@@ -56,7 +56,10 @@ for (i in 1:nrow(data_nv_plots)) {
   data_nv_plots$n_ets_old[i] <-
     sum(!is.na(data_nv$ETS.abgestorben.alt[temp_rows]), na.rm = T)
   data_nv_plots$n_ets_total[i] <- sum(temp_ets_total, na.rm = T)
+  data_nv_plots$ets_ratio[i] <- 
+    data_nv_plots$n_ets_total[i] / data_nv_plots$n_ash[i]
   data_nv_plots$im_zaun[i] <- all(data_nv$im_zaun[temp_rows])
+  
 }
 
 # Alle Plots ohne Baeume werden mit NAs aufgefüllt statt dieser komischen
@@ -150,6 +153,8 @@ for (i in 1:nrow(data_nv_area)) {
   data_nv_area$n_ets_total[i] <- sum(temp_ets_total, na.rm = T)
   data_nv_area$median_height[i] <- 
     median(data_nv$Hoehe[data_nv$Flaeche == temp_Flaeche], na.rm = T)
+  data_nv_area$ets_ratio[i] <-
+    data_nv_area$n_ets_total[i] / data_nv_area$n_ash[i]
 }
 
 ## ADD SUM ROW  ----------------------------------------------------------------
@@ -184,6 +189,7 @@ data_nv_plots_sum <-
           sum(data_nv_plots$n_ets_new),
           sum(data_nv_plots$n_ets_old),
           sum(data_nv_plots$n_ets_total),
+          sum(data_nv_plots$n_ets_total) / sum(data_nv_plots$n_ash),
           NA
           )
   )
@@ -226,7 +232,8 @@ data_nv_area_sum <-
           sum(data_nv_area$n_ets_new, na.rm = T),
           sum(data_nv_area$n_ets_old, na.rm = T),
           sum(data_nv_area$n_ets_total, na.rm = T),
-          median(data_nv$Hoehe, na.rm = T)
+          median(data_nv$Hoehe, na.rm = T),
+          sum(data_nv_area$n_ets_total, na.rm = T) / sum(data_nv_area$n_ash, na.rm = T)
         )
   )
 data_nv_area$Flaeche[nrow(data_nv_area)] <- "SUMME"
