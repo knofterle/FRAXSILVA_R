@@ -79,7 +79,7 @@ for (i in 1:nrow(nv_2021_plots)) {
   nv_2021_plots$comment[i] <- (nv_2021_with_empty$Bemerkungen[temp_rows2])[1]
   
   # Die Daten zu Zaun oder Ausschluss werden übertragen
-  nv_2021_plots$Zaun[i] <- nv_2021_with_empty$Zaun[temp_rows2] [1]
+  nv_2021_plots$im_zaun[i] <- nv_2021_with_empty$im_zaun[temp_rows2] [1]
   nv_2021_plots$Ausschluss[i] <-
   	nv_2021_with_empty$Ausgeschlossen.Rand.Zaun[temp_rows2] [1]
   

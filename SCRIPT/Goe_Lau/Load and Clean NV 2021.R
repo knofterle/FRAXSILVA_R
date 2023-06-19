@@ -215,7 +215,21 @@ nv_2021 <- merge(
 nv_2021 <- nv_2021[order(nv_2021$Reihenfolge), ]
 nv_2021 <- select(nv_2021, !Reihenfolge)
 
+## IM ZAUN ODER NICHT ----------------------------------------------
+# write.csv(nv_plots, file = "DATA/PROCESSED/GoeLau/im_zaun.csv", 
+# 					fileEncoding = "UTF-8")
+# Ich habe festgestellt dass in diesem Fall die Spalte "ZAUN" bereits bedeutet
+# ob der Plot im Zaun liegt oder nicht. Für den Ausschluss gibt es nochmal eine
+# separate Spalte.
+# Fürs Verständnis wird daher hier die Spalte umbenannt.
 
+nv_2021 <- nv_2021 %>% 
+	rename(im_zaun = Zaun)
+
+# In den Daten 2022 ist diese Spalte nicht mehr vorhanden, ich habe die eh erst 
+# später hinzugefügt und fand es dann unsinnig das 2022 nochmal zu machen.
+# Es gibt den Datensatz nv_plots, für beide Jahre in dem das dann die Spalte
+# im_zaun_2021 gibt. Das reicht.
 ###### SET DATATYPE FOR COLUMNS  -----------------------------------------------
 nv_2021$Einjaehriger.Saemling <- as.logical(nv_2021$Einjaehriger.Saemling)
 nv_2021$Einjaehriger.Saemling[is.na(nv_2021$Einjaehriger.Saemling)] <- F

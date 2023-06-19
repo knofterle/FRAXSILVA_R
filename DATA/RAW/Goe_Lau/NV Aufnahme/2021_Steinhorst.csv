@@ -3320,9 +3320,9 @@ Plotnummer,Rueckegasse,Esche markiert,Baumart,Hoehe,Anzahl Triebe,Einjaehriger S
 ,,,Esch,23,1,,,,,,,,,,FALSE,FALSE
 ,,,Esch,3,2,,,,,,1,,,,FALSE,FALSE
 ,,NW,Esch,8,1,,,,,,,,1,,FALSE,FALSE
-167,,,,,,,,,,,,,,ZAUN,FALSE,FALSE
-168,,,,,,,,,,,,,,ZAUN,FALSE,FALSE
-169,,,,,,,,,,,,,,ZAUN,FALSE,FALSE
+167,,,,,,,,,,,,,,ZAUN,FALSE,TRUE
+168,,,,,,,,,,,,,,ZAUN,FALSE,TRUE
+169,,,,,,,,,,,,,,ZAUN,FALSE,TRUE
 170,,,BAh,18,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,12,,,,,,,,,,,FALSE,FALSE
 ,,,BAh,12,,,,,,,,,,,FALSE,FALSE

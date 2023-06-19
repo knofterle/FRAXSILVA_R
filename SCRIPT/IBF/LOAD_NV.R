@@ -575,6 +575,19 @@ empty_rows <- data_nv %>%
 empty_rows <- empty_rows[,1]
 data_nv <- data_nv %>% filter(!ID_plant %in% empty_rows)
 
+## WELCHE PLOTS IM ZAUN ?   ----------------------------------------------------
+# Ich habe das an diese Position geschubst, weil die PlotIDs das ganze erheblich 
+# erleichtern.
+# write.csv(data_nv_plots, file = "DATA/PROCESSED/IBF/Zaun_plots.csv", 
+#          fileEncoding = "UTF-8")
+im_zaun <-
+  read.csv("DATA/PROCESSED/IBF/Zaun_plots_bearbeitet.csv",
+           fileEncoding = "UTF-8")
+im_zaun <- im_zaun %>% 
+  select(ID_plot, Im_Zaun) %>% 
+  rename(im_zaun = Im_Zaun)
+data_nv <- left_join(data_nv, im_zaun, by = "ID_plot")
+str(data_nv)
 ## ADD COLUMN ETS GENERAL ------------------------------------------------------
 data_nv$ETS <-
   !is.na(data_nv$ETS.abgestorben.frisch) |
@@ -634,6 +647,7 @@ data_nv <- data_nv %>%
       "ETS",
       "Rand",
       "Zaun",
+      "im_zaun",
       "Rueckegasse"
     )
   )

@@ -1,4 +1,4 @@
-"","Plotnummer","n_trees","n_species","n_ash","n_bah","location","height_mean","height_median","height_max","height_min","n_ets_new","n_ets_old","n_ets_total","Verbiss","comment","Zaun","Ausschluss","Rueckegasse"
+"","Plotnummer","n_trees","n_species","n_ash","n_bah","location","height_mean","height_median","height_max","height_min","n_ets_new","n_ets_old","n_ets_total","Verbiss","comment","im_zaun","Ausschluss","Rueckegasse"
 "1",8901,3,2,2,0,"goe_pol",19,14,30,13,0,0,0,1,"",FALSE,FALSE,FALSE
 "2",8902,3,2,2,1,"goe_pol",7.67,6,12,5,0,0,0,0,"",FALSE,FALSE,FALSE
 "3",8903,7,2,6,0,"goe_pol",7,7,12,4,0,0,0,0,"",FALSE,FALSE,FALSE
@@ -397,9 +397,9 @@
 "396",164,7,2,2,5,"lau",11.57,10,18,6,0,0,0,0,"",FALSE,FALSE,FALSE
 "397",165,18,3,6,3,"lau",10,7,36,3,0,1,1,3,"",FALSE,FALSE,FALSE
 "398",166,12,2,10,2,"lau",14.33,11,37,3,0,1,1,2,"",FALSE,FALSE,TRUE
-"399",167,0,0,0,0,"lau",NA,NA,NA,NA,0,0,0,0,"ZAUN",FALSE,FALSE,FALSE
-"400",168,0,0,0,0,"lau",NA,NA,NA,NA,0,0,0,0,"ZAUN",FALSE,FALSE,FALSE
-"401",169,0,0,0,0,"lau",NA,NA,NA,NA,0,0,0,0,"ZAUN",FALSE,FALSE,FALSE
+"399",167,NA,NA,NA,0,"lau",NA,NA,NA,NA,NA,NA,NA,0,"ZAUN",FALSE,TRUE,FALSE
+"400",168,NA,NA,NA,0,"lau",NA,NA,NA,NA,NA,NA,NA,0,"ZAUN",FALSE,TRUE,FALSE
+"401",169,NA,NA,NA,0,"lau",NA,NA,NA,NA,NA,NA,NA,0,"ZAUN",FALSE,TRUE,FALSE
 "402",170,7,1,0,7,"lau",12.57,12,18,9,0,0,0,0,"",FALSE,FALSE,FALSE
 "403",171,17,4,3,10,"lau",10.06,10,18,4,0,1,1,1,"KEINE BLÄTTER",FALSE,FALSE,FALSE
 "404",172,32,3,2,29,"lau",28.53,26,59,7,0,0,0,0,"",FALSE,FALSE,FALSE
