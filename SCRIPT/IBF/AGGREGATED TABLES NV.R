@@ -308,4 +308,72 @@ rm(tmp, plotnumber, flaeche, i, temp_ets_new, temp_ets_total, temp_ID_plot,
 # 
 # But might be usefull one time
 # HINT: Use STRG + SHIFT + C
+# 
+# 
+# 
+# Ich habe mal kurz getestet ob alle Plots vorkommen und es sieht ganz okay aus
+# mit ein zwei Ausnahmen aber das lässt sich nicht mehr auflösen
+# 
+# table(data_nv_plots$Flaeche)
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Ettersberg") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# # PASST
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Greifswald") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# # 45 55 lässt sich nicht herausfinden warum die fehlen. Ist halt so.
+# # Vermutlich sind die auch leer gewesen und deshalb dann vergessen worden
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Huy") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# # NA
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Leutzsch") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# # das passt so weit
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Mollenfelde") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# # NA
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Plattenwald") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Schotten") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Stegelitz") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+# 
+# tmp <- data_nv_plots %>%
+#   filter(Flaeche == "Weisweil") %>%
+#   select(Plotnummer) 
+# tmp1 <- range(tmp)
+# (tmp1[1] : tmp1[2]) [! tmp1[1] : tmp1[2]  %in% tmp$Plotnummer]
+
 
