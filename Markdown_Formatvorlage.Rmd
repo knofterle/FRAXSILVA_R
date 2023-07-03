@@ -1,0 +1,20 @@
+---
+title: "TITEL"
+author: "Johannes Osewold"
+date: "DATE"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global())
+# Das lokal ist aus irgendwelche Gründen nötig, dann tut aber die Konsole rechts
+# nicht mehr.
+```
+
+## TITEL
+### SUBTITEL
+
+TEXT
+```{r TITEL DES SKRIPTS, echo=F, warning=F, message=FALSE}
+
+```
