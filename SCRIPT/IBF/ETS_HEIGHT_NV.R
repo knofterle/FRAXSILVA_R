@@ -12,7 +12,9 @@ source(file = "SCRIPT/IBF/LOAD_NV.R", encoding = "UTF-8")
 # data_nv
 # 
 ## NOTES -----------------------------------------------------------------------
-
+# Beim Höhenzuwachs stellt sich die Frage ob man für jede Höhenklasse auch die 
+# Eschen ohne Vorjahres- und Vorvorjahreshöhen verwenden will. 
+# Momentan habe ich das so gemacht 
 
 ## HEIGHT DISTRIBUTION ASH  ----------------------------------------------------
 plot_height_distr <- 
@@ -27,13 +29,13 @@ plot_height_distr <-
     subtitle = "42 Eschen über 500 mm wurden ausgeschlossen",
     x = ("Hoehe [mm]")
   )
-ggsave(
-  plot = plot_height_distr,
-  filename = "EXPORT/IBF/figures/Hoehenverteilung_Esche_all.pdf",
-  units = "mm",
-  width = 250,
-  height = 150
-)
+# ggsave(
+#   plot = plot_height_distr,
+#   filename = "EXPORT/IBF/figures/Hoehenverteilung_Esche_all.pdf",
+#   units = "mm",
+#   width = 250,
+#   height = 150
+# )
 plot_height_distr
 
 ## ETS DISTRIBUTION BY HEIGHT CLASS  -------------------------------------------
@@ -48,7 +50,7 @@ table_ets_height$xmid <- (table_ets_height$xmin + table_ets_height$xmax) / 2
 data_nv_tmp <-
   data_nv %>% 
   filter(Baumart_kurz == "GEs") %>% 
-  filter(!is.na(Hoehe))
+  filter(!is.na(Hoehe)) # Momentan fällt da nur eine einzige Esche wegen Hoehe NA raus
 ets_tmp <- c()
 
 # Loop for ETS
@@ -62,6 +64,7 @@ for (i in 1:nrow(table_ets_height)) {
 }
 
 ## GROWTH DISTRIBUTION BY HEIGHT CLASS  ----------------------------------------
+
 data_nv_tmp$growth1 <- data_nv_tmp$Hoehe - data_nv_tmp$Hoehe.Vorjahr
 data_nv_tmp$growth2 <- data_nv_tmp$Hoehe.Vorjahr - data_nv_tmp$Hoehe.Vorvorjahr
 data_nv_tmp$growth_mean <-  (data_nv_tmp$growth1 + data_nv_tmp$growth2) / 2 
@@ -80,9 +83,14 @@ for (i in 1:nrow(table_ets_height)) {
 
 
 ##  BOTH PLOTS  ----------------------------------------------------------------
-# ETS
+
 tmp <- nrow(data_nv_tmp %>% filter(Hoehe >= 500))
 tmp <- paste0(tmp, " Eschen über 500 mm wurden ausgeschlossen")
+
+tmp2 <- nrow(data_nv_tmp %>% filter(Hoehe <= 500))
+tmp2 <- paste0("Anzahl [total = ", tmp2, "]")
+
+# ETS
 plot_height_ets_distr <- 
   ggplot(data = table_ets_height, aes(x = xmid, y = ratio)) +
   geom_col(aes(y = n_ash)) +
@@ -111,11 +119,11 @@ plot_height_growth_distr <-
   geom_col(aes(y = n_ash)) +
   geom_point(aes(y = growth_mean * 5)) +
   scale_y_continuous(
-    name = "n",
+    name = tmp2,
     # Add a second axis and specify its features
     sec.axis = sec_axis(trans = ~ . / 5,
                         name = "Zuwachs [mm]")) +
-  labs(title = "Eschen nach Hoehenklassen und jeweiliger letzter Zuwachs",
+  labs(title = "Eschen nach Hoehenklassen und jeweiliger Hoehenzuwachs",
        subtitle = tmp,
        x = ("Hoehe [mm]"))
 plot_height_growth_distr

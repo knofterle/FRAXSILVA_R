@@ -11,7 +11,8 @@ source(file = "SCRIPT/IBF/LOAD_NV.R", encoding = "UTF-8")
 # data_nv
 # 
 ## NOTES -----------------------------------------------------------------------
-
+# Ich kann gerade nicht mehr erkennen worin der Unterschied zwischen ets_height_nv
+# und ets_height_nv2 besteht, die sind sich ziemlich ähnlich.
 
 ## HEIGHT DISTRIBUTION ASH  ----------------------------------------------------
 plot_height_distr <- 
