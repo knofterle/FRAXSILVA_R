@@ -51,7 +51,10 @@ n_ets_neu <- tmp %>%
 n_ets_lebend <- tmp %>% 
 	filter(!is.na(ETS.lebend)) %>% 
 	nrow()
-
+n_sonst <- tmp %>% 
+	filter(!is.na(Sonstige.Gruende.tot)) %>%
+	nrow()
+				 	
 n_ets_gesamt_t <- tmp %>%
 	filter(ETS == T) %>%
 	filter(
@@ -60,6 +63,7 @@ n_ets_gesamt_t <- tmp %>%
 			ETS.lebend.terminal
 	) %>%
 	nrow()
+
 
 
 n_ets_alt_t <- tmp %>% 
@@ -71,6 +75,9 @@ n_ets_neu_t <- tmp %>%
 n_ets_lebend_t <- tmp %>% 
 	filter(ETS.lebend.terminal == T) %>% 
 	nrow()
+n_sonst_t <- tmp %>% 
+	filter(Sonstige.Gruende.tot.terminal == T) %>% 
+	nrow()
 
 tmp <-
 	tibble(
@@ -79,13 +86,16 @@ tmp <-
 			"ETS gesamt",
 			"Abgestorbener Trieb ETS",
 			"Abgestorbener Trieb ETS neu",
-			"ETS Nekrosen"
+			"ETS Nekrosen",
+			"Sonstige Guende"
 		),
-		"Anzahl" = c(n_ash, n_ets_gesamt, n_ets_alt, n_ets_neu, n_ets_lebend),
+		"Anzahl" = c(n_ash, n_ets_gesamt, n_ets_alt, n_ets_neu, n_ets_lebend, n_sonst),
 		"Terminaltrieb betroffen" = c(NA, n_ets_gesamt_t, n_ets_alt_t,
-																	n_ets_neu_t, n_ets_lebend_t)
+																	n_ets_neu_t, n_ets_lebend_t, 
+																	n_sonst_t)
 	)
 write.csv(tmp, file = "EXPORT/IBF/tables/abstract_ets.csv", fileEncoding = "UTF-8")
+tmp
 
 ```
 
