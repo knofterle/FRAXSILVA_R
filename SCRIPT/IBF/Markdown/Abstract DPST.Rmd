@@ -65,6 +65,13 @@ n_ets_gesamt_t <- tmp %>%
 	nrow()
 
 
+n_t <- 	tmp %>%
+	filter(
+		ETS.abgestorben.frisch.terminal |
+			ETS.abgestorben.alt.terminal |
+			ETS.lebend.terminal | Sonstige.Gruende.tot.terminal
+	) %>%
+	nrow()
 
 n_ets_alt_t <- tmp %>% 
 	filter(ETS.abgestorben.alt.terminal == T) %>% 
@@ -90,7 +97,7 @@ tmp <-
 			"Sonstige Guende"
 		),
 		"Anzahl" = c(n_ash, n_ets_gesamt, n_ets_alt, n_ets_neu, n_ets_lebend, n_sonst),
-		"Terminaltrieb betroffen" = c(NA, n_ets_gesamt_t, n_ets_alt_t,
+		"Terminaltrieb betroffen" = c(n_t, n_ets_gesamt_t, n_ets_alt_t,
 																	n_ets_neu_t, n_ets_lebend_t, 
 																	n_sonst_t)
 	)
