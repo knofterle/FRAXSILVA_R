@@ -12,7 +12,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 library(dplyr)
-source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global())
+source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R", local = knitr::knit_global(), encoding = "UTF-8")
 ```
 
 ## Grobe Zahlen zu den markierten Eschen
@@ -240,7 +240,7 @@ plot <-
 	)) +
 	geom_point(aes(x = hist_step, y = growth*0.5, color = ETS), size = 2) +
 	geom_smooth(aes(x = hist_step, y = growth*0.5, color = ETS), method = "gam") +
-	scale_y_continuous(name = "Anzahl [total = 1491]",
+	scale_y_continuous(name = "Anzahl [total = 1461]",
 										 sec.axis =  sec_axis(trans = ~ 2*.,
 										 										 name = "Durchschnittl. Zuwachs [mm pro Jahr]"),
 										 limits = c(-50, 250)) +
@@ -260,12 +260,12 @@ plot <-
 		x = 200,
 		y = 150,
 		hjust = 0,
-		label = "> filter (Hoehe < 500)",
+		label = "> filter (Höhe < 500)",
 		size = 4
 	)
-# ggsave(plot = plot, 
-# 			 filename = "EXPORT/IBF/figures/Hoehenverteilung_Zuwachs_ETS.pdf",
-# 			 units = "mm", width = 300, height = 150)
+ggsave(plot = plot, 
+ 			 filename = "EXPORT/Goe_Lau/figures/Hoehenverteilung_Zuwachs_ETS_marked.pdf",
+ 			 units = "mm", width = 300, height = 150)
 plot
 
 ```

@@ -6,7 +6,7 @@
 
 ## REQUIRES --------------------------------------------------------------------
 source(file = "SCRIPT/Goe_Lau/Combine_NV_2021_2022.R")
-source(file = "SCRIPT/IBF/LOAD_NV.R")
+source(file = "SCRIPT/IBF/LOAD_NV.R", encoding = "UTF-8")
 # 
 # data_nv
 # nv 
