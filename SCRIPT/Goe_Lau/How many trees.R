@@ -19,6 +19,11 @@ library(dplyr)
 ## HOW MANY TREES PER PLOT  ----------------------------------------------------
 # This is super messy and I only want to keep it until I tidied up the whole 
 # mess with ansitz polter und lau
+# 
+# Wenn ich das richtig verstehe ist das hier wirklich nicht mehr aktuell, es 
+# diente unter anderem dazu die Tabellen zu produzieren die es fürs Finden der
+# markierten Eschen 2022 brauchte. 
+# Und ein paar längst veraltete Analysen.
 
 
 

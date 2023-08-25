@@ -12,29 +12,33 @@ source(file = "SCRIPT/NV_combined/Combine_NV.R")
 ## LIBRARYS --------------------------------------------------------------------
 library(dplyr)
 ## NOTES -----------------------------------------------------------------------
-
+# Das hier dient dazu den Verbiss auf allen Flaechen ein bisschen besser kennen zu
+# lernen. 
 
 ## STEP 1  ---------------------------------------------------------------------
 str(nv_all)
+tmp <- nv_all %>% 
+	filter(Baumart_kurz == "GEs")
 
-nv_all$Verbiss <-
-	apply(subset(x = nv_all, select = c(Verbiss.tot, Verbiss.lebend)),
+tmp$Verbiss <-
+	apply(subset(x = tmp, select = c(Verbiss.tot, Verbiss.lebend)),
 				1,
 				sum,
 				na.rm = T)
 
-nv_all$Verbiss.OI <- nv_all$Verbiss != 0
+tmp$Verbiss.OI <- tmp$Verbiss != 0
 
-table(nv_all$Verbiss.OI, nv_all$ETS) 
+table(tmp$Verbiss.OI, tmp$ETS) 
 # 			FALSE  TRUE
-# FALSE 22920   758 0.039
-# TRUE    788   143
-#       0.038				
-# Die Kombination aus beiden kommt auffaellig haeufig vor, etwa 4 mal so haeufig
-# theoretisch wäre etwa 35 zu erwarten. Aber naja was heißt das schon.
+# FALSE 12072   767 0.064
+# TRUE    697   56
+#       0.058			
+# Die Kombination aus beidem kommt ziemlich exakt so oft vor wie zu erwarten 
+# gewesen wäre. 12072*0.058*0.064 ergibt 45. Und wir liegen bei 56, das ist 
+# relativ nah dran. 
 
-table(nv_all$ETS)
-table(nv_all$Verbiss.)
+table(tmp$ETS)
+table(tmp$Verbiss.OI)
 
 ## TIDY UP  --------------------------------------------------------------------
 rm()

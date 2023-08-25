@@ -10,6 +10,7 @@
 # 
 # The data and variables from the previous scripts can be listed here
 source(file = "SCRIPT/IBF/AGGREGATED TABLES NV.R", encoding = "UTF-8")
+source(file = "SCRIPT/IBF/LOAD_DATA_TREE.R", encoding = "UTF-8")
 
 
 ## LIBRARYS --------------------------------------------------------------------
@@ -24,6 +25,12 @@ require(ggplot2)
 # 
 # Weil die Formel ja auch mehr oder weniger für eine Art Überschirmung genutzt 
 # werden kann, habe ich das ganze auch auf alle Baumarten angewendet.
+# 
+# Die Idee war, einen Idex zu erstellen, der für jeden Plot die X nächsten Eschen
+# sucht und deren Abstand und BHD irgendwie zu einer Zahl verrechnet. Dieser Index
+# wird dann mit ETS Geschehen oder so verglichen.
+# 
+
 
 
 ## INDEX ERSTELLEN  ---------------------------------------------------------------------
@@ -61,15 +68,17 @@ for (i in 1:nrow(tmp)) {
 		filter(id_baumart == 120)
 	ash_trees$dist_x <- ash_trees$x_utm32 - tmp$x[i]
 	ash_trees$dist_y <- ash_trees$y_utm32 - tmp$y[i]
-	ash_trees$dist <- sqrt(ash_trees$dist_x^2 + ash_trees$dist_y^2)
+	ash_trees$dist <- sqrt(ash_trees$dist_x^2 + ash_trees$dist_y^2) # Abstand wird berechnet
 	ash_trees <- ash_trees %>% 
 		arrange(dist)
-	nearest <- ash_trees [1:10,]
+	nearest <- ash_trees [1:10,] # Die nächsten 10 werden genommen
 	nearest <- nearest %>% 
-		mutate(value1  = 1/(dist / BHD_CM)) %>% 
+		mutate(value1  = 1/(dist / BHD_CM)) %>% # Es werden drei Varianten berechnet
 		mutate(value2  = dist) %>% 
-		mutate(value3 = 1/(dist / BHD_CM))
-	value1 <- sum(nearest$value1)
+		mutate(value3 = 1/(dist / BHD_CM)) # Je größer der Value ist desto näher und 
+	# dicker ist die Esche
+	# 
+	value1 <- sum(nearest$value1) # Mit zehn bis drei nächste Eschen
 	value2 <- sum(nearest$value2[1:5])
 	value3 <- sum(nearest$value3[1:3])
 	tmp$value1[i] <- value1
@@ -107,12 +116,12 @@ for (i in 1:nrow(tmp)) {
 tmp2 <- tmp %>% 
 	filter(n_ash != 0) %>% 
 	filter(ets_ratio <= .5) %>% 
-	filter(value >= 0.01) %>%
-	filter(value <= 100) %>% 
+	filter(value1 >= 0.01) %>%
+	filter(value1 <= 100) %>% 
 	filter(ets_ratio != 0) 
 str(tmp2)
 ggplot(data = tmp2) +
-	geom_point(aes(x = value, y = ets_ratio, size = n_ash, alpha = n_ash))
+	geom_point(aes(x = value1, y = ets_ratio, size = n_ash, alpha = n_ash))
 
 tmp2 <- tmp %>% 
 	filter(n_ash != 0) %>% 
@@ -132,8 +141,8 @@ tmp2 <- tmp %>%
 	filter(ets_ratio != 0) 
 str(tmp2)
 ggplot(data = tmp2, aes(x = value3, y = ets_ratio, size = n_ash, alpha = n_ash)) +
-	geom_point() 
-#smooth()
+	geom_point() + 
+	geom_smooth()
 
 tmp2 <- tmp %>% 
 	filter(light_value >= 0.1, light_value <= 100)
@@ -152,7 +161,6 @@ str(tmp2)
 ggplot(data = tmp2, aes(x = value1, y = n_ash)) +
 	geom_point() +
 	geom_smooth()
-#smooth()
 
 
 
