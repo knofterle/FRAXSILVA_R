@@ -11,9 +11,12 @@
 # source()
 # 
 # The data and variables from the previous scripts can be listed here
+source(file = "SCRIPT/1000ETS/load_data_1000.R")
+
+
 
 ## NOTES -----------------------------------------------------------------------
-
+# Hier funktioniert gar nichts mehr  october '23
 
 ## STEP 1  ---------------------------------------------------------------------
 

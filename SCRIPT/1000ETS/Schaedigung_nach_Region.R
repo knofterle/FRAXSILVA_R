@@ -11,7 +11,7 @@ source(file = "SCRIPT/1000ETS/load_data_1000.R")
 
 ## NOTES -----------------------------------------------------------------------
 
-
+# Die Darstellung funktioniert aus irgendwelchen Gründen nicht mehr Oktober '23
 
 
 ## BEARBEITUNG DES DATENSATZES -------------------------------------------------

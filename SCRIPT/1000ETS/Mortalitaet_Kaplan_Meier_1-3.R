@@ -16,7 +16,11 @@ source(file = "SCRIPT/1000ETS/load_data_1000.R")
 # Tote_1000
 
 ###### NOTES -------------------------------------------------------------------
-
+# Ich habe Mortalitaet Kaplan Meier 1_4 hier mit eigefügt. 
+# Der Code ist im Grunde gleich, man muss nur an wenigen Stellen die Zahlen 
+# ändern, dafür zwei Skripte zu behalten erschien unnötig. Es gibt drei Stellen
+# mit HIER markiert an denen Änderungen für 1-4 eingetragen werden müssten. Bei 
+# Bedarf.
 
 ###### SORTIEREN IN TOT ODER NICHT UND ZEITPUNKT -------------------------------
 
@@ -28,7 +32,9 @@ source(file = "SCRIPT/1000ETS/load_data_1000.R")
 # mort_status$status = 1 bedeutet das Ereignis (tot) ist eingetreten
 # 
 # # Als an ETS gestorben werden alle Eschen definiert, die vor einer 8 bei 5 
-# oder 4 gestanden haben 
+# oder 4 gestanden haben. Es kann aber auch nur die Stufe 5 berücksichtigt 
+# werden, in dem Fall muss im Folgenden an einigen Stellen Code angepasst werden.
+# Die Stellen sind mit HIER markiert
 # 
 # Die 9 in den ets stufen kann nur vorkommen wenn danach keine anderen Stufen 
 # mehr festgestellt wurden. Das entspricht daher auch einer zensierung.
@@ -47,11 +53,11 @@ for (row in 1:nrow(data_1000)) {
   lock <- 0
   if (8 %in% ets) { 
     pos <- first(which(ets == 8))
-    if (ets[pos-1] %in% c(4,5)) { # 3 2 1 4 8 NA NA
+    if (ets[pos-1] %in% c(4,5)) { # 3 2 1 4 8 NA NA             ## HIER
       mort_status$status[row] <- 1
       lock <- lock +1
     }
-    if (ets[pos-1] %in% c(1:3,17)) { # 3 1 2 1 8 NA NA
+    if (ets[pos-1] %in% c(1:3,17)) { # 3 1 2 1 8 NA NA           ## HIER
       mort_status$status[row] <- 0
       lock <- lock +1
     }
@@ -70,7 +76,7 @@ for (row in 1:nrow(data_1000)) {
   # 5 oder 8 enthalten ist, wurde der Baum in dieser Zeit nicht mehr beobachtet
   # und wird entsprechend des Alters zu der Zeit zensiert. 
   # Alle anderen die keine NAs enthalten und vorher noch keinen status bekommen 
-  # haben entsprechend dort auch nur NA enthalten muessen folglich im letzten 
+  # haben, entsprechend dort auch nur NA enthalten, muessen folglich im letzten 
   # Jahr immer noch leben. 
   if (any(is.na(ets))) {
      if (ets[first(which(is.na(ets)))-1] %in% c(5,8)) { # 3 1 3 2 5.2 NA
@@ -90,6 +96,7 @@ for (row in 1:nrow(data_1000)) {
   
   mort_status$edvid[row] <- data_1000$edv_id[row]
   mort_status$bnr[row]   <- data_1000$bnr[row]
+  mort_status$baum_id[row]   <- data_1000$baum_id[row]
   mort_status$age[row]   <- data_1000$alt_ets13[row] + pos -1
   mort_status$age2013 [row] <- data_1000$alt_ets13 [row]
   mort_status$observ_time[row] <- pos
@@ -142,7 +149,7 @@ for (i in 1:(nrow(kp)-1)) {
 
 ###### DARSTELLUNG STERBERATE --------------------------------------------------
 
-pdf(file = "EXPORT/1000ETS/FIGURES/Kaplan_Meier_1-3.pdf",
+pdf(file = "EXPORT/1000ETS/FIGURES/Kaplan_Meier_1-3.pdf",           ### HIER
     width=14, height=7, paper='special')
 
 par(mar = c(5, 5, 3, 5))
