@@ -1,6 +1,6 @@
 ################ MORTALITAET KAPLAN MEIER 1-3 ###################################
 # J.Osewold
-# 11.05.22
+# 12.10.23
 ##### WORKS WELL #####
 ################################################################################
 
@@ -40,11 +40,23 @@ source(file = "SCRIPT/1000ETS/load_data_1000.R")
 # mehr festgestellt wurden. Das entspricht daher auch einer zensierung.
 # Wenn zwischendurch eine Messung ausgefallen ist wurde statt dessen eine 17 
 # eingefügt. z.B 1 3 4 17 17 2 1 oder 1 3 4 9 9 aber NIE 1 3 4 9 9 2 1 
+# 
+# Es wurde außerdem die Spalte "reason" eingefügt. Um die Gründe für den Ausfall 
+# etwas besser klassifizieren zu können. Im Grunde bekommt dabei jede der "if"
+# cases einen reason. Diese werden am Ende der Schleife in die mort_status Tabelle
+# eingetragen und dann auf null gesetzt.
+# 
+# Die Position in pos ist folgendermaßen codiert: 1 = 2013, 10 = 2022
+# 2023 wurden keine Daten mehr aufgenommen. 2013 gibt es zwar 5er aber keine 
+# Spalte tot_2013. D.h. alle Eschen die 2013 mit 5 gefunden wurden sind maximal das
+# Jahr danach gestorben. Aber auch das häufig nicht. Die Datenaufnahme war beschissen.
+# 
 
 mort_status <- data.frame(matrix(nrow = nrow(data_1000), ncol = 6))
 colnames(mort_status) <- c("edvid", "bnr", "age2013", "age", 
                                   "observ_time", "status")
 error <- c()
+reason <- 0
 
 for (row in 1:nrow(data_1000)) {
   ets <- ETSStufen_1000[row,]
@@ -56,21 +68,25 @@ for (row in 1:nrow(data_1000)) {
     if (ets[pos-1] %in% c(4,5)) { # 3 2 1 4 8 NA NA             ## HIER
       mort_status$status[row] <- 1
       lock <- lock +1
+      reason <- "48"
     }
     if (ets[pos-1] %in% c(1:3,17)) { # 3 1 2 1 8 NA NA           ## HIER
       mort_status$status[row] <- 0
       lock <- lock +1
+      reason <- "18"
     }
   } 
   if (9 %in% ets) { # 3 1 3 9 9 9 NA NA 
     pos <- first(which(ets == 9))
     mort_status$status[row] <- 0
     lock <- lock +1
+    reason <- "9_"
   } 
   if (2 %in% dead) { # 3 1 3 5 5.2 NA 
     pos <- first(which(dead == 2)) + 1
     mort_status$status[row] <- 1
     lock <- lock +1
+    reason <- "52"
   } 
   # Hier werden alle gefiltert, die irgendwann NAs enthalten, wenn davor keine 
   # 5 oder 8 enthalten ist, wurde der Baum in dieser Zeit nicht mehr beobachtet
@@ -80,17 +96,20 @@ for (row in 1:nrow(data_1000)) {
   # Jahr immer noch leben. 
   if (any(is.na(ets))) {
      if (ets[first(which(is.na(ets)))-1] %in% c(5,8)) { # 3 1 3 2 5.2 NA
-       
+       # Suche die erste Stelle die NA hat und schau in die Position davor, ist 
+       # der Inhalt gleich 5 oder 8? -> Do nothing
      } else { # 3 1 2 NA NA NA 
        pos <- first(which(is.na(ets)))
        mort_status$status[row] <- 0
        lock <- lock +1
+       reason <- "NA"
      }
   } else { # 3 1 2 4 1 3 2 
       if (is.na(mort_status$status[row])) {
         pos <- 10 # fuer das jahr 2021
         mort_status$status[row] <- 0
         lock <- lock +1
+        reason <- "alive"
       }
   }
   
@@ -100,7 +119,10 @@ for (row in 1:nrow(data_1000)) {
   mort_status$age[row]   <- data_1000$alt_ets13[row] + pos -1
   mort_status$age2013 [row] <- data_1000$alt_ets13 [row]
   mort_status$observ_time[row] <- pos
-
+  mort_status$reason[row] <- reason
+  
+  reason <- 0
+  
   # Dies dient lediglich der einfacheren Fehlersuche, die Zeilen werden 
   # angezeigt und es wird nach doppelten Fällen gefiltert
   print(pos)

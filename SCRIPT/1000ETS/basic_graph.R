@@ -10,13 +10,14 @@
 source(file = "SCRIPT/1000ETS/load_data_1000.R")
 # 
 ## NOTES -----------------------------------------------------------------------
-
+# Das sind lauter Diagramme die alle nicht wirklich eine Aussage haben, aber 
+# zumindest funktionieren. Die stammen noch aus der explorativen Phase.
 
 ## ETS-STUFEN PRO JAHR --------------------------------------------------------
 
 pdf(file = "EXPORT/1000ETS/FIGURES/ETS Stufen pro Jahr.pdf",
     width=10, height=5, paper='special')
-boxplot(ETSStufen_1000_clean, names = c(as.character(2013:2021)), 
+boxplot(ETSStufen_1000_clean, names = c(as.character(2013:2022)), 
         main = "ETS Stufen pro Jahr", ylab = "ETS-Stufe", 
         xlab = "Jahr der Aufnahme")
 dev.off()
