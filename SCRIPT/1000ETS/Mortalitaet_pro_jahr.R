@@ -16,6 +16,7 @@ require(ggplot2)
 # Es wird additiv für jedes Jahr zusammen gefasst wie viele Eschen an welchen
 # Gründen gestorben sind. Dabei werden absolut alle die eine Säge gesehen haben
 # als Entnahmen eingetragen.
+# Das ganze wird als Barplot dargestellt.
 
 ## CREATE NEW TABLE  ---------------------------------------------------------------------
 # Die Tabelle sieht folgendermaßen aus:
@@ -51,6 +52,11 @@ for (i in 2:10) {
 
 ## CREATE BarPlot  -----------------------------------------------------------
 
+# Hier musste die Tabelle für ggplot2 nochmal komplett durcheinander geworfen 
+# werden, das macht sie ziemlich hässlich, daher nur tmp. Hauptsächlich werden
+# alle Messwerte hintereinander gehängt und der reason wird als eine einzige 
+# Spalte hinzugefügt.
+# 
 tmp <- data.frame(
 	year = mort_year$year,
 	y = c(mort_year$tot_entnahme, mort_year$tot_natur, mort_year$lebend, mort_year$zensiert),
@@ -62,15 +68,20 @@ plot <- ggplot(data = tmp) +
 	geom_col(aes(x = year, y = y, fill = reason)) +
 	scale_fill_manual(values=c("#333333", "#666633", "#3399CC", "#006600")) +
 	scale_x_continuous(breaks = c(2013:2022),
-										 labels = as.character(c(2013:2022)))
+										 labels = as.character(c(2013:2022))) +
+	ylab(label = "n")
+
+ggsave(filename = "EXPORT/1000ETS/FIGURES/mort_year.pdf", plot = plot,
+			 width = 14, height = 7)
 	
 plot
 
 ## TIDY UP  --------------------------------------------------------------------
-rm()
+rm(tmp, )
 
 ## OUTPUT ----------------------------------------------------------------------
-# 
+# plot
+# mort_year
 
 
 
