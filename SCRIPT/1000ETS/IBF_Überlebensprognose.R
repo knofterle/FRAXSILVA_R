@@ -1,4 +1,4 @@
-#============================ TITLE ===========================================#
+#======================== Überlebensprognose ===================================#
 # J.Osewold
 # 18.10.2023
 # NEW
@@ -15,19 +15,26 @@ require(ggplot2)
 # Eschen die einmal abgestorben sind verschwinden nicht aus dem Datensatz sondern
 # bleiben für die folgenden Jahre bei "5", sie können aber auf "6" wechseln. 
 # Das ist anders als in meinem Datensatz. Daher musste ich noch Substraktionen 
-# in die Kalkulationen einbauen.
+# in die Kalkulationen einbauen. Leider haben Substraktionen nicht geklappt.
+# Daher musste es ein relativ komplizierter Weg über die Baum_IDs sein.
 
-## STEP 1  ---------------------------------------------------------------------
+# Der Code orientiert sich an der Überlebensprognose für die 1000ETS Daten.
+
+# Die Idee ist dass eine Tabelle erstellt wird in der für jede Schadstufe berechnet
+# wird wie viele Eschen im nächsten und wie viele im übernächsten Jahr drauf gehen
+# Die Spalten sind nicht addiert. 
+
+## READ DATA  ---------------------------------------------------------------------
 ibf <- read.csv2(file = "DATA/RAW/IBF/20230919_ibf_data.csv", encoding = "UTF-8")
 str(ibf)
 
-## STEP 1  ---------------------------------------------------------------------
+## CALCULATE  ---------------------------------------------------------------------
 
 prognose_ibf <- data.frame(
 	Schadstufe_y0 = c(1, 2, 3, 4),
-	n_y0 = c(0),
-	abgestorben_y1 = c(0),
-	abgestorben_y2 = c(0),
+	n_y0 = c(0), # Alle Eschen der Schadstufe 2021
+	abgestorben_y1 = c(0), # tot gefunden 2022
+	abgestorben_y2 = c(0), # tot gefunden 2023
 	umgefallen_y1 = c(0),
 	umgefallen_y2 = c(0)
 )
@@ -38,7 +45,8 @@ for (i in 1:4) {
 		ibf %>% filter(Season_Jahr == "Sommer_2021" &
 									 	Kronenzustand == as.character(i)) %>%
 		select(baum_id)
-	tmp <- tmp$baum_id
+	# Filter alle Eschen die 2021 die Schadstufe i haben 
+	tmp <- tmp$baum_id # Das hier war nötig damit im folgenden ein Vektor verwendet wird
 	
 	tmp2 <- ibf %>%
 		filter(Season_Jahr == "Sommer_2022" &
@@ -96,10 +104,10 @@ str(prognose_ibf)
 prognose_ibf
 
 ## TIDY UP  --------------------------------------------------------------------
-rm()
+rm(tmp, tmp2, tmp3, tmp_re)
 
 ## OUTPUT ----------------------------------------------------------------------
-# 
+# prognose_ibf
 
 
 
