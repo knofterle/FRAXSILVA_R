@@ -114,14 +114,16 @@ plot <-
 		color = "black",
 		size = 2
 	) +
-	geom_smooth(aes(
-		x = hist_step_point,
-		y = ETS_ratio * 5,
-		color = Versuch,
-		fill = Versuch
-	),
-	alpha = 0.2,
-	method = "lm") +
+	geom_smooth(
+		aes(
+			x = hist_step_point,
+			y = ETS_ratio * 5,
+			color = Versuch,
+			fill = Versuch
+		),
+		alpha = 0.2,
+		method = "gam"
+	) +
 	scale_y_continuous(name = paste0("Anzahl [total = ", 
 																	 nrow(tmp), 
 																	 "]"),
@@ -202,7 +204,7 @@ plot <-
 	color = "black",
 	fill = "gray",
 	alpha = 0.2,
-	method = "lm") +
+	method = "gam") +
 	scale_y_continuous(name = "Anzahl [total = 10887]",
 										 sec.axis =  sec_axis(trans = ~ . / 5,
 										 										 name = "ETS Anteil [%]")) +
