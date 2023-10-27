@@ -13,7 +13,7 @@
 # geloest werden sollten.
 
 ### 1. EINLESEN DER DATEN ------------------------------------------------------
-data_1000 <- read.csv2(file = "DATA/RAW/1000ETS/ets_daten_osw_veraendert_20221026.csv",
+data_1000 <- read.csv2(file = "DATA/RAW/1000ETS/ets_daten_osw_veraendert_20231027.csv",
                   stringsAsFactors = F, dec = ".", encoding = "UTF-8") 
 
 ### 2. BEREINIGUNG -------------------------------------------------------------
