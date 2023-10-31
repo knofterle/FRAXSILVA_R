@@ -39,7 +39,6 @@ ETS_tmp$`2020`[data_1000$tot_20 == 2] <- NA
 ETS_tmp$`2021`[data_1000$tot_21 == 2] <- NA
 ETS_tmp$`2022`[data_1000$tot_22 == 2] <- NA
 
-Zuwachs <- Zuwachs [data_1000$Durchmesser.problematisch.bzw..raus.lassen == FALSE, ]
 ETS_tmp <- ETS_tmp [data_1000$Durchmesser.problematisch.bzw..raus.lassen == FALSE, ]
 D_tmp <- D_tmp [data_1000$Durchmesser.problematisch.bzw..raus.lassen == FALSE, ]
 # Ich habe erst angefangen, einzelne Werte zu suchen und anzupassen und dann
@@ -95,17 +94,17 @@ Zuwachs_Schadstufe$Durchmesser_grp[Zuwachs_Schadstufe$Durchmesser > 500] <- 3
 Zuwachs_Schadstufe$Durchmesser_grp <- as.factor(Zuwachs_Schadstufe$Durchmesser_grp)
 
 # Alternative:
-c <- table(Zuwachs_Schadstufe$Durchmesser_grp)
-levels(Zuwachs_Schadstufe$Durchmesser_grp) <-
-	c(paste0("<= 200 \n Durchmesser [mm] \n n = ", c[1]),
-		paste0("200 - 500 \n Durchmesser [mm] \n n = ", c[2]),
-		paste0("> 500 \n Durchmesser [mm] \n n = ", c[3]))
+# c <- table(Zuwachs_Schadstufe$Durchmesser_grp)
+# levels(Zuwachs_Schadstufe$Durchmesser_grp) <-
+# 	c(paste0("<= 200 \n BHD [mm] \n n = ", c[1]),
+# 		paste0("200 - 500 \n BHD [mm] \n n = ", c[2]),
+# 		paste0("> 500 \n BHD [mm] \n n = ", c[3]))
 
 
 levels(Zuwachs_Schadstufe$Durchmesser_grp) <-
-	c("<= 200 \n Durchmesser [mm]",
-		"200 - 500 \n Durchmesser [mm]",
-		"> 500 \n Durchmesser [mm]")
+	c("<= 200 \n BHD [mm]",
+		"200 - 500 \n BHD [mm]",
+		"> 500 \n BHD [mm]")
 
 Zuwachs_Schadstufe <-
 	Zuwachs_Schadstufe[!is.na(Zuwachs_Schadstufe$Durchmesser_grp), ]
@@ -121,12 +120,14 @@ plot <- ggplot(data = Zuwachs_Schadstufe) +
 							# bw = bandwith, bei dem default hat er nur bei Schadstufe 4 ein ZickZack immer
 							# zu den 0.5er Werten gemacht.
 							scale = "count") +
-	scale_fill_discrete(type = c("#a2c617", "#ffdd00", "#f8a800", "#e5420f")) +
+	scale_fill_discrete(breaks = c("4", "3", "2", "1"), 
+											type = c("#a2c617", "#ffdd00", "#f8a800", "#e5420f")) +
+	scale_x_continuous(name = "Zuwachs [BHD in mm]") +
 	coord_cartesian(xlim = c(-10, 15)) +
 	facet_grid(cols = vars(Durchmesser_grp)) +
 	theme_bw()
 plot
-plot + ggsave(filename = "EXPORT/1000ETS/FIGURES/Zuwachs_ETS.pdf", units = "mm",
+ggsave(plot = plot, filename = "EXPORT/1000ETS/FIGURES/Zuwachs_ETS.pdf", units = "mm",
 							width = 200, height = 120)
 
 
