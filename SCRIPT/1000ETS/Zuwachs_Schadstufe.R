@@ -112,23 +112,39 @@ Zuwachs_Schadstufe <-
 
 ## GRAPH  --------------------------------------------------------------------
 plot <- ggplot(data = Zuwachs_Schadstufe) +
-	geom_vline(aes(xintercept = 0)) +
-	geom_violin(aes(x = Zuwachs,
+#	geom_vline(aes(xintercept = 0)) +
+	geom_violin(data = Zuwachs_Schadstufe,
+							aes(x = Zuwachs,
 									y = Schadstufe,
 									fill = Schadstufe),
 							bw = "bcv",
 							# bw = bandwith, bei dem default hat er nur bei Schadstufe 4 ein ZickZack immer
 							# zu den 0.5er Werten gemacht.
-							scale = "count") +
+							scale = "count",
+							draw_quantiles = .5) +
 	scale_fill_discrete(breaks = c("4", "3", "2", "1"), 
 											type = c("#a2c617", "#ffdd00", "#f8a800", "#e5420f")) +
-	scale_x_continuous(name = "Zuwachs [BHD in mm]") +
-	coord_cartesian(xlim = c(-10, 15)) +
+	scale_x_continuous(name = "Zuwachs BHD [mm]") +
+	coord_cartesian(xlim = c(-0, 14), expand = F) +
 	facet_grid(cols = vars(Durchmesser_grp)) +
-	theme_bw()
+	theme_bw() +
+	theme(legend.position = "none")
 plot
-ggsave(plot = plot, filename = "EXPORT/1000ETS/FIGURES/Zuwachs_ETS.pdf", units = "mm",
-							width = 200, height = 120)
+ggsave(
+	plot = plot,
+	filename = "EXPORT/1000ETS/FIGURES/Zuwachs_ETS.pdf",
+	units = "mm",
+	width = 150,
+	height = 100
+)
+ggsave(
+	plot = plot,
+	filename = "EXPORT/1000ETS/FIGURES/Zuwachs_ETS.png",
+	units = "mm",
+	width = 150,
+	height = 100,
+	dpi = 600
+)
 
 
 ## TIDY UP  --------------------------------------------------------------------
