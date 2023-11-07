@@ -246,8 +246,8 @@ ggsave(
 
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(table_ets_hist, table_ets_hist_gl, table_ets_hist_ibf, tmp, plot, nv_gl, 
-	 steps, nv_all, nv_ibf, df)
+rm(table_ets_hist, table_ets_hist_gl, table_ets_hist_ibf, tmp, plot, 
+	 steps, df)
 
 ## OUTPUT ----------------------------------------------------------------------
 # plot at EXPORT/Combined/figures/ETS_Anteil_Hoehe.pdf
