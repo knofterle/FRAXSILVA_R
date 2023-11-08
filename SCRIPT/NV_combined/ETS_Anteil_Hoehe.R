@@ -23,7 +23,7 @@ library(ggplot2)
 
 ## DEFINE HEIGHTCLASSES AND MAXIMA ---------------------------------------------
 
-maxHoehe <- 500
+maxHoehe <- 600
 
 heightStep <- 10
 
@@ -56,6 +56,7 @@ tmp <-
 
 ## SUMMARIZE DATA BY HEIGHT GROUPS  --------------------------------------------
 steps <- seq(from = 0, to = maxHoehe, by = heightStep)
+
 table_ets_hist_gl <-
 	tmp %>%
 	filter(Versuch == "Goe_Lau") %>% 
@@ -95,8 +96,29 @@ table_ets_hist_ibf <-
 	mutate(hist_step = as.numeric(as.character(hist_step))) %>% 
 	mutate(hist_step_point = hist_step - 2)
 
-
 table_ets_hist <- rbind(table_ets_hist_gl, table_ets_hist_ibf)
+
+# Ich hatte ursprünglich die beiden Versuche entwedet 50:50 oder 50:12,5 
+# zusammenfließen lassen. Aber das ist natürlich Unsinn. Die Eschen müssen pro
+# Hoehenklasse zusammen geführt werden und innerhalb der Klasse dann mit den 
+# Gewichten nach der Häufigkeit. Der einfachste Weg das zu erreichen ist, die 
+# Gruppierung und Berechnung pro Höhenklasse nochmal durch zuführen, dieses Mal
+# für alle Flächen zusammen.
+# 
+table_ets_hist_comb <- 
+	tmp %>% 
+	#	filter(Versuch == "IBF") %>% 
+	mutate(hist_step = cut(
+		x = Hoehe,
+		breaks = steps,
+		labels = steps[1:(maxHoehe/heightStep)] + 7
+	))  %>% 
+	group_by(hist_step, .drop = F) %>% 
+	summarise(n = n(), ETS_ratio = sum(ETS, na.rm = T)/ n() * 100) %>% 
+	mutate(Versuch = "Comb") %>% 
+	mutate(hist_step = as.numeric(as.character(hist_step))) %>% 
+	mutate(hist_step_point = hist_step - 2)
+
 
 ## GGPLOT gl ibf getrennt  ---------------------------------------------------------------------
 plot <-
@@ -167,28 +189,6 @@ ggsave(
 
 ## GGPLOT gl ibf kombiniert  ---------------------------------------------------------------------
 
-# Ab hier werden die beiden ETS Anteile kombiniert
-
-table_ets_combined_hist <- table_ets_hist %>% 
-	filter(Versuch == "IBF") %>% 
-	select(ETS_ratio, hist_step_point)
-# Der Filter Versuch ist nur dazu da die hälfte der Tabelle zu exportieren
-
-# An dieser Stelle gibt es zwei Optionen, entweder ich integriere die goeLau
-# Daten nur mit einem viertel Gewicht oder ich integriere sie voll. Holger 
-# empfiehlt sie komplett rein zu nehmen, aber ich habe dan alten Code 
-# trotzdem mal noch hier gelassen.
-
-# df <-	table_ets_hist %>% filter(Versuch == "IBF") %>% select(ETS_ratio) * 0.5 +
-# 	table_ets_hist %>% filter(Versuch == "Goe_Lau") %>% select(ETS_ratio) * 0.25 * 0.5
-df <-	table_ets_hist %>% filter(Versuch == "IBF") %>% select(ETS_ratio) * 0.5 +
-  table_ets_hist %>% filter(Versuch == "Goe_Lau") %>% select(ETS_ratio) * 0.5
-table_ets_combined_hist$ETS_ratio <- df$ETS_ratio
-# Da gab es wieder eines der üblichen Dataframe zu Vektor Problemen, daher der 
-# Zwischenschritt
-
-
-
 plot <-
 	ggplot(table_ets_hist) +
 	geom_col(aes(x = hist_step,
@@ -197,7 +197,7 @@ plot <-
 							 fill = Versuch),
 					 width = 4) +
 	geom_point(
-		data = table_ets_combined_hist,
+		data = table_ets_hist_comb,
 		aes(x = hist_step_point,
 				y = ETS_ratio * 5),
 		shape =  21,
@@ -206,7 +206,7 @@ plot <-
 		size = 2
 	) +
 	geom_smooth(
-		data = table_ets_combined_hist,
+		data = table_ets_hist_comb,
 		aes(x = hist_step_point,
 		y = ETS_ratio * 5
 	),
@@ -255,8 +255,7 @@ ggsave(
 
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(table_ets_hist, table_ets_hist_gl, table_ets_hist_ibf, tmp, plot, 
-	 steps, df)
+rm(table_ets_hist, table_ets_hist_gl, table_ets_hist_ibf, plot, df)
 
 ## OUTPUT ----------------------------------------------------------------------
 # plot at EXPORT/Combined/figures/ETS_Anteil_Hoehe.pdf

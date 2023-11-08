@@ -218,7 +218,11 @@ nv_2022$Anzahl.Triebe <- as.numeric(nv_2022$Anzahl.Triebe)
 
 # Mit diesem Schnipsel werden die NAs aus den Spalten zum Thema Triebanzahl durch 
 # nullen ersetzt, das erleichtert das Rechnen später ungemein.
-selection <- !is.na(nv_2022$Anzahl.Triebe)
+# Ich hatte zunächst nur Zeilen ausgewählt die ein NA bei "Anzahl der Triebe", 
+# hatten, aber das hat nicht funktioniert, jetzt werden einfach alle NAs in den 
+# besagten Spalten durch 0 ersetzt.
+
+# selection <- is.na(nv_2022$Anzahl.Triebe)
 columns <- which(
 	colnames(nv_2022) %in% c(
 		"ETS.abgestorben.frisch",
@@ -231,9 +235,9 @@ columns <- which(
 	)
 )
 for (i in columns) {
-	tmp <- nv_2022[selection, i]
+	tmp <- nv_2022[ , i]
 	tmp[is.na(tmp)] <- 0
-	nv_2022[selection, i] <- tmp
+	nv_2022[ , i] <- tmp
 }
 
 ###### ADD COLUMN ETS GENERAL --------------------------------------------------

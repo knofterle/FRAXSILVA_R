@@ -238,7 +238,11 @@ nv_2021$Einjaehriger.Saemling[is.na(nv_2021$Einjaehriger.Saemling)] <- F
 
 # Mit diesem Schnipsel werden die NAs aus den Spalten zum Thema Triebanzahl durch 
 # nullen ersetzt, das erleichtert das Rechnen später ungemein.
-selection <- !is.na(nv_2021$Anzahl.Triebe)
+# Ich hatte zunächst nur Zeilen ausgewählt die ein NA bei "Anzahl der Triebe", 
+# hatten, aber das hat nicht funktioniert, jetzt werden einfach alle NAs in den 
+# besagten Spalten durch 0 ersetzt.
+
+# selection <- is.na(nv_2021$Anzahl.Triebe)
 columns <- which(
 	colnames(nv_2021) %in% c(
 		"ETS.abgestorben.frisch",
@@ -246,14 +250,14 @@ columns <- which(
 		"ETS.lebend",
 		"Verbiss.lebend",
 		"Verbiss.tot",
-		"Sonstige.Gruende.tot" # ,
-#		"Aceria.fraxinivora"
+		"Sonstige.Gruende.tot",
+		"Aceria.fraxinivora"
 	)
 )
 for (i in columns) {
-	tmp <- nv_2021[selection, i]
+	tmp <- nv_2021[ , i]
 	tmp[is.na(tmp)] <- 0
-	nv_2021[selection, i] <- tmp
+	nv_2021[ , i] <- tmp
 }
 
 ###### ADD COLUMN ETS GENERAL ------------------------------------------------------
