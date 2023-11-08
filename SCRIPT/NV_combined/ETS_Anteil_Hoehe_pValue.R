@@ -10,7 +10,8 @@
 # 
 # The data and variables from the previous scripts can be listed here
 
-## LIBRARYS --------------------------------------------------------------------
+## LIBRARYS -------------------------------------------------------------------
+require(mgcv)
 
 ## NOTES -----------------------------------------------------------------------
 
@@ -36,6 +37,18 @@ plot(m)
 m <- gam(ETS ~ s(Hoehe), data = tmp, family = binomial)
 summary(m)
 plot(m)
+
+
+n <- gam(ETS ~ Hoehe, data = tmp, family = binomial)
+summary(n)
+plot(n)
+
+tmp2 <- tmp
+tmp2$Hoehe2 <- tmp2$Hoehe^2
+
+n <- gam(ETS ~ Hoehe2, data = tmp2, family = binomial)
+summary(n)
+plot(n)
 
 
 m <- gam(ETS ~ s(Hoehe) + s(FlaechenID, bs = 're'), family = binomial, data = df)

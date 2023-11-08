@@ -174,11 +174,20 @@ table_ets_combined_hist <- table_ets_hist %>%
 	select(ETS_ratio, hist_step_point)
 # Der Filter Versuch ist nur dazu da die hälfte der Tabelle zu exportieren
 
+# An dieser Stelle gibt es zwei Optionen, entweder ich integriere die goeLau
+# Daten nur mit einem viertel Gewicht oder ich integriere sie voll. Holger 
+# empfiehlt sie komplett rein zu nehmen, aber ich habe dan alten Code 
+# trotzdem mal noch hier gelassen.
+
+# df <-	table_ets_hist %>% filter(Versuch == "IBF") %>% select(ETS_ratio) * 0.5 +
+# 	table_ets_hist %>% filter(Versuch == "Goe_Lau") %>% select(ETS_ratio) * 0.25 * 0.5
 df <-	table_ets_hist %>% filter(Versuch == "IBF") %>% select(ETS_ratio) * 0.5 +
-	table_ets_hist %>% filter(Versuch == "Goe_Lau") %>% select(ETS_ratio) * 0.25 * 0.5
+  table_ets_hist %>% filter(Versuch == "Goe_Lau") %>% select(ETS_ratio) * 0.5
 table_ets_combined_hist$ETS_ratio <- df$ETS_ratio
 # Da gab es wieder eines der üblichen Dataframe zu Vektor Problemen, daher der 
 # Zwischenschritt
+
+
 
 plot <-
 	ggplot(table_ets_hist) +
