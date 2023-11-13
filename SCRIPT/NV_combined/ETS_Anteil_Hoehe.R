@@ -103,7 +103,9 @@ table_ets_hist <- rbind(table_ets_hist_gl, table_ets_hist_ibf)
 # Hoehenklasse zusammen geführt werden und innerhalb der Klasse dann mit den 
 # Gewichten nach der Häufigkeit. Der einfachste Weg das zu erreichen ist, die 
 # Gruppierung und Berechnung pro Höhenklasse nochmal durch zuführen, dieses Mal
-# für alle Flächen zusammen.
+# für alle Flächen zusammen. Dadurch werden die goe_lau Flächen 4 mal stärker 
+# gwichtet, einfach weil die mehr Bäume pro Fläche haben. Aber Holger sagte das 
+# geht in Ordnung.
 # 
 table_ets_hist_comb <- 
 	tmp %>% 
@@ -231,19 +233,18 @@ plot <-
 		# 	name = "Versuch",
 		values = c("cadetblue", "chocolate"),
 		# 	labels = c("Goe_Lau", "IBF")
-	) +
-	annotate(
-		geom = "text",
-		x = 150,
-		y = 450,
-		hjust = 0,
-		label =
-			paste0("> filter (hoehe < ", 
-						 maxHoehe, 
-						 ")
-> filter (alter > 2j) oder filter (alter != 1j)"),
-size = 4
-	)
+	) 
+#	annotate(
+#		geom = "text",
+#		x = 150,
+#		y = 450,
+#		hjust = 0,
+#		label =
+#			paste0("> filter (hoehe < ", 
+#						 maxHoehe, 
+#						 ") \n> filter (alter > 2j) oder filter (alter != 1j)"),
+#		size = 4
+#	)
 plot
 ggsave(
 	plot = plot,
@@ -255,7 +256,7 @@ ggsave(
 
 
 ## TIDY UP  --------------------------------------------------------------------
-rm(table_ets_hist, table_ets_hist_gl, table_ets_hist_ibf, plot, df)
+# rm(table_ets_hist, table_ets_hist_gl, table_ets_hist_ibf, plot, df)
 
 ## OUTPUT ----------------------------------------------------------------------
 # plot at EXPORT/Combined/figures/ETS_Anteil_Hoehe.pdf

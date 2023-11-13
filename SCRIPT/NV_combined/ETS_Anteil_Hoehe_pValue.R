@@ -16,21 +16,9 @@ require(mgcv)
 ## NOTES -----------------------------------------------------------------------
 
 
-## STEP 1  ---------------------------------------------------------------------
+## STATISTICS  ---------------------------------------------------------------------
 
-# ETS_Anteil_Hoehe_pValue
-# 
-# table(tmp$ETS)
-# sum(is.na(tmp$ETS))
-# hist(tmp$Hoehe)
-# str(tmp)
-# sum(is.na(tmp$Flaeche))
-# 
-
-#####
-tmp <- tmp %>% filter(!is.na(ETS))
 tmp$Flaeche <- as.factor(tmp$Flaeche)
-####
 
 m1 <- gam(ETS ~ s(Hoehe) + s(Flaeche, bs = 're'), data = tmp, family = binomial)
 summary(m1)
@@ -42,12 +30,10 @@ plot(m2, pages = 1, all.terms = T)
 
 m3 <- gam(ETS ~ Hoehe, data = tmp, family = binomial)
 summary(m3)
-# plot(m3)
 
 m4 <- gam(ETS ~ I(poly(Hoehe, degree = 2)) + s(Flaeche, bs = 're'), family = binomial, data = tmp)
 summary(m4)
 plot(m4, pages = 1, all.terms = T)
-
 
 m5 <- gam(ETS ~ I(poly(Hoehe, degree = 2)), family = binomial, data = tmp)
 summary(m5)
@@ -61,30 +47,26 @@ m7 <- gam(ETS ~ I(Hoehe^2), family = binomial, data = tmp)
 summary(m7)
 plot(m7, pages = 1, all.terms = T)
 
-##########
+## DATA PREDICTION ---------------------------------------------------------------------
 
 nd <- data.frame('Hoehe' = 0:maxHoehe)
 pre <- predict(m2, newdata = nd, exclude = 's(Flaeche)', newdata.guaranteed = T, se.fit = T)
 
 nd$pre <- as.numeric(plogis(pre$fit))
-nd$lo <- as.numeric(plogis(pre$fit+1.96*pre$se.fit))
+nd$lo <- as.numeric(plogis(pre$fit+1.96*pre$se.fit))  
 nd$up <- as.numeric(plogis(pre$fit-1.96*pre$se.fit))
-
+# Die 1.96  sind für das 95% Konfidenzintervall.
 
 ggplot() + 
 	# geom_point(aes(x = Hoehe, y = ETS)) +
  	geom_ribbon(data = nd, aes(x = Hoehe, ymin = lo, ymax = up)) + 
 	geom_line(data = nd, aes(x = Hoehe, y = pre)) +
-	geom_point(data = table_ets_combined_hist, aes(x = hist_step_point, y = ETS_ratio/100))
-
-ggplot() + 
-	# geom_point(aes(x = Hoehe, y = ETS)) +
-	geom_ribbon(data = nd, aes(x = Hoehe, ymin = lo, ymax = up)) + 
-	geom_line(data = nd, aes(x = Hoehe, y = pre)) +
 	geom_point(data = table_ets_hist_comb, aes(x = hist_step_point, y = ETS_ratio/100))
 
 
-######################
+## GRAPH ---------------------------------------------------------------------
+# Statt nach Datenherkunft werden die beiden Säulenfarben nun nach ETS T/F 
+# sortiert das ist ja wesentlich logischer.
 
 table_ets_hist_T <-
 	tmp %>%
@@ -98,7 +80,7 @@ table_ets_hist_T <-
 	# (siehe table_ets_hist_ibf) sein damit die columns am Ende an der richtigen 
 	# Stelle und dich beieinander stehen.
 	group_by(hist_step, .drop = F) %>%
-	summarise(n = n(), ETS_ratio = sum(ETS, na.rm = T) / n() * 100) %>% 
+	summarise(n = n()) %>% 
 	mutate(ETS = TRUE) %>% 
 	mutate(hist_step = as.numeric(as.character(hist_step))) %>% 
 	mutate(hist_step_point = hist_step + 2)
@@ -106,7 +88,7 @@ table_ets_hist_T <-
 # Punkte auf einer x-Höhe liegen, die Columns mussten ein bisschen nach rechts
 # bzw links damit sie sich nicht überdecken
 
-table_ets_hist_T <- table_ets_hist_T[1:(maxHoehe/heightStep),] 
+# table_ets_hist_T <- table_ets_hist_T[1:(maxHoehe/heightStep),] 
 # Aus unerfindlichen Gründen hat sich am Ende noch eine Zeile entwickelt die
 # bei Steps NA hat. Und ich habe gerade keine Zeit zu ergründen wo die her kommt.
 # Ich konnte das nicht reproduzieren, jetzt tut diese Zeile nichts mehr...
@@ -120,30 +102,34 @@ table_ets_hist_F <-
 		labels = steps[1:(maxHoehe/heightStep)] + 7
 	))  %>% 
 	group_by(hist_step, .drop = F) %>% 
-	summarise(n = n(), ETS_ratio = sum(ETS, na.rm = T)/ n() * 100) %>% 
+	summarise(n = n()) %>% 
 	mutate(ETS = FALSE) %>% 
 	mutate(hist_step = as.numeric(as.character(hist_step))) %>% 
 	mutate(hist_step_point = hist_step - 2)
 
 table_ets_hist_TF <- rbind(table_ets_hist_T, table_ets_hist_F)
-
+table_ets_hist_TF$ETS <- 
+	factor(table_ets_hist_TF$ETS, levels = c("TRUE", "FALSE")) 
 
 ######################
 
 plot <-
-	ggplot(table_ets_hist_TF) +
+	ggplot(data = table_ets_hist_TF) +
+	geom_col(aes(x = hist_step_point,
+							 y = n,
+							 color = ETS, 
+							 fill = ETS),
+					 width = 6,
+					 position = "stack") +
 	geom_ribbon(data = nd, aes(
 		x = Hoehe,
 		ymin = lo * 1000,
 		ymax = up * 1000
 	),
-	fill = "grey") +
-	geom_line(data = nd, aes(x = Hoehe, y = pre * 1000)) +
-	geom_col(aes(x = hist_step,
-							 y = n,
-							 color = ETS, 
-							 fill = ETS),
-					 width = 4) +
+	fill = "grey",
+	alpha = .5) +
+	geom_line(data = nd, aes(x = Hoehe, y = pre * 1000),
+						alpha = .5) +
 	geom_point(
 		data = table_ets_hist_comb,
 		aes(x = hist_step_point,
@@ -153,57 +139,50 @@ plot <-
 		fill = "black",
 		size = 2
 	) +
-	geom_smooth(
-		data = table_ets_hist_comb,
-		aes(
-			x = hist_step_point,
-			y = ETS_ratio * 10
-		),
-		alpha = 0.2,
-		method = "glm"
-	) +
-	scale_y_continuous(name = paste0("Anzahl [total = ", 
+	# geom_smooth(
+	# 	data = table_ets_hist_comb,
+	# 	aes(
+	# 		x = hist_step_point,
+	# 		y = ETS_ratio * 10
+	# 	),
+	# 	alpha = 0.2,
+	# 	method = "glm"
+	# ) +
+	scale_y_continuous(name = paste0("Individuals [n = ", 
 																	 nrow(tmp), 
 																	 "]"),
 										 sec.axis =  sec_axis(trans = ~ . / 10,
-										 										 name = "ETS Anteil [%]")) +
+										 										 name = "Ashdieback ratio [%]")) +
 	scale_x_continuous(
-		name = "Hoehenklassen [mm]",
+		name = "Heighclasses [mm]",
 		breaks = seq(0, maxHoehe, (maxHoehe/heightStep)),
 		labels = seq(0, maxHoehe, (maxHoehe/heightStep))
 	) +
 	scale_fill_manual(
-		# 	name = "ETS",
-		values = c("#a2c617", "#e5420f"),
-		# 	labels = c("FALSE", "TRUE")
+		name = "ADB",
+		values = c("#e5420f", "#a2c617"),
+		labels = c("TRUE", "FALSE")
 	) +
 	scale_color_manual(
-		# 	name = "ETS",
-		values = c("#a2c617", "#e5420f"),
-		# 	labels = c("FALSE", "TRUE")
+		name = "ADB",
+		values = c("#e5420f", "#a2c617"),
+		labels = c("TRUE", "FALSE")
 	) 
-# annotate(
-# 	geom = "text",
-# 	x = 150,
-# 	y = 450,
-# 	hjust = 0,
-# 	label =
-# 		paste0("> filter (hoehe < ", 
-# 					 maxHoehe, 
-# 					 ") \n> filter (alter > 2j) oder filter (alter != 1j)"),
-# size = 4
-# )
 plot
 ggsave(
 	plot = plot,
-	filename = "EXPORT/NV_combined/figures/ETS_Anteil_Hoehe.pdf",
+	filename = "EXPORT/NV_combined/figures/ETS_Anteil_Hoehe_pValue.pdf",
 	units = "mm",
 	width = 300,
 	height = 150
 )
 
 
-############
+## TEST BY AREA ---------------------------------------------------------------------
+# Hier habe ich mal getestet ob sich der Zuwachs des ETS Anteils auch auf allen
+# Versuchsflächen wiederholen lässt. UNd es sieht so weit sehr gut aus. Ist aber 
+# nun auskommentiert, weil war ja nur ein Test
+# 
 # nv_all2 <- nv_all
 # 
 # nv_all <- nv_all2 %>% filter(Flaeche == "Greifswald")
@@ -215,12 +194,10 @@ ggsave(
 # nv_all <- nv_all2 %>% filter(Flaeche == "Weisweil")
 # 
 # nv_all <- nv_all2
-# 
-ggplot(data = tmp) +
- 	geom_violin(aes(x = Hoehe, y = Flaeche), scale = "count") +
- 	facet_grid(cols = vars(ETS))
-# 
-# 
+# ggplot(data = tmp) +
+#  	geom_violin(aes(x = Hoehe, y = Flaeche), scale = "count") +
+#  	facet_grid(cols = vars(ETS))
+
 ## TIDY UP  --------------------------------------------------------------------
 rm()
 
