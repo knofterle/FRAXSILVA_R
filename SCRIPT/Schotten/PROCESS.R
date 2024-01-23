@@ -57,13 +57,13 @@ S_tmp$diff_humid <- S_tmp$humid - S_tmp$humid_mean
 
 
 
-slice <- as.POSIXct("2021-07-05 18:00:00", tz = "UTC")
+slice <- as.POSIXct("2022-04-20 18:00:00", tz = "UTC")
 window <- 3600 * 48
 slice <- c(slice - window, slice + window) 
 
 S_tmp %>% 
 	filter(time > slice[1] , time < slice[2]) %>% 
-	filter(device %in% c("S1", "S4", "S5", "S2")) %>% 
+	filter(device %in% c("S1", "S3", "S6", "S2")) %>% 
 	ggplot(aes(x = time, y = temp_mean)) +
 	geom_line() +
 	geom_point(aes(x = time, y = diff_temp*2, color = device)) +
@@ -74,7 +74,7 @@ S_tmp %>%
 
 S_tmp %>% 
 	filter(time > slice[1] , time < slice[2]) %>% 
-	filter(device %in% c("S1", "S4", "S5", "S2")) %>% 
+	filter(device %in% c("S1", "S3", "S6", "S2")) %>% 
 	ggplot(aes(x = time, y = humid_mean)) +
 	geom_line() +
 	geom_point(aes(x = time, y = diff_humid*2, color = device)) +
