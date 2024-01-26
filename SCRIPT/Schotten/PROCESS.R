@@ -54,19 +54,47 @@ S_tmp$diff_temp <- S_tmp$temp - S_tmp$temp_mean
 S_tmp$diff_humid <- S_tmp$humid - S_tmp$humid_mean
 
 ## STEP 3  ---------------------------------------------------------------------
+require(zoo)
+S_tmp <- S_tmp[order(S_tmp$device),]
+S_tmp$diff_temp_smooth <- rollmean(S_tmp$diff_temp, k = 8, fill = NA)
+S_tmp$diff_humid_smooth <- rollmean(S_tmp$diff_humid, k = 8, fill = NA)
+S_tmp <- S_tmp[order(S_tmp$time),]
+
+## STEP 4  ---------------------------------------------------------------------
 
 
-
-slice <- as.POSIXct("2022-04-20 18:00:00", tz = "UTC")
+slice <- as.POSIXct("2022-08-11 18:00:00", tz = "UTC")
 window <- 3600 * 48
 slice <- c(slice - window, slice + window) 
 
 S_tmp %>% 
 	filter(time > slice[1] , time < slice[2]) %>% 
-	filter(device %in% c("S1", "S3", "S6", "S2")) %>% 
+	filter(device %in% c("S4", "S5", "S1", "S2")) %>% 
 	ggplot(aes(x = time, y = temp_mean)) +
 	geom_line() +
 	geom_point(aes(x = time, y = diff_temp*2, color = device)) +
+	geom_hline(yintercept = 0) +
+	scale_x_datetime(date_breaks = "2 hours") +
+	scale_y_continuous(sec.axis = sec_axis(~./2), n.breaks = 15) +
+	theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+S_tmp %>% 
+	filter(time > slice[1] , time < slice[2]) %>% 
+	filter(device %in% c("S1", "S2", "S3", "S4", "S5", "S6")) %>% 
+	ggplot(aes(x = time, y = temp_mean)) +
+	geom_line() +
+	geom_point(aes(x = time, y = diff_temp_smooth*2, color = device)) +
+	geom_hline(yintercept = 0) +
+	scale_x_datetime(date_breaks = "2 hours") +
+	scale_y_continuous(sec.axis = sec_axis(~./2), n.breaks = 15) +
+	theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+S_tmp %>% 
+	filter(time > slice[1] , time < slice[2]) %>% 
+	filter(device %in% c("S1", "S2", "S3", "S4", "S5", "S6")) %>% 
+	ggplot(aes(x = time, y = humid_mean)) +
+	geom_line() +
+	geom_point(aes(x = time, y = diff_humid_smooth*2, color = device)) +
 	geom_hline(yintercept = 0) +
 	scale_x_datetime(date_breaks = "2 hours") +
 	scale_y_continuous(sec.axis = sec_axis(~./2), n.breaks = 15) +
@@ -86,6 +114,57 @@ S_tmp %>%
 
 
 unique(round_date(S_tmp %>% filter(device == "S2") %>% pull(time), "1 month"))
+
+## STEP 5  ---------------------------------------------------------------------
+
+
+slice <- as.POSIXct("2022-04-20 18:00:00", tz = "UTC")
+window <- 3600 * 48
+slice <- c(slice - window, slice + window) 
+
+S_tmp %>% 
+	filter(time > slice[1] , time < slice[2]) %>% 
+	filter(device %in% c("S4", "S5", "S1", "S2")) %>% 
+	ggplot(aes(x = time, y = temp_mean)) +
+	geom_line() +
+	geom_point(aes(x = time, y = diff_temp*2, color = device)) +
+	geom_hline(yintercept = 0) +
+	scale_x_datetime(date_breaks = "2 hours") +
+	scale_y_continuous(sec.axis = sec_axis(~./2), n.breaks = 15) +
+	theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+S_tmp %>% 
+	filter(time > slice[1] , time < slice[2]) %>% 
+	filter(device %in% c("S1", "S2", "S3", "S4", "S5", "S6")) %>% 
+	ggplot(aes(x = time, y = temp_mean)) +
+	geom_line() +
+	geom_point(aes(x = time, y = diff_temp_smooth*2, color = device)) +
+	geom_hline(yintercept = 0) +
+	scale_x_datetime(date_breaks = "2 hours") +
+	scale_y_continuous(sec.axis = sec_axis(~./2), n.breaks = 15) +
+	theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+S_tmp %>% 
+	filter(time > slice[1] , time < slice[2]) %>% 
+	filter(device %in% c("S1", "S2", "S3", "S4", "S5", "S6")) %>% 
+	ggplot(aes(x = time, y = humid_mean)) +
+	geom_line() +
+	geom_point(aes(x = time, y = diff_humid_smooth*2, color = device)) +
+	geom_hline(yintercept = 0) +
+	scale_x_datetime(date_breaks = "2 hours") +
+	scale_y_continuous(sec.axis = sec_axis(~./2), n.breaks = 15) +
+	theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+S_tmp %>% 
+	filter(time > slice[1] , time < slice[2]) %>% 
+	filter(device %in% c("S1", "S3", "S6", "S2")) %>% 
+	ggplot(aes(x = time, y = humid_mean)) +
+	geom_line() +
+	geom_point(aes(x = time, y = diff_humid*2, color = device)) +
+	geom_hline(yintercept = 0) +
+	scale_x_datetime(date_breaks = "2 hours") +
+	scale_y_continuous(sec.axis = sec_axis(~./2), n.breaks = 15) +
+	theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 
 ## TIDY UP  --------------------------------------------------------------------
